@@ -1,4 +1,4 @@
-import { cdnCache } from '../utils/cache.js';
+import { noEdgeCache } from '../utils/cache.js';
 import { getDb, COLLECTIONS, SINGLETONS } from '../db/index.js';
 import { schemas, singletonSchemas } from '../schemas/index.js';
 import { validate } from '../middleware/common.js';
@@ -31,7 +31,7 @@ const sortProjects = (projects) =>
 export async function getSite(_req, res) {
   const db = getDb();
   const [profile, settings, video] = await Promise.all(SINGLETONS.map((s) => db.getSingleton(s)));
-  cdnCache(res, 10, 60);
+  noEdgeCache(res);
   res.json({ profile, settings, video: video.published === false ? null : video, meta: { dataSource: db.kind } });
 }
 
@@ -46,7 +46,7 @@ export async function listPublic(req, res) {
   }
   const limit = Number(req.query.limit);
   if (limit > 0) docs = docs.slice(0, limit);
-  cdnCache(res, 10, 60);
+  noEdgeCache(res);
   res.json(docs);
 }
 

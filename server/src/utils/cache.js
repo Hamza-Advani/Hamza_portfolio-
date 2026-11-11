@@ -8,3 +8,11 @@ export function cdnCache(res, seconds, swr = seconds * 5) {
   res.set('Cache-Control', 'public, max-age=0, must-revalidate');
   res.set('CDN-Cache-Control', `public, s-maxage=${seconds}, stale-while-revalidate=${swr}`);
 }
+
+/**
+ * Site content: never cached at the edge, so admin edits are visible on the very next request.
+ * (Reads are cheap — the storage driver revalidates its own copy with ETags.)
+ */
+export function noEdgeCache(res) {
+  res.set('Cache-Control', 'public, max-age=0, must-revalidate');
+}
