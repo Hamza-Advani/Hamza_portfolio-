@@ -1,0 +1,45 @@
+rules_version = '2';
+
+// All reads and writes go through the Express API, which uses the Firebase Admin SDK
+// (Admin SDK access is not subject to these rules). Browsers therefore get NO direct
+// write access to Firestore. As defence in depth, published content is readable and
+// admins (custom claim admin == true) may read everything — nobody can write from a client.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Site singletons: profile, settings, video
+    match /site/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /projects/{id} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if false;
+    }
+
+    match /posts/{id} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow write: if false;
+    }
+
+    match /{col}/{id} {
+      allow read: if col in ['skills', 'education', 'certificates', 'roadmap'] && resource.data.get('published', true) != false;
+      allow write: if false;
+    }
+
+    // Contact messages are private: only admins can read them, only the API can create them.
+    match /messages/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

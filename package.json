@@ -1,0 +1,28 @@
+{
+  "name": "muhammad-hamza-portfolio",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c cyan,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "dev:client": "npm run dev -w client",
+    "dev:server": "npm run dev -w server",
+    "build": "npm run build -w client",
+    "test": "npm test -w server",
+    "seed": "npm run seed -w server",
+    "set-admin": "npm run set-admin -w server --"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "jwks-rsa": "^3.2.2"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "portfolio-intro-video",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.jsx",
+    "render": "remotion render src/index.jsx Intro out/intro.mp4 --codec=h264 --crf=20 --pixel-format=yuv420p",
+    "poster": "remotion still src/index.jsx Intro out/intro-poster.jpg --frame=90 --image-format=jpeg --jpeg-quality=88",
+    "og": "remotion still src/index.jsx OgImage out/og-image.jpg --image-format=jpeg --jpeg-quality=90",
+    "build": "npm run render && npm run poster && npm run og && node copy-to-site.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.542",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "4.0.542"
+  }
+}

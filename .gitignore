@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# builds
+dist/
+client/dist/
+video/out/
+.vercel/
+
+# environment files (NEVER commit real secrets)
+.env
+.env.*
+!.env.example
+*.local
+
+# Firebase service account keys
+*serviceAccount*.json
+*-firebase-adminsdk-*.json
+
+# local data store used in development without Firebase
+server/.data/
+
+# logs & OS
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+test-results/
+playwright-report/
+
+# Old static site — local backup only (it remains in GitHub history)
+legacy/
