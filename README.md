@@ -116,6 +116,15 @@ Delete `server/.data/db.json` any time to reset local content to the seed.
 
 The administrator account is **hamzaadvani2006@gmail.com**. No password is ever stored in code or env files.
 
+**Current production setup (no service-account key needed):**
+- Login uses Firebase Authentication. The server verifies Firebase sign-ins using only the public project ID.
+- `ADMIN_EMAILS` (Vercel env) lists who may enter `/admin`; they must sign in with email + password.
+- Content and contact messages are stored in a **private Vercel Blob store** (`portfolio-content`),
+  connected to the Vercel project. If the Firebase Admin key is added later, the API switches to Firestore.
+- Real-store integration test: `BLOB_TEST=1 BLOB_READ_WRITE_TOKEN=… node --test server/test/blob.integration.test.js`
+
+Optional — granting the role with a custom claim instead (needs the service-account key):
+
 1. With the Firebase Admin variables in `server/.env`, run:
    ```bash
    npm run set-admin -- hamzaadvani2006@gmail.com

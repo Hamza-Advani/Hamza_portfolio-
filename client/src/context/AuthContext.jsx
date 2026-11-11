@@ -59,21 +59,15 @@ export function AuthProvider({ children }) {
     }
 
     setTokenGetter(async () => (auth.currentUser ? auth.currentUser.getIdToken() : null));
-    let first = true;
     return auth.onAuthStateChanged(async (fbUser) => {
       setUser(fbUser);
       if (fbUser) {
+        // The SERVER decides who is an admin (custom claim or ADMIN_EMAILS allow-list).
+        // A signed admin claim lets a temporary server problem not log the admin out.
         const claims = await fbUser.getIdTokenResult();
-        if (claims.claims.admin === true) await verify({ trustClaim: true });
-        else {
-          setIsAdmin(false);
-          setError(new Error('This account is not authorised to access the admin dashboard.'));
-        }
+        await verify({ trustClaim: claims.claims.admin === true });
       } else {
         setIsAdmin(false);
-      }
-      if (first) {
-        first = false;
       }
       setLoading(false);
     });
@@ -83,10 +77,12 @@ export function AuthProvider({ children }) {
     const { signInWithEmailAndPassword } = await import('firebase/auth');
     setError(null);
     const cred = await signInWithEmailAndPassword(auth, email, password);
-    const claims = await cred.user.getIdTokenResult(true);
-    if (claims.claims.admin !== true) {
+    try {
+      await adminApi.me(); // server-side authorisation check
+    } catch (err) {
       await auth.signOut();
-      throw new Error('This account is not authorised to access the admin dashboard.');
+      if (err.status === 403) throw new Error('This account is not authorised to access the admin dashboard.');
+      throw new Error(err.status === 401 ? 'Your session could not be verified. Please try again.' : err.message);
     }
     return cred.user;
   }, []);

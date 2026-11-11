@@ -90,8 +90,9 @@ export default function Dashboard() {
               <h2 className="mb-4 text-lg font-semibold">Services</h2>
               <ul className="space-y-3 text-sm">
                 {[
-                  ['Database', health.data?.dataSource === 'firestore' ? 'Cloud Firestore' : health.data?.dataSource === 'local' ? 'Local JSON store' : 'Read-only seed', health.data?.dataSource === 'firestore'],
-                  ['Firebase Admin', services?.firebase ? 'Connected' : 'Not configured', services?.firebase],
+                  ['Database', { firestore: 'Cloud Firestore', blob: 'Vercel Blob (private)', local: 'Local JSON store' }[health.data?.dataSource] || 'Read-only seed', ['firestore', 'blob'].includes(health.data?.dataSource)],
+                  ['Firebase Authentication', services?.auth ? 'Connected' : 'Not configured', services?.auth],
+                  ['Firebase Admin key', services?.firebase ? 'Connected' : 'Not added (optional)', services?.firebase],
                   ['Cloudinary uploads', services?.cloudinary ? 'Connected' : 'Not configured', services?.cloudinary],
                   ['Resend email', services?.resend ? 'Connected' : 'Not configured', services?.resend],
                 ].map(([k, v, ok]) => (

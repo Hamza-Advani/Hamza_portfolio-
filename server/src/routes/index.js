@@ -7,7 +7,7 @@ import { sitemap } from '../controllers/sitemapController.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { contactLimiter } from '../middleware/common.js';
 import { getDb } from '../db/index.js';
-import { isCloudinaryConfigured, isFirebaseConfigured, isResendConfigured, isDevAuthEnabled } from '../config/env.js';
+import { isCloudinaryConfigured, isFirebaseConfigured, isFirebaseAuthAvailable, isResendConfigured, isDevAuthEnabled } from '../config/env.js';
 
 // ── Public API ─────────────────────────────────────────────────────────
 export const publicRouter = Router();
@@ -18,6 +18,7 @@ publicRouter.get('/health', (_req, res) => {
     dataSource: getDb().kind,
     services: {
       firebase: isFirebaseConfigured(),
+      auth: isFirebaseAuthAvailable() || isFirebaseConfigured(),
       cloudinary: isCloudinaryConfigured(),
       resend: isResendConfigured(),
       devAuth: isDevAuthEnabled(),

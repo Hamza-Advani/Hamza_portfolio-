@@ -45,12 +45,30 @@ export const env = {
     token: process.env.GITHUB_TOKEN || '',
   },
 
+  // Firebase accounts allowed into the admin dashboard (comma-separated). An account with the
+  // custom claim admin=true is also accepted.
+  adminEmails: (process.env.ADMIN_EMAILS || '')
+    .split(',')
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean),
+
+  blobPrefix: process.env.BLOB_PREFIX || 'data/',
+
   devAdminToken: process.env.DEV_ADMIN_TOKEN || '',
   dataFile: process.env.LOCAL_DATA_FILE || '',
 };
 
 export const isFirebaseConfigured = () =>
   Boolean(env.firebase.projectId && env.firebase.clientEmail && env.firebase.privateKey.includes('PRIVATE KEY'));
+
+// Vercel Blob store connected to the project (Vercel injects these when the store is linked).
+// Unit tests never touch a real store unless BLOB_TEST=1 is set explicitly.
+export const isBlobConfigured = () =>
+  Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) && (!env.isTest || process.env.BLOB_TEST === '1');
+
+// Firebase Authentication can verify sign-ins with only the (public) project ID —
+// no service-account key needed. True whenever the web config is set up.
+export const isFirebaseAuthAvailable = () => Boolean(env.firebase.projectId) && (isFirebaseConfigured() || env.adminEmails.length > 0);
 
 // Firebase Auth emulator (local testing of login / password flows). Ignored in production.
 export const isAuthEmulator = () => !env.isProduction && Boolean(process.env.FIREBASE_AUTH_EMULATOR_HOST);
