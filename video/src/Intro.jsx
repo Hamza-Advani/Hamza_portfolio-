@@ -2,8 +2,12 @@
 // 32-second motion-graphics intro (1920×1080 @ 30fps). Uses only real information and the
 // owner's own profile photo (public/profile.jpg). Render with `npm run build`.
 import {
-  AbsoluteFill, Img, Sequence, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Easing,
+  AbsoluteFill, Audio, Img, Sequence, continueRender, delayRender, getStaticFiles, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Easing,
 } from 'remotion';
+
+// Optional soundtrack: put YOUR OWN audio (voiceover or licensed music) at
+// video/public/soundtrack.mp3 (or .wav / .m4a / .aac) and re-render. Without it the video is silent.
+const SOUNDTRACK = getStaticFiles().find((f) => /^soundtrack\.(mp3|wav|m4a|aac)$/i.test(f.name));
 
 export const FPS = 30;
 export const DURATION = 32 * FPS;
@@ -326,6 +330,12 @@ export function Intro() {
   return (
     <AbsoluteFill>
       <Backdrop />
+      {SOUNDTRACK && (
+        <Audio
+          src={SOUNDTRACK.src}
+          volume={(fr) => interpolate(fr, [0, 20, DURATION - 30, DURATION], [0, 1, 1, 0], clamp)}
+        />
+      )}
       {SCENES.map(({ C: Scene, len }, i) => {
         const el = (
           <Sequence key={i} from={from} durationInFrames={len}>

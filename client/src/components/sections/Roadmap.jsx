@@ -96,7 +96,7 @@ export default function Roadmap({ semesters, years, disclaimer }) {
             const topics = (s.topics || []).filter((t) => filter === 'All' || t.status === filter);
             const p = progressOf(s.topics || []);
             return (
-              <article key={s.id} className="card p-6">
+              <article key={s.id} className="card min-w-0 p-5 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="eyebrow">Semester {s.semester}</p>
@@ -118,10 +118,12 @@ export default function Roadmap({ semesters, years, disclaimer }) {
                     return (
                       <li key={t.id} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-2/50 px-3.5 py-2.5">
                         <span className="flex min-w-0 items-center gap-2.5 text-sm">
-                          <Icon className={cx('h-4 w-4 shrink-0', STATUS_COLOR[t.status])} />
+                          <Icon className={cx('h-4 w-4 shrink-0', STATUS_COLOR[t.status])} aria-hidden="true" />
+                          <span className="sr-only sm:hidden">{t.status}: </span>
                           <span className={cx('truncate', t.status === 'Completed' && 'text-muted line-through decoration-lime/60')}>{t.title}</span>
                         </span>
-                        <StatusBadge status={t.status} className="hidden shrink-0 sm:inline-flex" />
+                        {/* Badge hidden on small screens — the coloured icon already shows the status */}
+                        <span className="hidden shrink-0 sm:block"><StatusBadge status={t.status} /></span>
                       </li>
                     );
                   })}

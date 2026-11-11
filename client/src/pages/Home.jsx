@@ -1,20 +1,25 @@
 import { useRef } from 'react';
-import { Link } from 'react-router';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowRight, Download, GraduationCap, MapPin, Sparkles, PenLine } from 'lucide-react';
+import { ArrowDown, ArrowRight, Download, GraduationCap, MapPin, PenLine } from 'lucide-react';
 import { useSite } from '../context/SiteContext.jsx';
 import { useFetch } from '../hooks/useFetch.js';
 import { useTypewriter } from '../hooks/ui.js';
 import { publicApi } from '../lib/api.js';
 import { Seo } from '../lib/seo.jsx';
+import { scrollToSection, useScrollToHashOnLoad } from '../lib/scroll.js';
+import { useLocation } from 'react-router';
 import { ArrowLink, Button, GithubIcon, Marquee, Reveal, Section, SectionHeading, SkeletonGrid, SmartImage, Spotlight } from '../components/ui.jsx';
 import { SocialLinks } from '../components/sections/SocialLinks.jsx';
-import { PostCard, ProjectCard } from '../components/sections/Cards.jsx';
+import { PostCard } from '../components/sections/Cards.jsx';
 import VideoSection from '../components/sections/VideoSection.jsx';
 import SkillsGrid from '../components/sections/SkillsGrid.jsx';
 import GithubRepos from '../components/sections/GithubRepos.jsx';
-import ContactCTA from '../components/sections/ContactCTA.jsx';
-import { EducationCard } from '../components/sections/Timeline.jsx';
+import { AboutChapters, ProfileFacts } from './About.jsx';
+import { EducationContent } from './Education.jsx';
+import { ProjectsGrid } from './Projects.jsx';
+import { CertificatesGallery } from './Certificates.jsx';
+import { JourneyRoadmap } from './Journey.jsx';
+import { ContactPanel } from './Contact.jsx';
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -78,7 +83,7 @@ function Hero() {
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.6, ease }} className="mt-9 flex flex-wrap items-center gap-3">
-            <Button to="/projects" variant="gradient" size="lg">
+            <Button href="/#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} variant="gradient" size="lg">
               View projects <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
             </Button>
             {cvHref.startsWith('/') ? (
@@ -124,7 +129,7 @@ function Hero() {
         </motion.div>
       </motion.div>
 
-      <a href="#intro" className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs text-faint md:flex" aria-label="Scroll to content">
+      <a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }} className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs text-faint md:flex" aria-label="Scroll to content">
         <span className="eyebrow">Scroll</span>
         <ArrowDown className="h-4 w-4 animate-bounce" />
       </a>
@@ -161,12 +166,36 @@ function IntroBand() {
   );
 }
 
+function LatestPosts() {
+  const posts = useFetch((o) => publicApi.list('posts', '?limit=3', o), []);
+  if (posts.loading) return <SkeletonGrid count={3} />;
+  if (posts.data?.length)
+    return (
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.data.map((p, i) => <Reveal key={p.id} delay={i * 0.08}><PostCard post={p} index={i} /></Reveal>)}
+      </div>
+    );
+  return (
+    <Reveal>
+      <Spotlight className="flex flex-col items-start gap-4 p-8 md:flex-row md:items-center md:justify-between">
+        <div className="relative z-10 flex items-center gap-4">
+          <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface-2 text-iris"><PenLine className="h-5 w-5" /></span>
+          <div>
+            <p className="font-semibold">First articles are being written</p>
+            <p className="text-sm text-muted">Posts about my BSCS journey, C programming and DSA are on the way.</p>
+          </div>
+        </div>
+        <Button to="/blog" variant="outline" size="sm" className="relative z-10">Visit the blog</Button>
+      </Spotlight>
+    </Reveal>
+  );
+}
+
 export default function Home() {
   const { profile } = useSite();
-  const projects = useFetch((o) => publicApi.list('projects', '?featured=true&limit=3', o), []);
-  const posts = useFetch((o) => publicApi.list('posts', '?limit=3', o), []);
+  const { hash } = useLocation();
+  useScrollToHashOnLoad(hash);
   const skills = useFetch((o) => publicApi.list('skills', '', o), []);
-  const education = useFetch((o) => publicApi.list('education', '', o), []);
 
   return (
     <>
@@ -174,90 +203,72 @@ export default function Home() {
       <Hero />
       <IntroBand />
 
-      <Section>
+      {/* 2 · About */}
+      <Section id="about">
         <div className="grid items-center gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeading
-              eyebrow="Introduction"
+              id="about-title"
+              eyebrow="About me"
               title={<>Meet <span className="text-gradient">{profile.shortName || 'Hamza'}</span> — my journey into technology</>}
               description={profile.about?.intro}
               className="!mb-8"
             />
-            <Reveal delay={0.1}><ArrowLink to="/about">More about me</ArrowLink></Reveal>
+            <Reveal delay={0.1}><ArrowLink to="/about">Full about page</ArrowLink></Reveal>
           </div>
           <div className="lg:col-span-7"><VideoSection /></div>
         </div>
-      </Section>
-
-      <Section>
-        <SectionHeading eyebrow="Selected work" title="Featured projects" description="Things I have designed and built while learning." action={<ArrowLink to="/projects">All projects</ArrowLink>} />
-        {projects.loading ? (
-          <SkeletonGrid count={2} className="h-96" />
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2">
-            {(projects.data || []).map((p, i) => (
-              <Reveal key={p.id} delay={i * 0.08}><ProjectCard project={p} index={i} large /></Reveal>
-            ))}
-          </div>
-        )}
-      </Section>
-
-      <Section>
-        <SectionHeading eyebrow="Toolkit" title="Skills I'm building" description="Languages, tools and strengths I work with today — growing every semester." action={<ArrowLink to="/skills">Skill details</ArrowLink>} />
-        {skills.loading ? <SkeletonGrid count={3} className="h-56" /> : <SkillsGrid skills={skills.data} compact />}
-      </Section>
-
-      <Section>
-        <SectionHeading eyebrow="Education" title="Where I'm learning" action={<ArrowLink to="/education">Full timeline</ArrowLink>} />
-        <div className="grid gap-5 lg:grid-cols-3">
-          {(education.data || []).map((e, i) => (
-            <Reveal key={e.id} delay={i * 0.08} className={i === 0 ? 'lg:col-span-3' : 'lg:col-span-1'}>
-              <EducationCard item={e} compact={i !== 0} />
-            </Reveal>
-          ))}
-          <Reveal delay={0.2} className="lg:col-span-1">
-            <Link to="/journey" className="card group flex h-full flex-col justify-between p-6 transition hover:border-iris md:p-8">
-              <Sparkles className="h-6 w-6 text-lime" />
-              <div className="mt-8">
-                <p className="text-xl font-semibold">Four-year learning roadmap</p>
-                <p className="mt-1 text-sm text-muted">My suggested BSCS plan, semester by semester.</p>
-              </div>
-              <ArrowRight className="mt-6 h-5 w-5 transition group-hover:translate-x-1" />
-            </Link>
-          </Reveal>
+        <div className="mt-14 grid gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-8"><AboutChapters compact /></div>
+          <Reveal className="lg:col-span-4" delay={0.1}><ProfileFacts showPortrait={false} className="lg:sticky lg:top-28" /></Reveal>
         </div>
       </Section>
 
-      <Section>
-        <SectionHeading eyebrow="Writing" title="Latest from the blog" action={<ArrowLink to="/blog">All posts</ArrowLink>} />
-        {posts.loading ? (
-          <SkeletonGrid count={3} />
-        ) : posts.data?.length ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.data.map((p, i) => <Reveal key={p.id} delay={i * 0.08}><PostCard post={p} index={i} /></Reveal>)}
-          </div>
-        ) : (
-          <Reveal>
-            <Spotlight className="flex flex-col items-start gap-4 p-8 md:flex-row md:items-center md:justify-between">
-              <div className="relative z-10 flex items-center gap-4">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface-2 text-iris"><PenLine className="h-5 w-5" /></span>
-                <div>
-                  <p className="font-semibold">First articles are being written</p>
-                  <p className="text-sm text-muted">Posts about my BSCS journey, C programming and DSA are on the way.</p>
-                </div>
-              </div>
-              <Button to="/blog" variant="outline" size="sm" className="relative z-10">Visit the blog</Button>
-            </Spotlight>
-          </Reveal>
-        )}
+      {/* 3 · Education */}
+      <Section id="education">
+        <SectionHeading id="education-title" eyebrow="Education" title="Where I'm learning" description="My university programme and the schooling that led me here." action={<ArrowLink to="/education">Education page</ArrowLink>} />
+        <EducationContent headingLevel="section" />
       </Section>
 
-      <Section>
-        <SectionHeading eyebrow="Open source" title="On GitHub" description="My public repositories, straight from GitHub." />
-        <GithubRepos limit={6} />
+      {/* 4 · Skills */}
+      <Section id="skills">
+        <SectionHeading id="skills-title" eyebrow="Skills" title="Skills I'm building" description="Languages, tools and strengths I work with today — growing every semester." action={<ArrowLink to="/skills">Skills page</ArrowLink>} />
+        {skills.loading ? <SkeletonGrid count={3} className="h-56" /> : <SkillsGrid skills={skills.data} />}
       </Section>
 
-      <ContactCTA />
+      {/* 5 · Projects (+ GitHub) */}
+      <Section id="projects">
+        <SectionHeading id="projects-title" eyebrow="Projects" title="Things I've built" description="Each project is a step in my learning — with links to the code and, where available, a live demo." action={<ArrowLink to="/projects">Projects page</ArrowLink>} />
+        <ProjectsGrid filterId="home-proj-filter" />
+        <div className="mt-16">
+          <h3 className="mb-6 text-2xl font-semibold">On GitHub</h3>
+          <GithubRepos limit={6} />
+        </div>
+      </Section>
+
+      {/* 6 · Certificates */}
+      <Section id="certificates">
+        <SectionHeading id="certificates-title" eyebrow="Certificates" title={<>Verified <span className="text-gradient">credentials</span></>} description="Course certificates I have earned. Every certificate links to its official verification page." action={<ArrowLink to="/certificates">Certificates page</ArrowLink>} />
+        <CertificatesGallery showSummary />
+      </Section>
+
+      {/* 7 · Journey */}
+      <Section id="journey">
+        <SectionHeading id="journey-title" eyebrow="Learning journey" title={<>Four years. Eight semesters. <span className="text-gradient">One roadmap.</span></>} description="What I've completed, what I'm learning right now, and what comes next." action={<ArrowLink to="/journey">Journey page</ArrowLink>} />
+        <JourneyRoadmap />
+      </Section>
+
+      {/* 8 · Blog */}
+      <Section id="blog">
+        <SectionHeading id="blog-title" eyebrow="Blog" title="Latest from the blog" description="Writing about what I'm studying, building and figuring out along the way." action={<ArrowLink to="/blog">All posts</ArrowLink>} />
+        <LatestPosts />
+      </Section>
+
+      {/* 9 · Contact */}
+      <Section id="contact">
+        <SectionHeading id="contact-title" eyebrow="Contact" title={<>Let&apos;s start a <span className="text-gradient">conversation.</span></>} description="Questions, collaborations, internships or feedback on my work — I read every message." />
+        <ContactPanel />
+      </Section>
     </>
   );
 }

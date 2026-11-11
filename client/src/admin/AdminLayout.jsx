@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router';
-import { Award, BookOpen, ExternalLink, FolderKanban, GraduationCap, Inbox, LayoutDashboard, LogOut, Map, Menu, Settings, Sparkles, User, Video, X } from 'lucide-react';
+import { Award, BookOpen, ExternalLink, FolderKanban, GraduationCap, Inbox, KeyRound, LayoutDashboard, LogOut, Map, Menu, Settings, Sparkles, User, Video, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Spinner } from '../components/ui.jsx';
 import { ThemeToggle } from '../components/layout/Navbar.jsx';
@@ -20,6 +20,7 @@ export const ADMIN_NAV = [
   { to: '/admin/video', label: 'Intro video', icon: Video },
   { to: '/admin/messages', label: 'Messages', icon: Inbox },
   { to: '/admin/settings', label: 'Settings', icon: Settings },
+  { to: '/admin/account', label: 'Account', icon: KeyRound },
 ];
 
 function Sidebar({ onNavigate }) {

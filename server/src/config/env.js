@@ -52,6 +52,9 @@ export const env = {
 export const isFirebaseConfigured = () =>
   Boolean(env.firebase.projectId && env.firebase.clientEmail && env.firebase.privateKey.includes('PRIVATE KEY'));
 
+// Firebase Auth emulator (local testing of login / password flows). Ignored in production.
+export const isAuthEmulator = () => !env.isProduction && Boolean(process.env.FIREBASE_AUTH_EMULATOR_HOST);
+
 export const isCloudinaryConfigured = () =>
   Boolean(env.cloudinary.cloudName && env.cloudinary.apiKey && env.cloudinary.apiSecret);
 

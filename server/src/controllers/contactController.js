@@ -7,6 +7,7 @@ import { env } from '../config/env.js';
 import { badRequest, unavailable } from '../utils/httpError.js';
 import { escapeHtml } from '../utils/text.js';
 
+export const contactUnavailableMessage = 'The contact form is temporarily unavailable.';
 const MIN_FILL_MS = 3000; // humans take longer than 3s to fill the form
 
 function looksLikeSpam({ message, subject, name }) {
@@ -97,7 +98,7 @@ export async function submitContact(req, res) {
   }
 
   if (!saved && !emailSent) {
-    throw unavailable('The contact service is temporarily unavailable. Please email me directly instead.');
+    throw unavailable(contactUnavailableMessage);
   }
 
   res.status(201).json({ ok: true, stored: Boolean(saved), emailSent });

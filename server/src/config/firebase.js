@@ -1,23 +1,28 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
-import { env, isFirebaseConfigured } from './env.js';
+import { env, isFirebaseConfigured, isAuthEmulator } from './env.js';
 
 let app = null;
 
 function getApp() {
-  if (!isFirebaseConfigured()) return null;
   if (app) return app;
-  app =
-    getApps()[0] ||
-    initializeApp({
-      credential: cert({
+  if (isFirebaseConfigured()) {
+    app =
+      getApps()[0] ||
+      initializeApp({
+        credential: cert({
+          projectId: env.firebase.projectId,
+          clientEmail: env.firebase.clientEmail,
+          privateKey: env.firebase.privateKey,
+        }),
         projectId: env.firebase.projectId,
-        clientEmail: env.firebase.clientEmail,
-        privateKey: env.firebase.privateKey,
-      }),
-      projectId: env.firebase.projectId,
-    });
+      });
+  } else if (isAuthEmulator()) {
+    // Local testing only: the Admin SDK talks to the Firebase Auth emulator
+    // (FIREBASE_AUTH_EMULATOR_HOST) and needs no credentials. Never active in production.
+    app = getApps()[0] || initializeApp({ projectId: env.firebase.projectId });
+  }
   return app;
 }
 
@@ -28,10 +33,9 @@ export const adminAuth = () => {
 
 let db = null;
 export const adminDb = () => {
-  const a = getApp();
-  if (!a) return null;
+  if (!isFirebaseConfigured()) return null;
   if (!db) {
-    db = getFirestore(a);
+    db = getFirestore(getApp());
     db.settings({ ignoreUndefinedProperties: true });
   }
   return db;

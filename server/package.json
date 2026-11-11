@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/app.js",
   "scripts": {
-    "dev": "node --watch src/index.js",
+    "dev": "node --watch-path=src --watch-preserve-output src/index.js",
     "start": "node src/index.js",
     "test": "node --no-experimental-require-module --test test/*.test.js",
     "seed": "node scripts/seed.js",

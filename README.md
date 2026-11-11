@@ -114,14 +114,30 @@ Delete `server/.data/db.json` any time to reset local content to the seed.
 
 ## 4. Admin account setup
 
-1. Firebase console → Authentication → Users → **Add user** (your email + a strong password).
-2. Grant the admin role (custom claim `admin: true`):
+The administrator account is **hamzaadvani2006@gmail.com**. No password is ever stored in code or env files.
+
+1. With the Firebase Admin variables in `server/.env`, run:
    ```bash
-   npm run set-admin -- your-email@example.com
+   npm run set-admin -- hamzaadvani2006@gmail.com
    ```
-   (revoke with `npm run set-admin -- your-email@example.com --revoke`)
-3. Sign in at `/admin/login`. Accounts without the claim are rejected by both the UI and the API.
-   "Forgot password?" on the login page sends a Firebase reset email.
+   This creates the account if it does not exist (with a random password nobody knows) and grants the
+   admin role via the custom claim `admin: true`. Revoke with `--revoke`.
+2. Choose your password with Firebase's secure reset flow: open `/admin/login`, type the email and click
+   **Forgot password?**. Firebase emails you a link to set the password.
+3. Sign in. Accounts without the admin claim are rejected by both the UI and the API.
+4. **Admin → Account** lets you change the password (current password required) or send yourself a reset email.
+
+Firestore content: the first time the API connects to an empty database it copies the starter content in
+automatically (once — a `site/_meta` marker prevents re-seeding). `npm run seed` is still available.
+
+### Testing login locally without real credentials
+The Firebase Auth emulator works with the app (dev builds only — the code is removed from production bundles):
+```bash
+npx firebase-tools emulators:start --only auth --project demo-portfolio
+# in another terminal, set FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099, FIREBASE_PROJECT_ID=demo-portfolio
+# and VITE_FIREBASE_API_KEY/APP_ID (any value), VITE_FIREBASE_PROJECT_ID=demo-portfolio,
+# VITE_FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099, then: npm run dev
+```
 
 ## 5. Cloudinary setup
 
@@ -215,6 +231,11 @@ npm install
 npm run studio   # live preview in the browser
 npm run build    # renders MP4 + poster + og-image and copies them into client/public
 ```
+
+**Audio:** the current MP4 has **no audio track** (it was generated without any soundtrack). To add sound,
+place your own voiceover or properly licensed music at `video/public/soundtrack.mp3` (or `.wav`/`.m4a`/`.aac`)
+and run `npm run build` in `video/` — it is mixed in automatically with fade in/out. The site's player has a
+visible Mute/Unmute control and shows "No audio track" when a file has no sound.
 
 To replace the video without code, use **Admin → Intro video** (upload to Cloudinary; poster and duration are filled automatically).
 

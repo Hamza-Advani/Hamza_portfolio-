@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, Moon, Sun, X, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext.jsx';
 import { useScrolled } from '../../hooks/ui.js';
 import { cx } from '../../lib/format.js';
+import { HOME_SECTIONS, scrollToSection, useActiveSection } from '../../lib/scroll.js';
 
+/** Standalone pages (still available; used by the footer). */
 export const NAV = [
   { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
-  { to: '/education', label: 'Education' },
-  { to: '/skills', label: 'Skills' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/certificates', label: 'Certificates' },
-  { to: '/journey', label: 'Journey' },
-  { to: '/blog', label: 'Blog' },
+  ...HOME_SECTIONS.filter((s) => s.id !== 'contact').map((s) => ({ to: s.page, label: s.label })),
 ];
+
+/** Navbar items: each scrolls to its section on the homepage. */
+const SECTION_NAV = [{ id: 'top', label: 'Home', page: '/' }, ...HOME_SECTIONS.filter((s) => s.id !== 'contact')];
+const SECTION_IDS = HOME_SECTIONS.map((s) => s.id);
 
 export function Logo({ className }) {
   return (
@@ -49,10 +49,41 @@ export function ThemeToggle({ className }) {
   );
 }
 
+/** Link to a homepage section: smooth-scrolls on "/", otherwise navigates to "/#id". */
+function useSectionLink(onNavigate) {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  return (id) => ({
+    href: id === 'top' ? '/' : `/#${id}`,
+    onClick: (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // let "open in new tab" work
+      e.preventDefault();
+      onNavigate?.();
+      if (pathname === '/') scrollToSection(id);
+      else navigate(id === 'top' ? '/' : `/#${id}`);
+    },
+  });
+}
+
+function useCurrent() {
+  const { pathname } = useLocation();
+  const onHome = pathname === '/';
+  const activeSection = useActiveSection(SECTION_IDS, onHome);
+  return (item) => {
+    if (onHome) return item.id === (activeSection || 'top');
+    return item.id !== 'top' && (pathname === item.page || pathname.startsWith(`${item.page}/`));
+  };
+}
+
 export default function Navbar() {
   const scrolled = useScrolled();
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const linkProps = useSectionLink(() => {
+    document.body.style.overflow = ''; // release the mobile-menu scroll lock before scrolling
+    setOpen(false);
+  });
+  const isCurrent = useCurrent();
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
@@ -78,31 +109,30 @@ export default function Navbar() {
           >
             <Logo />
             <ul className="hidden items-center gap-1 lg:flex">
-              {NAV.map((item) => (
-                <li key={item.to}>
-                  <NavLink
-                    to={item.to}
-                    end={item.to === '/'}
-                    className={({ isActive }) => cx('relative rounded-full px-3.5 py-2 text-sm transition-colors', isActive ? 'text-ink' : 'text-muted hover:text-ink')}
-                  >
-                    {({ isActive }) => (
-                      <>
-                        {isActive && <motion.span layoutId="nav-pill" className="absolute inset-0 -z-10 rounded-full bg-surface-2 ring-1 ring-line" transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }} />}
-                        {item.label}
-                      </>
-                    )}
-                  </NavLink>
-                </li>
-              ))}
+              {SECTION_NAV.map((item) => {
+                const active = isCurrent(item);
+                return (
+                  <li key={item.id}>
+                    <a
+                      {...linkProps(item.id)}
+                      aria-current={active ? 'true' : undefined}
+                      className={cx('relative rounded-full px-3.5 py-2 text-sm transition-colors', active ? 'text-ink' : 'text-muted hover:text-ink')}
+                    >
+                      {active && <motion.span layoutId="nav-pill" className="absolute inset-0 -z-10 rounded-full bg-surface-2 ring-1 ring-line" transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }} />}
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              <Link
-                to="/contact"
+              <a
+                {...linkProps('contact')}
                 className="hidden h-10 items-center gap-1.5 rounded-full bg-ink px-5 text-sm font-medium text-bg transition hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_var(--iris)] sm:inline-flex"
               >
                 Let&apos;s talk <ArrowUpRight className="h-4 w-4" />
-              </Link>
+              </a>
               <button
                 type="button"
                 className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden"
@@ -130,16 +160,15 @@ export default function Navbar() {
           >
             <div className="container-x flex h-full flex-col justify-between overflow-y-auto pb-10 pt-28">
               <ul className="flex flex-col gap-1">
-                {[...NAV, { to: '/contact', label: 'Contact' }].map((item, i) => (
-                  <motion.li key={item.to} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.04 }}>
-                    <NavLink
-                      to={item.to}
-                      end={item.to === '/'}
-                      className={({ isActive }) => cx('flex items-baseline gap-4 py-2 font-display text-4xl font-semibold tracking-tight', isActive ? 'text-gradient' : 'text-ink')}
+                {[...SECTION_NAV, { id: 'contact', label: 'Contact', page: '/contact' }].map((item, i) => (
+                  <motion.li key={item.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.04 }}>
+                    <a
+                      {...linkProps(item.id)}
+                      className={cx('flex items-baseline gap-4 py-2 font-display text-4xl font-semibold tracking-tight', isCurrent(item) ? 'text-gradient' : 'text-ink')}
                     >
-                      <span className="font-mono text-xs text-faint">0{i + 1}</span>
+                      <span className="font-mono text-xs text-faint">{String(i + 1).padStart(2, '0')}</span>
                       {item.label}
-                    </NavLink>
+                    </a>
                   </motion.li>
                 ))}
               </ul>

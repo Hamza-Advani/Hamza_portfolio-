@@ -19,7 +19,12 @@ const limiterBase = {
   handler: (_req, res) => res.status(429).json({ error: 'Too many requests. Please try again later.' }),
 };
 
-export const apiLimiter = rateLimit({ ...limiterBase, windowMs: 15 * 60 * 1000, limit: 400 });
+// Public GET reads are cheap, edge-cached and made several at a time by the homepage, so they
+// get a generous budget (visitors behind one shared IP, e.g. a campus network, must not be
+// blocked). Everything else — admin calls and writes — keeps a tighter limit.
+const isPublicRead = (req) => req.method === 'GET' && (req.path.startsWith('/public/') || req.path === '/health' || req.path === '/sitemap.xml');
+export const publicReadLimiter = rateLimit({ ...limiterBase, windowMs: 15 * 60 * 1000, limit: 5000, skip: (req) => env.isTest || !isPublicRead(req) });
+export const apiLimiter = rateLimit({ ...limiterBase, windowMs: 15 * 60 * 1000, limit: 600, skip: (req) => env.isTest || isPublicRead(req) });
 export const contactLimiter = rateLimit({ ...limiterBase, windowMs: 15 * 60 * 1000, limit: 5 });
 
 export function notFoundHandler(req, res) {

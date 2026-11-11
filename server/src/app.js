@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env.js';
 import { publicRouter, adminRouter } from './routes/index.js';
-import { apiLimiter, errorHandler, notFoundHandler } from './middleware/common.js';
+import { apiLimiter, publicReadLimiter, errorHandler, notFoundHandler } from './middleware/common.js';
 import { sitemap } from './controllers/sitemapController.js';
 
 const app = express();
@@ -24,7 +24,7 @@ app.use(
   }),
 );
 app.use(express.json({ limit: '1mb' }));
-app.use('/api', apiLimiter);
+app.use('/api', publicReadLimiter, apiLimiter);
 
 app.get('/sitemap.xml', sitemap); // Vercel rewrites /sitemap.xml to this function
 app.use('/api', publicRouter);

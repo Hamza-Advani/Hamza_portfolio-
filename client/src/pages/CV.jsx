@@ -38,8 +38,8 @@ export default function CV() {
         </div>
       </div>
 
-      <article className="mx-auto max-w-[210mm] bg-white px-[14mm] py-[14mm] text-[13px] leading-relaxed text-neutral-700 shadow-xl print:shadow-none" style={{ colorScheme: 'light' }}>
-        <header className="flex items-start justify-between gap-6 border-b-2 border-neutral-900 pb-5">
+      <article className="mx-auto max-w-[210mm] bg-white px-5 py-8 sm:px-[14mm] sm:py-[14mm] print:px-[14mm] print:py-[14mm] text-[13px] leading-relaxed text-neutral-700 shadow-xl print:shadow-none" style={{ colorScheme: 'light' }}>
+        <header className="flex flex-col-reverse items-start justify-between gap-4 sm:flex-row sm:gap-6 print:flex-row border-b-2 border-neutral-900 pb-5">
           <div>
             <h1 className="font-display text-4xl font-bold tracking-tight text-neutral-900">{profile.name}</h1>
             <p className="mt-1 text-base font-medium text-neutral-800">{profile.program} Student · {profile.university}</p>

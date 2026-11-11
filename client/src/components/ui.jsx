@@ -97,7 +97,7 @@ export function Spotlight({ as: Tag = 'div', className, children, ...rest }) {
 }
 
 // ── Layout pieces ───────────────────────────────────────────────────────
-export function SectionHeading({ eyebrow, title, description, align = 'left', action, className }) {
+export function SectionHeading({ eyebrow, title, description, align = 'left', action, className, id }) {
   return (
     <div className={cx('mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between', align === 'center' && 'md:flex-col md:items-center text-center', className)}>
       <Reveal className={cx('max-w-2xl', align === 'center' && 'mx-auto')}>
@@ -107,7 +107,7 @@ export function SectionHeading({ eyebrow, title, description, align = 'left', ac
             {eyebrow}
           </p>
         )}
-        <h2 className="text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl md:text-5xl">{title}</h2>
+        <h2 id={id} className="text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl md:text-5xl">{title}</h2>
         {description && <p className="mt-4 text-base leading-relaxed text-muted md:text-lg">{description}</p>}
       </Reveal>
       {action && <Reveal delay={0.1}>{action}</Reveal>}
@@ -134,7 +134,7 @@ export function PageHeader({ eyebrow, title, description, children }) {
 
 export function Section({ id, className, children }) {
   return (
-    <section id={id} className={cx('relative py-16 md:py-28', className)}>
+    <section id={id} aria-labelledby={id ? `${id}-title` : undefined} className={cx('relative scroll-mt-20 py-16 md:py-24', className)}>
       <div className="container-x">{children}</div>
     </section>
   );

@@ -16,11 +16,13 @@ export function RouteFallback() {
 }
 
 export default function Layout() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const { loading, error, profile, reload } = useSite();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Links like /#projects scroll to their section instead (see useScrollToHashOnLoad).
+    if (!hash) window.scrollTo({ top: 0, behavior: 'instant' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   return (

@@ -20,7 +20,7 @@ export default function Skills() {
         {data && <SkillsGrid skills={data} />}
         <Reveal className="mt-14 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-line p-6 md:p-8">
           <p className="max-w-xl text-sm text-muted">Want to see these skills in practice? My projects and GitHub repositories show what I&apos;ve built with them.</p>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button to="/projects">See projects</Button>
             <Button to="/journey" variant="outline">What I&apos;m learning next</Button>
           </div>

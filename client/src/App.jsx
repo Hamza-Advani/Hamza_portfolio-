@@ -36,6 +36,7 @@ const PostsList = lazy(() => import('./admin/Posts.jsx').then((m) => ({ default:
 const PostEditor = lazy(() => import('./admin/Posts.jsx').then((m) => ({ default: m.PostEditor })));
 const RoadmapEditor = lazy(() => import('./admin/RoadmapEditor.jsx'));
 const Messages = lazy(() => import('./admin/Messages.jsx'));
+const AccountSettings = lazy(() => import('./admin/AccountSettings.jsx'));
 
 export default function App() {
   return (
@@ -75,6 +76,7 @@ export default function App() {
                     <Route path="video" element={<VideoEditor />} />
                     <Route path="messages" element={<Messages />} />
                     <Route path="settings" element={<SettingsEditor />} />
+                    <Route path="account" element={<AccountSettings />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
                   </Route>

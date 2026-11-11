@@ -18,16 +18,23 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const verify = useCallback(async () => {
+  const verify = useCallback(async ({ trustClaim = false } = {}) => {
     try {
       const { user: me } = await adminApi.me();
       setIsAdmin(Boolean(me?.admin));
       setError(null);
       return true;
     } catch (err) {
-      setIsAdmin(false);
       setError(err);
-      return false;
+      // When Firebase's signed token already carries admin=true (trustClaim), only an explicit
+      // 401/403 ends the session; temporary problems (rate limit, network, server error) don't
+      // log the admin out. The dev-token login has no claim to trust, so any failure rejects it.
+      if (!trustClaim || err.status === 401 || err.status === 403) {
+        setIsAdmin(false);
+        return false;
+      }
+      setIsAdmin(true);
+      return true;
     }
   }, []);
 
@@ -57,7 +64,7 @@ export function AuthProvider({ children }) {
       setUser(fbUser);
       if (fbUser) {
         const claims = await fbUser.getIdTokenResult();
-        if (claims.claims.admin === true) await verify();
+        if (claims.claims.admin === true) await verify({ trustClaim: true });
         else {
           setIsAdmin(false);
           setError(new Error('This account is not authorised to access the admin dashboard.'));
@@ -87,6 +94,20 @@ export function AuthProvider({ children }) {
   const resetPassword = useCallback(async (email) => {
     const { sendPasswordResetEmail } = await import('firebase/auth');
     await sendPasswordResetEmail(auth, email);
+  }, []);
+
+  /**
+   * Changes the signed-in admin's password. Always re-authenticates with the current
+   * password first (Firebase requires a recent sign-in for this, and it proves the person
+   * at the keyboard knows the password). Passwords are only ever sent to Firebase Auth.
+   */
+  const changePassword = useCallback(async (currentPassword, newPassword) => {
+    const { EmailAuthProvider, reauthenticateWithCredential, updatePassword } = await import('firebase/auth');
+    const current = auth?.currentUser;
+    if (!current?.email) throw Object.assign(new Error('Password changes need a Firebase sign-in.'), { code: 'no-user' });
+    await reauthenticateWithCredential(current, EmailAuthProvider.credential(current.email, currentPassword));
+    await updatePassword(current, newPassword);
+    await current.getIdToken(true); // fresh token so the API keeps accepting this session
   }, []);
 
   const signInDev = useCallback(
@@ -120,8 +141,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, isAdmin, loading, error, signIn, signInDev, signOut, resetPassword, firebaseEnabled }),
-    [user, isAdmin, loading, error, signIn, signInDev, signOut, resetPassword],
+    () => ({ user, isAdmin, loading, error, signIn, signInDev, signOut, resetPassword, changePassword, firebaseEnabled }),
+    [user, isAdmin, loading, error, signIn, signInDev, signOut, resetPassword, changePassword],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
