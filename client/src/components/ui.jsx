@@ -23,14 +23,14 @@ const btnBase =
   'group relative inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap';
 const btnVariants = {
   primary:
-    'bg-ink text-bg hover:shadow-[0_10px_40px_-10px_var(--iris)] hover:-translate-y-0.5 active:translate-y-0',
+    'text-white bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
   gradient:
-    'text-white bg-[linear-gradient(110deg,var(--iris),#5b8cff_45%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 shadow-[0_10px_40px_-14px_var(--iris)]',
-  outline: 'border border-line-strong text-ink hover:border-iris hover:bg-surface-2',
+    'text-white bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
+  outline: 'border border-line-strong bg-surface/40 text-ink backdrop-blur hover:-translate-y-0.5 hover:border-iris/70 hover:bg-surface-2 hover:shadow-[0_10px_30px_-16px_var(--iris)]',
   ghost: 'text-muted hover:text-ink hover:bg-surface-2',
   danger: 'bg-rose/10 text-rose border border-rose/30 hover:bg-rose hover:text-white',
 };
-const btnSizes = { sm: 'h-9 px-4 text-sm', md: 'h-11 px-6 text-sm', lg: 'h-13 px-7 text-base', icon: 'h-10 w-10' };
+const btnSizes = { sm: 'h-9 px-4 text-sm', md: 'h-11 px-6 text-sm', lg: 'h-12 px-6 text-[15px] sm:h-13 sm:px-7', icon: 'h-10 w-10' };
 
 export function Button({ to, href, variant = 'primary', size = 'md', className, children, external, loading, ...rest }) {
   const cls = cx(btnBase, btnVariants[variant], btnSizes[size], className);
@@ -90,7 +90,7 @@ export function Spotlight({ as: Tag = 'div', className, children, ...rest }) {
     ref.current.style.setProperty('--my', `${e.clientY - r.top}px`);
   };
   return (
-    <Tag ref={ref} onMouseMove={onMove} className={cx('card spotlight overflow-hidden', className)} {...rest}>
+    <Tag ref={ref} onMouseMove={onMove} className={cx('card glow-border spotlight overflow-hidden', className)} {...rest}>
       {children}
     </Tag>
   );
@@ -103,7 +103,7 @@ export function SectionHeading({ eyebrow, title, description, align = 'left', ac
       <Reveal className={cx('max-w-2xl', align === 'center' && 'mx-auto')}>
         {eyebrow && (
           <p className={cx('eyebrow mb-4 flex items-center gap-3', align === 'center' && 'justify-center')}>
-            <span className="h-px w-8 bg-gradient-to-r from-iris to-aqua" />
+            <span className="h-px w-8 bg-gradient-to-r from-violet to-aqua shadow-[0_0_12px_var(--iris)]" />
             {eyebrow}
           </p>
         )}
@@ -119,11 +119,14 @@ export function PageHeader({ eyebrow, title, description, children }) {
   return (
     <header className="relative overflow-hidden pb-14 pt-32 md:pb-20 md:pt-44">
       <div className="grid-bg mask-fade-b absolute inset-0 -z-10" />
-      <div className="absolute left-1/2 top-0 -z-10 h-[420px] w-[820px] max-w-[140vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--glow),transparent)] blur-2xl" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="orb left-[-10%] top-[-20%] h-[420px] w-[520px] bg-iris/30" />
+        <div className="orb right-[-10%] top-[10%] h-[360px] w-[460px] bg-aqua/20" />
+      </div>
       <div className="container-x">
         <Reveal>
-          {eyebrow && <p className="eyebrow mb-5 flex items-center gap-3"><span className="h-1.5 w-1.5 rounded-full bg-lime shadow-[0_0_12px_var(--lime)]" />{eyebrow}</p>}
-          <h1 className="text-balance max-w-4xl text-4xl font-semibold leading-[1.02] sm:text-5xl md:text-7xl">{title}</h1>
+          {eyebrow && <p className="eyebrow mb-5 flex items-center gap-3"><span className="h-1.5 w-1.5 rounded-full bg-aqua shadow-[0_0_12px_var(--aqua)]" />{eyebrow}</p>}
+          <h1 className="text-balance max-w-4xl text-[2.4rem] font-semibold leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl">{title}</h1>
           {description && <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">{description}</p>}
         </Reveal>
         {children && <Reveal delay={0.15} className="mt-8">{children}</Reveal>}
@@ -175,7 +178,7 @@ export function SkeletonGrid({ count = 3, className = 'h-72' }) {
 
 export function ErrorState({ error, onRetry, title = 'Something went wrong' }) {
   return (
-    <div role="alert" className="card mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
+    <div role="alert" className="card glow-border mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
       <CircleAlert className="h-8 w-8 text-rose" />
       <h3 className="text-lg font-semibold">{title}</h3>
       <p className="text-sm text-muted">{error?.message || 'Please try again in a moment.'}</p>
@@ -190,8 +193,8 @@ export function ErrorState({ error, onRetry, title = 'Something went wrong' }) {
 
 export function EmptyState({ icon: Icon, title, description, action }) {
   return (
-    <div className="card mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
-      {Icon && <div className="grid h-14 w-14 place-items-center rounded-2xl bg-surface-2"><Icon className="h-6 w-6 text-iris" /></div>}
+    <div className="card glow-border mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
+      {Icon && <div className="icon-tile h-14 w-14 rounded-2xl"><Icon className="h-6 w-6" /></div>}
       <h3 className="text-lg font-semibold">{title}</h3>
       {description && <p className="text-sm text-muted">{description}</p>}
       {action}
@@ -218,16 +221,16 @@ export function SmartImage({ src, alt, width = 1200, sizes = '(min-width: 1024px
 
 /** Generated artwork used when a project/post has no image yet. */
 export function CoverArt({ title = '', seed = 0, className }) {
-  const hue = [...title].reduce((a, c) => a + c.charCodeAt(0), seed) % 360;
+  const hue = 215 + ([...title].reduce((a, c) => a + c.charCodeAt(0), seed) % 60); // blue → purple range
   const initials = title.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
   return (
     <div
       className={cx('relative grid place-items-center overflow-hidden', className)}
-      style={{ background: `radial-gradient(120% 120% at 0% 0%, hsl(${hue} 85% 62% / .55), transparent 55%), radial-gradient(120% 120% at 100% 100%, hsl(${(hue + 70) % 360} 85% 55% / .45), transparent 55%), var(--surface-2)` }}
+      style={{ background: `radial-gradient(120% 120% at 0% 0%, hsl(${hue + 50} 95% 62% / .55), transparent 55%), radial-gradient(120% 120% at 100% 100%, hsl(${hue} 95% 58% / .5), transparent 55%), #0c1227` }}
       aria-hidden="true"
     >
       <div className="grid-bg absolute inset-0 opacity-60" />
-      <span className="relative font-display text-6xl font-bold tracking-tighter text-white/90 mix-blend-overlay">{initials}</span>
+      <span className="relative font-display text-6xl font-bold tracking-tighter text-white/85 drop-shadow-[0_0_30px_rgb(133_59_255/0.8)]">{initials}</span>
     </div>
   );
 }
@@ -245,10 +248,51 @@ export function Marquee({ items, className }) {
         {row.map((item, i) => (
           <span key={i} className="flex items-center gap-10 whitespace-nowrap font-display text-2xl font-medium text-faint md:text-4xl">
             {item}
-            <span className="h-2 w-2 rounded-full bg-gradient-to-r from-iris to-aqua" />
+            <span className="h-2 w-2 rounded-full bg-gradient-to-r from-violet to-aqua shadow-[0_0_10px_var(--iris)]" />
           </span>
         ))}
       </div>
     </div>
+  );
+}
+
+// ── Bento primitives ────────────────────────────────────────────────────
+/** Glass bento tile with a gradient border, lift + glow on hover. */
+export function BentoCard({ as: Tag = 'div', className, children, ...rest }) {
+  return (
+    <Tag className={cx('card glow-border bento relative overflow-hidden', className)} {...rest}>
+      {children}
+    </Tag>
+  );
+}
+
+/** Header row inside a bento tile: icon, eyebrow + title, and a "View all" link. */
+export function BentoHeader({ icon: Icon, eyebrow, title, to, linkLabel = 'View all', className }) {
+  return (
+    <div className={cx('relative z-10 flex items-start justify-between gap-4', className)}>
+      <div className="flex min-w-0 items-center gap-3.5">
+        {Icon && <span className="icon-tile h-11 w-11"><Icon className="h-5 w-5" /></span>}
+        <div className="min-w-0">
+          {eyebrow && <p className="eyebrow !text-[0.66rem]">{eyebrow}</p>}
+          <h2 className="mt-0.5 text-xl font-semibold leading-tight sm:text-2xl">{title}</h2>
+        </div>
+      </div>
+      {to && <ViewAll to={to}>{linkLabel}</ViewAll>}
+    </div>
+  );
+}
+
+export function ViewAll({ to, children = 'View all', className }) {
+  return (
+    <Link
+      to={to}
+      className={cx(
+        'group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong bg-surface/50 px-3.5 py-1.5 text-xs font-medium text-ink backdrop-blur transition hover:border-iris/70 hover:text-white hover:bg-iris/80 hover:shadow-[0_8px_24px_-10px_var(--iris)]',
+        className,
+      )}
+    >
+      {children}
+      <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+    </Link>
   );
 }

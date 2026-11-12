@@ -1,31 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, Moon, Sun, X, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext.jsx';
 import { useScrolled } from '../../hooks/ui.js';
 import { cx } from '../../lib/format.js';
-import { HOME_SECTIONS, scrollToSection, useActiveSection } from '../../lib/scroll.js';
+import { HOME_SECTIONS } from '../../lib/scroll.js';
 
-/** Standalone pages (still available; used by the footer). */
+/** Every standalone page except Contact (which has its own button). Used by the navbar and footer. */
 export const NAV = [
   { to: '/', label: 'Home' },
   ...HOME_SECTIONS.filter((s) => s.id !== 'contact').map((s) => ({ to: s.page, label: s.label })),
 ];
-
-/** Navbar items: each scrolls to its section on the homepage. */
-const SECTION_NAV = [{ id: 'top', label: 'Home', page: '/' }, ...HOME_SECTIONS.filter((s) => s.id !== 'contact')];
-const SECTION_IDS = HOME_SECTIONS.map((s) => s.id);
+const MOBILE_NAV = [...NAV, { to: '/contact', label: 'Contact' }];
 
 export function Logo({ className }) {
   return (
     <Link to="/" className={cx('group flex items-center gap-2.5', className)} aria-label="Muhammad Hamza — home">
-      <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-ink font-display text-sm font-bold text-bg">
-        <span className="absolute inset-0 bg-[conic-gradient(from_180deg,var(--iris),var(--aqua),var(--lime),var(--iris))] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-[linear-gradient(135deg,var(--violet),var(--aqua))] font-display text-sm font-bold text-white shadow-[0_8px_24px_-8px_var(--iris)]">
+        <span className="absolute inset-0 bg-[conic-gradient(from_180deg,var(--violet),var(--aqua),var(--iris),var(--violet))] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <span className="relative">MH</span>
       </span>
       <span className="hidden font-display text-[15px] font-semibold tracking-tight sm:block">
-        Muhammad Hamza<span className="text-iris">.</span>
+        Muhammad Hamza<span className="text-aqua">.</span>
       </span>
     </Link>
   );
@@ -37,7 +34,7 @@ export function ThemeToggle({ className }) {
     <button
       type="button"
       onClick={toggle}
-      className={cx('grid h-10 w-10 place-items-center rounded-full border border-line text-muted transition hover:border-iris hover:text-ink', className)}
+      className={cx('grid h-10 w-10 place-items-center rounded-full border border-line bg-surface/40 text-muted transition hover:border-iris hover:text-ink', className)}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -49,41 +46,10 @@ export function ThemeToggle({ className }) {
   );
 }
 
-/** Link to a homepage section: smooth-scrolls on "/", otherwise navigates to "/#id". */
-function useSectionLink(onNavigate) {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  return (id) => ({
-    href: id === 'top' ? '/' : `/#${id}`,
-    onClick: (e) => {
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // let "open in new tab" work
-      e.preventDefault();
-      onNavigate?.();
-      if (pathname === '/') scrollToSection(id);
-      else navigate(id === 'top' ? '/' : `/#${id}`);
-    },
-  });
-}
-
-function useCurrent() {
-  const { pathname } = useLocation();
-  const onHome = pathname === '/';
-  const activeSection = useActiveSection(SECTION_IDS, onHome);
-  return (item) => {
-    if (onHome) return item.id === (activeSection || 'top');
-    return item.id !== 'top' && (pathname === item.page || pathname.startsWith(`${item.page}/`));
-  };
-}
-
 export default function Navbar() {
   const scrolled = useScrolled();
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  const linkProps = useSectionLink(() => {
-    document.body.style.overflow = ''; // release the mobile-menu scroll lock before scrolling
-    setOpen(false);
-  });
-  const isCurrent = useCurrent();
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
@@ -98,44 +64,59 @@ export default function Navbar() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-bg">
         Skip to content
       </a>
-      <header className={cx('fixed inset-x-0 top-0 z-50 transition-all duration-500', scrolled ? 'py-3' : 'py-5')}>
+      <header className={cx('fixed inset-x-0 top-0 z-50 transition-all duration-500', scrolled ? 'py-3' : 'py-4 md:py-5')}>
         <div className="container-x">
           <nav
             aria-label="Main"
             className={cx(
-              'flex items-center justify-between gap-4 rounded-full border px-3 py-2 pl-4 transition-all duration-500',
-              scrolled ? 'border-line bg-bg/70 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.5)] backdrop-blur-xl' : 'border-transparent',
+              'flex items-center justify-between gap-4 rounded-full border px-3 py-2 pl-4 backdrop-blur-xl transition-all duration-500',
+              scrolled
+                ? 'border-line-strong bg-bg/70 shadow-[0_10px_40px_-18px_rgb(0_0_0/0.7),0_0_0_1px_rgb(133_59_255/0.06)]'
+                : 'border-line bg-bg/30',
             )}
           >
             <Logo />
-            <ul className="hidden items-center gap-1 lg:flex">
-              {SECTION_NAV.map((item) => {
-                const active = isCurrent(item);
-                return (
-                  <li key={item.id}>
-                    <a
-                      {...linkProps(item.id)}
-                      aria-current={active ? 'true' : undefined}
-                      className={cx('relative rounded-full px-3.5 py-2 text-sm transition-colors', active ? 'text-ink' : 'text-muted hover:text-ink')}
-                    >
-                      {active && <motion.span layoutId="nav-pill" className="absolute inset-0 -z-10 rounded-full bg-surface-2 ring-1 ring-line" transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }} />}
-                      {item.label}
-                    </a>
-                  </li>
-                );
-              })}
+            <ul className="hidden items-center gap-0.5 xl:flex">
+              {NAV.map((item) => (
+                <li key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    end={item.to === '/'}
+                    className={({ isActive }) => cx('relative block rounded-full px-3.5 py-2 text-sm transition-colors', isActive ? 'text-white' : 'text-muted hover:text-ink')}
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-pill"
+                            className="absolute inset-0 -z-10 rounded-full bg-[linear-gradient(120deg,rgb(133_59_255/0.85),rgb(38_139_255/0.75))] shadow-[0_6px_24px_-8px_var(--iris)]"
+                            transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                          />
+                        )}
+                        {item.label}
+                      </>
+                    )}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              <a
-                {...linkProps('contact')}
-                className="hidden h-10 items-center gap-1.5 rounded-full bg-ink px-5 text-sm font-medium text-bg transition hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_var(--iris)] sm:inline-flex"
+              <NavLink
+                to="/contact"
+                className={({ isActive }) =>
+                  cx(
+                    'hidden h-10 items-center gap-1.5 rounded-full px-5 text-sm font-medium text-white transition hover:-translate-y-0.5 sm:inline-flex',
+                    'bg-[linear-gradient(110deg,var(--violet),var(--iris)_45%,var(--aqua))] shadow-[0_8px_30px_-10px_var(--iris)] hover:shadow-[0_12px_36px_-10px_var(--iris)]',
+                    isActive && 'ring-2 ring-white/30',
+                  )
+                }
               >
                 Let&apos;s talk <ArrowUpRight className="h-4 w-4" />
-              </a>
+              </NavLink>
               <button
                 type="button"
-                className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden"
+                className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface/40 xl:hidden"
                 onClick={() => setOpen((o) => !o)}
                 aria-expanded={open}
                 aria-controls="mobile-menu"
@@ -152,23 +133,38 @@ export default function Navbar() {
         {open && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 bg-bg/95 backdrop-blur-2xl xl:hidden"
             initial={{ clipPath: 'circle(0% at calc(100% - 40px) 40px)' }}
             animate={{ clipPath: 'circle(150% at calc(100% - 40px) 40px)' }}
             exit={{ clipPath: 'circle(0% at calc(100% - 40px) 40px)' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="container-x flex h-full flex-col justify-between overflow-y-auto pb-10 pt-28">
-              <ul className="flex flex-col gap-1">
-                {[...SECTION_NAV, { id: 'contact', label: 'Contact', page: '/contact' }].map((item, i) => (
-                  <motion.li key={item.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.04 }}>
-                    <a
-                      {...linkProps(item.id)}
-                      className={cx('flex items-baseline gap-4 py-2 font-display text-4xl font-semibold tracking-tight', isCurrent(item) ? 'text-gradient' : 'text-ink')}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="orb -left-20 top-20 h-72 w-72 bg-iris/30" />
+              <div className="orb -right-20 bottom-10 h-72 w-72 bg-aqua/20" />
+            </div>
+            <div className="container-x relative flex h-full flex-col justify-between overflow-y-auto pb-10 pt-24">
+              <ul className="grid gap-1.5">
+                {MOBILE_NAV.map((item, i) => (
+                  <motion.li key={item.to} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.12 + i * 0.035 }}>
+                    <NavLink
+                      to={item.to}
+                      end={item.to === '/'}
+                      onClick={() => setOpen(false)}
+                      className={({ isActive }) =>
+                        cx(
+                          'flex items-center gap-4 rounded-2xl border px-4 py-3 font-display text-2xl font-semibold tracking-tight transition sm:text-3xl',
+                          isActive ? 'border-iris/40 bg-iris/10 text-ink' : 'border-transparent text-ink hover:border-line',
+                        )
+                      }
                     >
-                      <span className="font-mono text-xs text-faint">{String(i + 1).padStart(2, '0')}</span>
-                      {item.label}
-                    </a>
+                      {({ isActive }) => (
+                        <>
+                          <span className={cx('font-mono text-xs', isActive ? 'text-aqua' : 'text-faint')}>{String(i + 1).padStart(2, '0')}</span>
+                          <span className={isActive ? 'text-gradient' : undefined}>{item.label}</span>
+                        </>
+                      )}
+                    </NavLink>
                   </motion.li>
                 ))}
               </ul>

@@ -3,49 +3,59 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ── Design tokens ─────────────────────────────────────────────────────
-   "Nocturne" — deep ink surfaces, an iris → aqua → lime aurora, editorial type. */
+   "Neon Bento" — deep navy surfaces, purple → electric-blue light, glass cards.
+   Token names are kept (iris = purple, aqua = electric blue, lime = success) so every
+   page and the admin pick the new palette up without logic changes. */
 :root {
-  --bg: #f6f6f9;
-  --bg-2: #ececf2;
+  --bg: #f4f5fb;
+  --bg-2: #eceef8;
   --surface: #ffffff;
-  --surface-2: #f2f2f7;
-  --border: rgb(20 20 40 / 0.09);
-  --border-strong: rgb(20 20 40 / 0.16);
-  --text: #0d0d18;
-  --muted: #5d5d72;
-  --faint: #8d8da2;
-  --iris: #6d4aff;
-  --aqua: #0891b2;
-  --lime: #65a30d;
+  --surface-2: #f1f2fa;
+  --border: rgb(40 40 110 / 0.10);
+  --border-strong: rgb(40 40 110 / 0.18);
+  --text: #0b0f24;
+  --muted: #4d5575;
+  --faint: #737a98;
+  --iris: #6f2cf0;
+  --violet: #8b3dff;
+  --aqua: #1f74e8;
+  --lime: #0b8a5f;
   --rose: #e11d74;
-  --ring: rgb(109 74 255 / 0.45);
-  --glow: rgb(109 74 255 / 0.14);
-  --grid: rgb(20 20 40 / 0.05);
+  --ring: rgb(111 44 240 / 0.45);
+  --glow: rgb(111 44 240 / 0.12);
+  --glow-blue: rgb(31 116 232 / 0.10);
+  --grid: rgb(40 40 110 / 0.05);
+  --card-bg: rgb(255 255 255 / 0.72);
+  --shadow-card: 0 20px 50px -30px rgb(40 30 120 / 0.35);
   color-scheme: light;
 }
 
 .dark {
-  --bg: #06060b;
-  --bg-2: #0b0b13;
-  --surface: #0f0f19;
-  --surface-2: #151522;
-  --border: rgb(255 255 255 / 0.07);
-  --border-strong: rgb(255 255 255 / 0.14);
-  --text: #f1f1f7;
-  --muted: #a0a0b6;
-  --faint: #6b6b82;
-  --iris: #8b6cff;
-  --aqua: #2dd4ee;
-  --lime: #b4f046;
-  --rose: #ff4d9a;
-  --ring: rgb(139 108 255 / 0.55);
-  --glow: rgb(139 108 255 / 0.22);
-  --grid: rgb(255 255 255 / 0.035);
+  --bg: #070a18;
+  --bg-2: #0c1227;
+  --surface: #101832;
+  --surface-2: #151f3d;
+  --border: rgb(150 160 255 / 0.10);
+  --border-strong: rgb(150 160 255 / 0.18);
+  --text: #ffffff;
+  --muted: #b8c0d8;
+  --faint: #8089ab;
+  --iris: #853bff;
+  --violet: #a34fff;
+  --aqua: #268bff;
+  --lime: #3ddc97;
+  --rose: #ff4d8d;
+  --ring: rgb(133 59 255 / 0.55);
+  --glow: rgb(133 59 255 / 0.24);
+  --glow-blue: rgb(38 139 255 / 0.20);
+  --grid: rgb(160 170 255 / 0.04);
+  --card-bg: rgb(16 24 50 / 0.62);
+  --shadow-card: 0 24px 60px -30px rgb(0 0 0 / 0.8);
   color-scheme: dark;
 }
 
 @theme inline {
-  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -62,6 +72,7 @@
   --color-aqua: var(--aqua);
   --color-lime: var(--lime);
   --color-rose: var(--rose);
+  --color-violet: var(--violet);
 
   --animate-marquee: marquee 40s linear infinite;
   --animate-spin-slow: spin 18s linear infinite;
@@ -88,7 +99,11 @@
     -webkit-text-size-adjust: 100%;
   }
   body {
-    background: var(--bg);
+    background:
+      radial-gradient(1100px 700px at 8% -10%, var(--glow), transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, var(--glow-blue), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
     color: var(--text);
     font-family: var(--font-sans);
     font-feature-settings: 'cv11', 'ss01';
@@ -107,7 +122,7 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
   }
   img { max-width: 100%; }
   @media (prefers-reduced-motion: reduce) {
@@ -131,7 +146,7 @@
   @media (min-width: 1024px) { .container-x { padding-inline: 2rem; } }
 
   .text-gradient {
-    background: linear-gradient(100deg, var(--iris) 0%, var(--aqua) 55%, var(--lime) 100%);
+    background: linear-gradient(100deg, var(--violet) 0%, var(--iris) 35%, var(--aqua) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -147,10 +162,61 @@
 
   .card {
     position: relative;
-    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 70%, transparent), var(--card-bg));
     border: 1px solid var(--border);
     border-radius: 1.5rem;
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-card), inset 0 1px 0 rgb(255 255 255 / 0.04);
+  }
+
+  /* Glass card with a permanent purple → blue gradient hairline border */
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(140deg, color-mix(in srgb, var(--violet) 70%, transparent), transparent 38%, transparent 62%, color-mix(in srgb, var(--aqua) 70%, transparent));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.4s;
+    z-index: 1;
+  }
+
+  /* Bento tile: lift + glow on hover */
+  .bento {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s, border-color 0.45s;
+  }
+  @media (hover: hover) {
+    .bento:hover {
+      transform: translateY(-4px);
+      border-color: color-mix(in srgb, var(--iris) 35%, transparent);
+      box-shadow: var(--shadow-card), 0 30px 80px -40px var(--iris);
+    }
+    .bento.glow-border:hover::before { opacity: 1; }
+  }
+
+  /* Gradient icon tile */
+  .icon-tile {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 0.9rem;
+    color: #fff;
+    background: linear-gradient(135deg, var(--violet), var(--aqua));
+    box-shadow: 0 10px 30px -12px var(--iris);
+  }
+
+  /* Soft ambient orb */
+  .orb {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(90px);
+    pointer-events: none;
   }
 
   /* Card with a cursor-following spotlight (see <Spotlight />) */
@@ -160,7 +226,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--iris), transparent 45%);
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--violet), var(--aqua) 25%, transparent 50%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -225,9 +291,40 @@
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--muted);
-    background: var(--surface-2);
+    background: color-mix(in srgb, var(--surface-2) 80%, transparent);
     white-space: nowrap;
   }
+
+  /* Gradient technology pill */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem 0.4rem 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(120deg, color-mix(in srgb, var(--violet) 65%, transparent), color-mix(in srgb, var(--aqua) 65%, transparent)) border-box;
+    border: 1px solid transparent;
+    transition: transform 0.3s, box-shadow 0.3s;
+    white-space: nowrap;
+  }
+  .pill:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -14px var(--iris); }
+  .pill-icon {
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--iris);
+    flex-shrink: 0;
+  }
+  .pill-icon img { width: 1.1rem; height: 1.1rem; object-fit: contain; }
+  .dark .pill-icon img.invert-dark { filter: invert(1); }
 
   /* Rich text (blog posts, project descriptions) */
   .prose-x { color: var(--muted); line-height: 1.8; font-size: 1.05rem; }
@@ -243,7 +340,7 @@
   .prose-x li::marker { color: var(--iris); }
   .prose-x blockquote { border-left: 3px solid var(--iris); padding: 0.2rem 0 0.2rem 1.1rem; font-style: italic; color: var(--text); }
   .prose-x code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--border); padding: 0.12em 0.4em; border-radius: 0.4rem; color: var(--text); }
-  .prose-x pre { background: #0b0b14; color: #e5e5f0; border: 1px solid var(--border); border-radius: 1rem; padding: 1.1rem 1.25rem; overflow-x: auto; font-size: 0.88rem; line-height: 1.65; }
+  .prose-x pre { background: #070a18; color: #e5e5f0; border: 1px solid var(--border); border-radius: 1rem; padding: 1.1rem 1.25rem; overflow-x: auto; font-size: 0.88rem; line-height: 1.65; }
   .prose-x pre code { background: none; border: 0; padding: 0; color: inherit; }
   .prose-x img { border-radius: 1rem; border: 1px solid var(--border); }
   .prose-x hr { border-color: var(--border); }

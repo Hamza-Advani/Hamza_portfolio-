@@ -23,11 +23,11 @@ export function ProfileFacts({ showPortrait = true, className }) {
   return (
     <div className={className}>
       {showPortrait && (
-        <div className="card mb-4 overflow-hidden p-2">
-          <SmartImage src={profile.image} alt={`Portrait of ${profile.name}`} width={700} className="aspect-[4/5] w-full rounded-[1.2rem] object-cover" />
+        <div className="mb-4 overflow-hidden rounded-[1.6rem] bg-[linear-gradient(150deg,var(--violet),var(--aqua))] p-[1.5px] shadow-[0_30px_80px_-40px_var(--iris)]">
+          <SmartImage src={profile.image} alt={`Portrait of ${profile.name}`} width={700} className="aspect-[4/5] w-full rounded-[calc(1.6rem-1.5px)] object-cover" />
         </div>
       )}
-      <div className="card space-y-4 p-6">
+      <div className="card glow-border space-y-4 p-6">
         <div>
           <p className="eyebrow">Name</p>
           <p className="mt-1 font-medium">{profile.name}</p>
@@ -39,7 +39,7 @@ export function ProfileFacts({ showPortrait = true, className }) {
         </div>
         <div>
           <p className="eyebrow">Based in</p>
-          <p className="mt-1 flex items-center gap-1.5 font-medium"><MapPin className="h-4 w-4 text-iris" />{profile.location}</p>
+          <p className="mt-1 flex items-center gap-1.5 font-medium"><MapPin className="h-4 w-4 text-aqua" />{profile.location}</p>
         </div>
         <div>
           <p className="eyebrow mb-2 flex items-center gap-2"><Languages className="h-3.5 w-3.5" /> Languages</p>
@@ -66,7 +66,7 @@ export function AboutChapters({ compact = false }) {
             <div className="relative z-10">
               <div className="flex items-center gap-4">
                 <span className="font-mono text-xs text-faint">0{i + 1}</span>
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-surface-2 text-iris"><c.icon className="h-5 w-5" /></span>
+                <span className="icon-tile h-10 w-10"><c.icon className="h-5 w-5" /></span>
                 <h3 className={cx('font-semibold', compact ? 'text-xl' : 'text-2xl')}>{c.title}</h3>
               </div>
               <p className={cx('mt-5 leading-relaxed text-muted', compact ? 'text-base' : 'text-base md:text-lg')}>{c.body}</p>
@@ -87,7 +87,7 @@ export default function About() {
       <PageHeader eyebrow="About me" title={<>Curious about how things work — <span className="text-gradient">and how to build them.</span></>} description={a.intro} />
 
       <Section className="!pt-0">
-        <div className="grid gap-12 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <ProfileFacts className="lg:sticky lg:top-28" />
           </Reveal>

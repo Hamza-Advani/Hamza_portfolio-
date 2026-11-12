@@ -21,7 +21,7 @@ export function SocialLinks({ className, size = 'md' }) {
               {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               aria-label={`${s.platform}${s.handle ? ` — ${s.handle}` : ''}`}
               title={s.platform}
-              className={cx(dim, 'grid place-items-center rounded-full border border-line text-muted transition duration-300 hover:-translate-y-1 hover:border-iris hover:bg-iris hover:text-white')}
+              className={cx(dim, 'grid place-items-center rounded-full border border-line-strong bg-surface/40 text-muted backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-transparent hover:bg-[linear-gradient(135deg,var(--violet),var(--aqua))] hover:text-white hover:shadow-[0_10px_26px_-10px_var(--iris)]')}
             >
               <Icon className="h-4 w-4" />
             </a>

@@ -28,7 +28,7 @@ export default function PageLoader({ done }) {
           <div className="flex flex-col items-center gap-6">
             <div className="relative grid h-20 w-20 place-items-center">
               <motion.span
-                className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_0deg,var(--iris),var(--aqua),var(--lime),var(--iris))]"
+                className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_0deg,var(--violet),var(--aqua),var(--iris),var(--violet))]"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: 'linear' }}
               />
@@ -39,7 +39,7 @@ export default function PageLoader({ done }) {
             </div>
             <div className="h-px w-40 overflow-hidden bg-line">
               <motion.div
-                className="h-full bg-gradient-to-r from-iris via-aqua to-lime"
+                className="h-full bg-gradient-to-r from-violet via-iris to-aqua"
                 initial={{ x: '-100%' }}
                 animate={{ x: done ? '0%' : '-30%' }}
                 transition={{ duration: done ? 0.4 : 1.6, ease: 'easeOut' }}

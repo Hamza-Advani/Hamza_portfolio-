@@ -100,27 +100,27 @@ export function ContactPanel() {
   return (
     <div className="grid gap-8 lg:grid-cols-12">
       <Reveal className="space-y-4 lg:col-span-4">
-        <div className="card p-6">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-surface-2 text-iris"><Mail className="h-5 w-5" /></span>
+        <div className="card glow-border p-6">
+          <span className="icon-tile h-11 w-11"><Mail className="h-5 w-5" /></span>
           <p className="eyebrow mt-5">Email</p>
-          <a href={`mailto:${profile.email}`} className="mt-1 block break-all font-medium hover:text-iris">{profile.email}</a>
+          <a href={`mailto:${profile.email}`} className="mt-1 block break-all font-medium hover:text-violet">{profile.email}</a>
           <button type="button" onClick={copyEmail} className="chip mt-4 !py-1.5 transition hover:!text-ink">
             {copied ? <Check className="h-3.5 w-3.5 text-lime" /> : <Copy className="h-3.5 w-3.5" />} {copied ? 'Copied!' : 'Copy address'}
           </button>
         </div>
-        <div className="card p-6">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-surface-2 text-iris"><MapPin className="h-5 w-5" /></span>
+        <div className="card glow-border p-6">
+          <span className="icon-tile h-11 w-11"><MapPin className="h-5 w-5" /></span>
           <p className="eyebrow mt-5">Location</p>
           <p className="mt-1 font-medium">{profile.location}</p>
         </div>
-        <div className="card p-6">
+        <div className="card glow-border p-6">
           <p className="eyebrow mb-4">Elsewhere</p>
           <SocialLinks size="lg" />
         </div>
       </Reveal>
 
       <Reveal delay={0.08} className="lg:col-span-8">
-        <form onSubmit={submit} noValidate className="card space-y-5 p-6 md:p-10" aria-describedby="form-status">
+        <form onSubmit={submit} noValidate className="card glow-border space-y-5 p-6 md:p-10" aria-describedby="form-status">
           <div className="grid gap-5 md:grid-cols-2">
             <Field id="name" label="Name" error={errors.name}><input {...inputProps('name')} autoComplete="name" placeholder="Your name" maxLength={80} /></Field>
             <Field id="email" label="Email" error={errors.email}><input {...inputProps('email')} type="email" autoComplete="email" placeholder="you@example.com" maxLength={160} /></Field>

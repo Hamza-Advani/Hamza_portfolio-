@@ -18,11 +18,11 @@ export default function Footer() {
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">{profile?.summary}</p>
             <div className="mt-6 space-y-2 text-sm text-muted">
               {profile?.location && (
-                <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-iris" /> {profile.location}</p>
+                <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-aqua" /> {profile.location}</p>
               )}
               {profile?.email && (
                 <a href={`mailto:${profile.email}`} className="flex items-center gap-2 transition hover:text-ink">
-                  <Mail className="h-4 w-4 text-iris" /> {profile.email}
+                  <Mail className="h-4 w-4 text-aqua" /> {profile.email}
                 </a>
               )}
             </div>
@@ -56,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p aria-hidden="true" className="pointer-events-none mt-16 select-none text-center font-display text-[18vw] font-bold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_var(--border-strong)] md:text-[13vw]">
+        <p aria-hidden="true" className="pointer-events-none mt-16 select-none text-center font-display text-[18vw] font-bold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_rgb(133_59_255/0.28)] md:text-[13vw]">
           HAMZA
         </p>
 
