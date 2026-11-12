@@ -54,15 +54,16 @@ export default function VideoSection() {
     <Reveal className="relative">
       {/* Glow stays inside the page gutter on phones so it never widens the layout */}
       <div aria-hidden="true" className="absolute inset-x-0 -inset-y-6 -z-10 rounded-[3rem] sm:-inset-6 bg-[radial-gradient(60%_60%_at_50%_50%,var(--glow),transparent)] blur-2xl" />
-      <figure className="card overflow-hidden p-2 md:p-3">
+      <figure className="card glow-border bento overflow-hidden p-2 md:p-3">
         <div className="relative aspect-video overflow-hidden rounded-[1.1rem] bg-black">
+          {/* preload="none": the video loads only when played, so it never competes with the page data */}
           <video
             ref={ref}
             src={video.url}
             poster={optimizeImage(video.poster, 1600)}
             controls={playing}
             playsInline
-            preload="metadata"
+            preload="none"
             className="h-full w-full object-cover"
             onPlay={() => setPlaying(true)}
             onEnded={() => setPlaying(false)}
