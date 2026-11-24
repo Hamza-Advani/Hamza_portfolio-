@@ -1,7 +1,8 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import * as content from '../controllers/contentController.js';
 import { submitContact } from '../controllers/contactController.js';
-import { signUpload, verifyUpload, deleteUpload } from '../controllers/uploadController.js';
+import { signUpload, verifyUpload, deleteUpload, uploadMedia, serveMedia } from '../controllers/uploadController.js';
+import { mediaBackend } from '../db/media.js';
 import { getGithub } from '../controllers/githubController.js';
 import { sitemap } from '../controllers/sitemapController.js';
 import { requireAdmin } from '../middleware/auth.js';
@@ -20,12 +21,14 @@ publicRouter.get('/health', (_req, res) => {
       firebase: isFirebaseConfigured(),
       auth: isFirebaseAuthAvailable() || isFirebaseConfigured(),
       cloudinary: isCloudinaryConfigured(),
+      uploads: isCloudinaryConfigured() ? 'cloudinary' : mediaBackend(),
       resend: isResendConfigured(),
       devAuth: isDevAuthEnabled(),
     },
   });
 });
 publicRouter.get('/sitemap.xml', sitemap);
+publicRouter.get('/media/:folder/:file', serveMedia);
 publicRouter.get('/public/site', content.getSite);
 publicRouter.get('/public/github', getGithub);
 publicRouter.get('/public/:collection', content.listPublic);
@@ -42,6 +45,8 @@ adminRouter.get('/stats', content.adminStats);
 adminRouter.post('/uploads/sign', signUpload);
 adminRouter.post('/uploads/verify', verifyUpload);
 adminRouter.delete('/uploads', deleteUpload);
+// Built-in storage for images/PDFs when Cloudinary is not configured (raw body, max 4 MB)
+adminRouter.post('/uploads/media', express.raw({ type: () => true, limit: '4.5mb' }), uploadMedia);
 
 adminRouter.get('/site/:name', content.adminGetSingleton);
 adminRouter.put('/site/:name', content.adminSetSingleton);

@@ -32,7 +32,9 @@ describe('public API', () => {
 
   test('blog drafts are hidden from the public', async () => {
     const res = await request(app).get('/api/public/posts').expect(200);
-    assert.equal(res.body.length, 0);
+    assert.ok(res.body.length >= 10, 'technical articles are published');
+    assert.ok(res.body.every((p) => p.status === 'published' && !('content' in p)));
+    assert.ok(!res.body.some((p) => p.slug === 'my-first-semester-bscs-journey'));
     await request(app).get('/api/public/posts/my-first-semester-bscs-journey').expect(404);
   });
 
@@ -42,7 +44,7 @@ describe('public API', () => {
       assert.ok(res.body.length >= min, `${col} has ${res.body.length}`);
     }
     const p = await request(app).get('/api/public/projects/developer-portfolio-v2').expect(200);
-    assert.equal(p.body.title, 'Developer Portfolio v2');
+    assert.equal(p.body.title, 'Developer Portfolio (this website)');
     assert.ok(Array.isArray(p.body.related));
   });
 
@@ -107,11 +109,14 @@ describe('admin CRUD', () => {
       .expect(200);
     assert.ok(res.body.publishedAt);
     assert.equal(res.body.readingTime, 2);
-    const list = (await request(app).get('/api/public/posts').expect(200)).body;
-    assert.equal(list.length, 1);
-    assert.equal(list[0].content, undefined, 'list omits content');
+    const before = (await request(app).get('/api/public/posts').expect(200)).body;
+    const mine = before.find((p) => p.slug === 'learning-programming-fundamentals');
+    assert.ok(mine, 'published draft appears publicly');
+    assert.equal(mine.content, undefined, 'list omits content');
     await request(app).patch(`/api/admin/content/posts/${draft.id}`).set(ADMIN).send({ status: 'draft' }).expect(200);
-    assert.equal((await request(app).get('/api/public/posts')).body.length, 0);
+    const after = (await request(app).get('/api/public/posts')).body;
+    assert.equal(after.length, before.length - 1);
+    assert.ok(!after.some((p) => p.slug === 'learning-programming-fundamentals'));
   });
 
   test('validation errors return 400 with details', async () => {

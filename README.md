@@ -1,6 +1,14 @@
-# Muhammad Hamza — Developer Portfolio (v2)
+# Muhammad Hamza — Developer Portfolio (v3)
 
-A full-stack personal portfolio with a headless CMS and admin dashboard.
+A full-stack personal portfolio with project case studies, a technical blog, a learning roadmap and an admin dashboard.
+
+**What's new in v3**
+- One token-based design system with matching **light and dark themes** (`client/src/index.css`). Components use tokens only — no hard-coded dark-only colours.
+- **Portfolio** (`/portfolio`, alias `/projects`) with case-study pages (`/projects/:slug`): problem, overview, key features, architecture, screenshot gallery, status, role, live demo and source links (or a "private repository" note).
+- **Blogs** (`/blogs`, alias `/blog`, `/blog/:slug`) — 16 technical articles written in Markdown under `server/content/posts`, compiled with `npm run build:posts -w server`. Search, categories and tags are kept in the URL.
+- **Future learning roadmap** on Home and `/journey#future` (clearly marked as plans, not finished work).
+- **Uploads without Cloudinary**: when `CLOUDINARY_*` is not set, admin image/PDF uploads (≤ 4 MB, images compressed in the browser) are stored in the private Vercel Blob store and served from `/api/media/...`. `/api/health` reports `services.uploads`.
+- `server/scripts/merge-content.mjs` adds new starter projects/posts to the live Blob document (dry run by default, backup first, add-only, ETag-guarded).
 
 | Layer | Tech |
 | --- | --- |
@@ -148,7 +156,9 @@ npx firebase-tools emulators:start --only auth --project demo-portfolio
 # VITE_FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099, then: npm run dev
 ```
 
-## 5. Cloudinary setup
+## 5. Cloudinary setup (optional)
+
+> Without Cloudinary, images and PDFs are stored in the Vercel Blob store automatically (max 4 MB each). Cloudinary is only required for **video** uploads, and adds on-the-fly image resizing.
 
 1. Cloudinary console → *Settings → API Keys* → copy **Cloud name**, **API key**, **API secret**.
 2. Put them in `server/.env` as `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.

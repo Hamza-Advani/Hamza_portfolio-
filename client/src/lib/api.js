@@ -90,3 +90,11 @@ export const adminApi = {
   verifyUpload: (body) => api('/admin/uploads/verify', { method: 'POST', body, auth: true }),
   deleteUpload: (body) => api('/admin/uploads', { method: 'DELETE', body, auth: true }),
 };
+
+/** Authorization header for admin requests made outside api() (e.g. XHR uploads with progress). */
+export async function adminAuthHeader() {
+  const token = tokenGetter ? await tokenGetter() : null;
+  if (!token) throw new ApiError('Please sign in again.', 401);
+  return `Bearer ${token}`;
+}
+export const API_BASE = BASE;
