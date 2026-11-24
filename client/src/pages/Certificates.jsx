@@ -36,13 +36,13 @@ export function CertificatesGallery({ showSummary = false, limit }) {
                 <button
                   type="button"
                   onClick={() => setOpen(withImages.indexOf(c))}
-                  className="relative block overflow-hidden rounded-[1.1rem] bg-[radial-gradient(120%_90%_at_50%_0%,rgb(133_59_255/0.35),transparent_60%),linear-gradient(160deg,#151f3d,#0c1227)] p-3 ring-1 ring-white/5"
+                  className="relative block overflow-hidden rounded-[1.1rem] bg-[radial-gradient(120%_90%_at_50%_0%,var(--glow),transparent_60%),var(--surface-2)] p-3 ring-1 ring-[var(--border)]"
                   aria-label={`Enlarge certificate: ${c.title}`}
                 >
-                  <div className="overflow-hidden rounded-lg bg-white shadow-[0_18px_40px_-18px_rgb(0_0_0/0.9)]">
+                  <div className="overflow-hidden rounded-lg bg-white shadow-[0_14px_34px_-18px_rgb(0_0_0/0.55)]">
                     <SmartImage src={c.image} alt={`Certificate: ${c.title}`} width={800} sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" className="aspect-[4/3] w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]" />
                   </div>
-                  <span className="absolute inset-0 grid place-items-center bg-[#070a18]/0 opacity-0 transition duration-300 group-hover:bg-[#070a18]/45 group-hover:opacity-100 group-focus-visible:opacity-100">
+                  <span className="absolute inset-0 grid place-items-center bg-transparent opacity-0 transition duration-300 group-hover:bg-black/40 group-hover:opacity-100 group-focus-visible:opacity-100">
                     <span className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--violet),var(--aqua))] px-4 py-2 text-xs font-medium text-white shadow-[0_8px_30px_-8px_var(--iris)]"><Maximize2 className="h-3.5 w-3.5" /> View full size</span>
                   </span>
                 </button>

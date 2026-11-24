@@ -10,7 +10,7 @@ import { HOME_SECTIONS } from '../../lib/scroll.js';
 /** Every standalone page except Contact (which has its own button). Used by the navbar and footer. */
 export const NAV = [
   { to: '/', label: 'Home' },
-  ...HOME_SECTIONS.filter((s) => s.id !== 'contact').map((s) => ({ to: s.page, label: s.label })),
+  ...HOME_SECTIONS.filter((s) => s.id !== 'contact').map((s) => ({ to: s.page, label: s.label, match: s.match })),
 ];
 const MOBILE_NAV = [...NAV, { to: '/contact', label: 'Contact' }];
 
@@ -71,15 +71,15 @@ export default function Navbar() {
             className={cx(
               'flex items-center justify-between gap-4 rounded-full border px-3 py-2 pl-4 backdrop-blur-xl transition-all duration-500',
               scrolled
-                ? 'border-line-strong bg-bg/70 shadow-[0_10px_40px_-18px_rgb(0_0_0/0.7),0_0_0_1px_rgb(133_59_255/0.06)]'
-                : 'border-line bg-bg/30',
+                ? 'border-line-strong bg-surface/80 shadow-[var(--shadow-nav)]'
+                : 'border-line bg-surface/50',
             )}
           >
             <Logo />
             <ul className="hidden items-center gap-0.5 xl:flex">
               {NAV.map((item) => (
                 <li key={item.to}>
-                  <NavLink
+                  <MatchLink match={item.match}
                     to={item.to}
                     end={item.to === '/'}
                     className={({ isActive }) => cx('relative block rounded-full px-3.5 py-2 text-sm transition-colors', isActive ? 'text-white' : 'text-muted hover:text-ink')}
@@ -89,14 +89,14 @@ export default function Navbar() {
                         {isActive && (
                           <motion.span
                             layoutId="nav-pill"
-                            className="absolute inset-0 -z-10 rounded-full bg-[linear-gradient(120deg,rgb(133_59_255/0.85),rgb(38_139_255/0.75))] shadow-[0_6px_24px_-8px_var(--iris)]"
+                            className="absolute inset-0 -z-10 rounded-full bg-[linear-gradient(120deg,var(--violet),var(--iris))] shadow-[0_6px_24px_-8px_var(--iris)]"
                             transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
                           />
                         )}
                         {item.label}
                       </>
                     )}
-                  </NavLink>
+                  </MatchLink>
                 </li>
               ))}
             </ul>
@@ -108,7 +108,7 @@ export default function Navbar() {
                   cx(
                     'hidden h-10 items-center gap-1.5 rounded-full px-5 text-sm font-medium text-white transition hover:-translate-y-0.5 sm:inline-flex',
                     'bg-[linear-gradient(110deg,var(--violet),var(--iris)_45%,var(--aqua))] shadow-[0_8px_30px_-10px_var(--iris)] hover:shadow-[0_12px_36px_-10px_var(--iris)]',
-                    isActive && 'ring-2 ring-white/30',
+                    isActive && 'ring-2 ring-[var(--ring)]',
                   )
                 }
               >
@@ -147,7 +147,7 @@ export default function Navbar() {
               <ul className="grid gap-1.5">
                 {MOBILE_NAV.map((item, i) => (
                   <motion.li key={item.to} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.12 + i * 0.035 }}>
-                    <NavLink
+                    <MatchLink match={item.match}
                       to={item.to}
                       end={item.to === '/'}
                       onClick={() => setOpen(false)}
@@ -164,7 +164,7 @@ export default function Navbar() {
                           <span className={isActive ? 'text-gradient' : undefined}>{item.label}</span>
                         </>
                       )}
-                    </NavLink>
+                    </MatchLink>
                   </motion.li>
                 ))}
               </ul>
@@ -174,5 +174,16 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/** NavLink that is also "active" on related routes (e.g. Portfolio on /projects/:slug). */
+function MatchLink({ match, className, children, ...rest }) {
+  const { pathname } = useLocation();
+  const extra = Boolean(match?.some((p) => pathname.startsWith(p)));
+  return (
+    <NavLink {...rest} className={(s) => className({ isActive: s.isActive || extra })}>
+      {(s) => children({ isActive: s.isActive || extra })}
+    </NavLink>
   );
 }

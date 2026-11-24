@@ -35,7 +35,9 @@ export function Seo({ title, description, image, type = 'website', noindex = fal
     const origin = window.location.origin;
     const img = image || settings?.ogImage || '/og-image.jpg';
     const absImg = img.startsWith('http') ? img : origin + img;
-    const url = origin + pathname;
+    // /projects and /blog are aliases of /portfolio and /blogs — point search engines at one URL
+    const canonicalPath = pathname === '/projects' ? '/portfolio' : pathname === '/blog' ? '/blogs' : pathname;
+    const url = origin + canonicalPath;
 
     document.title = fullTitle;
     upsertMeta('name', 'description', desc);

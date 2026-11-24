@@ -220,17 +220,23 @@ export function SmartImage({ src, alt, width = 1200, sizes = '(min-width: 1024px
 }
 
 /** Generated artwork used when a project/post has no image yet. */
-export function CoverArt({ title = '', seed = 0, className }) {
-  const hue = 215 + ([...title].reduce((a, c) => a + c.charCodeAt(0), seed) % 60); // blue → purple range
-  const initials = title.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+export function CoverArt({ title = '', seed = 0, label, className }) {
+  // Theme-aware typographic cover: the gradient comes from theme tokens, the text is ink-coloured,
+  // so it reads well in both light and dark mode. `seed` only moves the light around.
+  const n = [...title].reduce((a, c) => a + c.charCodeAt(0), seed);
+  const x = 10 + (n % 70);
+  const y = 5 + ((n >> 3) % 40);
   return (
     <div
-      className={cx('relative grid place-items-center overflow-hidden', className)}
-      style={{ background: `radial-gradient(120% 120% at 0% 0%, hsl(${hue + 50} 95% 62% / .55), transparent 55%), radial-gradient(120% 120% at 100% 100%, hsl(${hue} 95% 58% / .5), transparent 55%), #0c1227` }}
+      className={cx('relative flex flex-col justify-between overflow-hidden p-5 sm:p-6', className)}
+      style={{
+        background: `radial-gradient(90% 110% at ${x}% ${y}%, color-mix(in srgb, var(--violet) 34%, transparent), transparent 60%), radial-gradient(80% 90% at 100% 100%, color-mix(in srgb, var(--aqua) 26%, transparent), transparent 60%), var(--surface-2)`,
+      }}
       aria-hidden="true"
     >
-      <div className="grid-bg absolute inset-0 opacity-60" />
-      <span className="relative font-display text-6xl font-bold tracking-tighter text-white/85 drop-shadow-[0_0_30px_rgb(133_59_255/0.8)]">{initials}</span>
+      <div className="grid-bg absolute inset-0" />
+      <span className="relative font-mono text-[10px] uppercase tracking-[0.2em] text-accent">{label || 'Muhammad Hamza'}</span>
+      <span className="relative line-clamp-3 max-w-[90%] font-display text-xl font-semibold leading-tight tracking-tight text-ink sm:text-2xl">{title}</span>
     </div>
   );
 }

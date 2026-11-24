@@ -3,54 +3,92 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ── Design tokens ─────────────────────────────────────────────────────
-   "Neon Bento" — deep navy surfaces, purple → electric-blue light, glass cards.
-   Token names are kept (iris = purple, aqua = electric blue, lime = success) so every
-   page and the admin pick the new palette up without logic changes. */
+   One token set, two themes. Components must use these tokens (or the Tailwind colours
+   mapped from them below) — never hard-coded light-only or dark-only colours.
+   iris = primary purple · violet = bright purple · aqua = indigo/blue accent · lime = success.
+
+   Light: clean neutral page, SOLID white cards with visible borders + natural shadows,
+          dark ink text, deep purple accents that pass WCAG AA on white.
+   Dark:  near-black surfaces with a purple tint, soft glass cards, bright purple highlights. */
 :root {
-  --bg: #f4f5fb;
-  --bg-2: #eceef8;
+  --bg: #f6f6fa;
+  --bg-2: #eeeef5;
   --surface: #ffffff;
-  --surface-2: #f1f2fa;
-  --border: rgb(40 40 110 / 0.10);
-  --border-strong: rgb(40 40 110 / 0.18);
-  --text: #0b0f24;
-  --muted: #4d5575;
-  --faint: #737a98;
-  --iris: #6f2cf0;
-  --violet: #8b3dff;
-  --aqua: #1f74e8;
-  --lime: #0b8a5f;
-  --rose: #e11d74;
-  --ring: rgb(111 44 240 / 0.45);
-  --glow: rgb(111 44 240 / 0.12);
-  --glow-blue: rgb(31 116 232 / 0.10);
-  --grid: rgb(40 40 110 / 0.05);
-  --card-bg: rgb(255 255 255 / 0.72);
-  --shadow-card: 0 20px 50px -30px rgb(40 30 120 / 0.35);
+  --surface-2: #f3f3f8;
+  --border: rgb(23 20 56 / 0.10);
+  --border-strong: rgb(23 20 56 / 0.17);
+  --text: #0e0c1b;
+  --muted: #474459;
+  --faint: #67637b;
+  --iris: #6d28d9;
+  --violet: #7c3aed;
+  --aqua: #4f46e5;
+  --lime: #047857;
+  --rose: #be123c;
+  --amber: #b45309;
+  --accent-text: #6d28d9; /* purple text on page/card backgrounds */
+  --ring: rgb(109 40 217 / 0.45);
+  --glow: rgb(109 40 217 / 0.07);
+  --glow-blue: rgb(79 70 229 / 0.05);
+  --grid: rgb(23 20 56 / 0.045);
+  --card-bg: #ffffff;
+  --card-blur: 0px;
+  --glow-border-opacity: 0;
+  --shadow-card: 0 1px 2px rgb(16 12 40 / 0.05), 0 14px 34px -18px rgb(40 22 110 / 0.22);
+  --shadow-hover: 0 2px 4px rgb(16 12 40 / 0.05), 0 26px 50px -24px rgb(76 29 149 / 0.38);
+  --shadow-nav: 0 10px 30px -18px rgb(30 20 80 / 0.35);
+  /* Content placed on top of photos/screenshots (captions, badges) */
+  --media-scrim: rgb(10 8 22 / 0.62);
+  --media-chip-bg: rgb(255 255 255 / 0.92);
+  --media-chip-fg: #1b1530;
+  /* Code windows & <pre> blocks */
+  --code-bg: #f7f5ff;
+  --code-fg: #26213d;
+  --code-border: rgb(109 40 217 / 0.16);
+  --code-dim: #8a85a3;
+  --syn-kw: #7c3aed;
+  --syn-type: #2563eb;
+  --syn-str: #047857;
   color-scheme: light;
 }
 
 .dark {
-  --bg: #070a18;
-  --bg-2: #0c1227;
-  --surface: #101832;
-  --surface-2: #151f3d;
-  --border: rgb(150 160 255 / 0.10);
-  --border-strong: rgb(150 160 255 / 0.18);
-  --text: #ffffff;
-  --muted: #b8c0d8;
-  --faint: #8089ab;
-  --iris: #853bff;
-  --violet: #a34fff;
-  --aqua: #268bff;
-  --lime: #3ddc97;
-  --rose: #ff4d8d;
-  --ring: rgb(133 59 255 / 0.55);
-  --glow: rgb(133 59 255 / 0.24);
-  --glow-blue: rgb(38 139 255 / 0.20);
-  --grid: rgb(160 170 255 / 0.04);
-  --card-bg: rgb(16 24 50 / 0.62);
-  --shadow-card: 0 24px 60px -30px rgb(0 0 0 / 0.8);
+  --bg: #07060d;
+  --bg-2: #0c0a15;
+  --surface: #13111d;
+  --surface-2: #1b1828;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.14);
+  --text: #f6f4ff;
+  --muted: #b9b5cc;
+  --faint: #8c879f;
+  --iris: #8b5cf6;
+  --violet: #a855f7;
+  --aqua: #818cf8;
+  --lime: #34d399;
+  --rose: #fb7185;
+  --amber: #fbbf24;
+  --accent-text: #c4b5fd;
+  --ring: rgb(139 92 246 / 0.6);
+  --glow: rgb(139 92 246 / 0.20);
+  --glow-blue: rgb(99 102 241 / 0.14);
+  --grid: rgb(255 255 255 / 0.035);
+  --card-bg: rgb(19 17 29 / 0.72);
+  --card-blur: 16px;
+  --glow-border-opacity: 0.55;
+  --shadow-card: 0 24px 60px -32px rgb(0 0 0 / 0.85);
+  --shadow-hover: 0 30px 70px -30px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(139 92 246 / 0.25);
+  --shadow-nav: 0 10px 40px -18px rgb(0 0 0 / 0.8);
+  --media-scrim: rgb(5 4 12 / 0.66);
+  --media-chip-bg: rgb(12 10 21 / 0.78);
+  --media-chip-fg: #f6f4ff;
+  --code-bg: #0d0b17;
+  --code-fg: #e7e3ff;
+  --code-border: rgb(255 255 255 / 0.09);
+  --code-dim: #7d7896;
+  --syn-kw: #c084fc;
+  --syn-type: #93c5fd;
+  --syn-str: #6ee7b7;
   color-scheme: dark;
 }
 
@@ -73,6 +111,8 @@
   --color-lime: var(--lime);
   --color-rose: var(--rose);
   --color-violet: var(--violet);
+  --color-amber: var(--amber);
+  --color-accent: var(--accent-text);
 
   --animate-marquee: marquee 40s linear infinite;
   --animate-spin-slow: spin 18s linear infinite;
@@ -162,12 +202,72 @@
 
   .card {
     position: relative;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 70%, transparent), var(--card-bg));
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 1.5rem;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(var(--card-blur));
+    -webkit-backdrop-filter: blur(var(--card-blur));
+    box-shadow: var(--shadow-card);
+  }
+  .dark .card {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 40%), var(--card-bg);
     box-shadow: var(--shadow-card), inset 0 1px 0 rgb(255 255 255 / 0.04);
+  }
+
+  /* Small label placed on top of an image (e.g. "Featured") */
+  .media-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--media-chip-bg);
+    color: var(--media-chip-fg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px -10px rgb(0 0 0 / 0.4);
+  }
+
+  /* Caption bar over a photo: always light text on a dark scrim, in both themes */
+  .media-caption {
+    background: var(--media-scrim);
+    color: #fff;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Decorative code window */
+  .code-window {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border: 1px solid var(--code-border);
+  }
+
+  /* Browser-frame chrome around screenshots */
+  .browser-frame {
+    overflow: hidden;
+    border-radius: 1.1rem;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .browser-frame-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .browser-frame-bar > i {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: var(--border-strong);
   }
 
   /* Glass card with a permanent purple → blue gradient hairline border */
@@ -182,7 +282,7 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
-    opacity: 0.7;
+    opacity: var(--glow-border-opacity);
     transition: opacity 0.4s;
     z-index: 1;
   }
@@ -195,7 +295,7 @@
     .bento:hover {
       transform: translateY(-4px);
       border-color: color-mix(in srgb, var(--iris) 35%, transparent);
-      box-shadow: var(--shadow-card), 0 30px 80px -40px var(--iris);
+      box-shadow: var(--shadow-hover);
     }
     .bento.glow-border:hover::before { opacity: 1; }
   }
@@ -217,7 +317,9 @@
     border-radius: 999px;
     filter: blur(90px);
     pointer-events: none;
+    opacity: 0.45; /* light theme: a hint of colour, never a wash */
   }
+  .dark .orb { opacity: 1; }
 
   /* Card with a cursor-following spotlight (see <Spotlight />) */
   .spotlight::before {
@@ -333,14 +435,18 @@
   .prose-x h3 { color: var(--text); font-size: 1.3rem; margin-top: 1.6em; font-weight: 600; }
   .prose-x h4 { color: var(--text); font-size: 1.1rem; margin-top: 1.4em; font-weight: 600; }
   .prose-x strong { color: var(--text); }
-  .prose-x a { color: var(--iris); text-decoration: underline; text-underline-offset: 3px; }
+  .prose-x a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
   .prose-x ul { list-style: disc; padding-left: 1.3rem; }
   .prose-x ol { list-style: decimal; padding-left: 1.3rem; }
   .prose-x li + li { margin-top: 0.4em; }
   .prose-x li::marker { color: var(--iris); }
   .prose-x blockquote { border-left: 3px solid var(--iris); padding: 0.2rem 0 0.2rem 1.1rem; font-style: italic; color: var(--text); }
   .prose-x code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--border); padding: 0.12em 0.4em; border-radius: 0.4rem; color: var(--text); }
-  .prose-x pre { background: #070a18; color: #e5e5f0; border: 1px solid var(--border); border-radius: 1rem; padding: 1.1rem 1.25rem; overflow-x: auto; font-size: 0.88rem; line-height: 1.65; }
+  .prose-x pre { background: var(--code-bg); color: var(--code-fg); border: 1px solid var(--code-border); border-radius: 1rem; padding: 1.1rem 1.25rem; overflow-x: auto; font-size: 0.86rem; line-height: 1.7; }
+  .prose-x table { width: 100%; border-collapse: collapse; font-size: 0.95rem; display: block; overflow-x: auto; }
+  .prose-x th, .prose-x td { border: 1px solid var(--border-strong); padding: 0.55rem 0.8rem; text-align: left; vertical-align: top; }
+  .prose-x th { color: var(--text); background: var(--surface-2); font-weight: 600; }
+  .prose-x h2, .prose-x h3 { scroll-margin-top: 6rem; }
   .prose-x pre code { background: none; border: 0; padding: 0; color: inherit; }
   .prose-x img { border-radius: 1rem; border: 1px solid var(--border); }
   .prose-x hr { border-color: var(--border); }

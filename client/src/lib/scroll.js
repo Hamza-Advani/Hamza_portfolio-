@@ -5,10 +5,10 @@ export const HOME_SECTIONS = [
   { id: 'about', label: 'About', page: '/about' },
   { id: 'education', label: 'Education', page: '/education' },
   { id: 'skills', label: 'Skills', page: '/skills' },
-  { id: 'projects', label: 'Projects', page: '/projects' },
+  { id: 'projects', label: 'Portfolio', page: '/portfolio', match: ['/portfolio', '/projects'] },
   { id: 'certificates', label: 'Certificates', page: '/certificates' },
   { id: 'journey', label: 'Journey', page: '/journey' },
-  { id: 'blog', label: 'Blog', page: '/blog' },
+  { id: 'blog', label: 'Blogs', page: '/blogs', match: ['/blog'] },
   { id: 'contact', label: 'Contact', page: '/contact' },
 ];
 

@@ -16,6 +16,7 @@ import { BentoCard, BentoHeader, Button, Reveal, Skeleton, SmartImage, StatusBad
 import { SocialLinks } from '../components/sections/SocialLinks.jsx';
 import { ProjectCard } from '../components/sections/Cards.jsx';
 import VideoSection from '../components/sections/VideoSection.jsx';
+import FutureRoadmap from '../components/sections/FutureRoadmap.jsx';
 import { SkillPill } from '../components/sections/SkillsGrid.jsx';
 import { CertificatesGallery } from './Certificates.jsx';
 
@@ -32,7 +33,7 @@ function HeroStats() {
   const count = (q) => (q.loading ? '…' : q.data ? String(q.data.length) : '—');
 
   const stats = [
-    { icon: FolderKanban, value: count(projects), label: 'Projects', to: '/projects' },
+    { icon: FolderKanban, value: count(projects), label: 'Projects', to: '/portfolio' },
     { icon: Award, value: count(certs), label: 'Certificates', to: '/certificates' },
     { icon: Layers, value: count(skills), label: 'Skills listed', to: '/skills' },
     { icon: GraduationCap, value: profile.programYears?.replace(/\s/g, '') || '—', label: 'BSCS programme', to: '/education' },
@@ -117,7 +118,7 @@ function Hero() {
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9, duration: 0.6, ease }} className="mt-8 flex flex-wrap items-center gap-3">
-            <Button to="/projects" variant="gradient" size="lg">
+            <Button to="/portfolio" variant="gradient" size="lg">
               View projects <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
             </Button>
             {cvHref.startsWith('/') ? (
@@ -141,13 +142,13 @@ function Hero() {
           className="relative mx-auto w-full max-w-[320px] sm:max-w-[360px] lg:col-span-5 lg:max-w-[400px] xl:col-span-4"
         >
           <div className="relative aspect-[4/5]">
-            <div aria-hidden="true" className="absolute -inset-8 rounded-full bg-[radial-gradient(closest-side,rgb(133_59_255/0.55),rgb(38_139_255/0.25)_55%,transparent)] blur-2xl" />
+            <div aria-hidden="true" className="absolute -inset-8 rounded-full bg-[radial-gradient(closest-side,var(--iris),var(--aqua)_55%,transparent)] opacity-40 blur-2xl dark:opacity-60" />
             <div aria-hidden="true" className="absolute -inset-3 animate-spin-slow rounded-[2.4rem] bg-[conic-gradient(from_0deg,var(--violet),transparent_30%,var(--aqua)_55%,transparent_80%,var(--violet))] opacity-60 blur-md" />
             <div className="absolute inset-0 overflow-hidden rounded-[2rem] bg-[linear-gradient(150deg,var(--violet),var(--aqua))] p-[1.5px] shadow-[0_40px_100px_-40px_var(--iris)]">
               <div className="relative h-full w-full overflow-hidden rounded-[calc(2rem-1.5px)] bg-bg-2">
                 <SmartImage src={profile.image} alt={`Portrait of ${name}`} width={800} eager className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070a18]/70 via-transparent to-transparent" />
-                <div className="absolute inset-x-3 bottom-3 flex items-center gap-3 rounded-2xl border border-white/10 bg-[#070a18]/60 px-3.5 py-2.5 text-white backdrop-blur-md">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+                <div className="absolute inset-x-3 bottom-3 flex items-center gap-3 media-caption rounded-2xl px-3.5 py-2.5">
                   <span className="icon-tile h-9 w-9 rounded-xl"><GraduationCap className="h-4 w-4" /></span>
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-semibold">{profile.program || 'BS Computer Science'}</span>
@@ -202,12 +203,12 @@ function AboutPreview({ wide }) {
           </ul>
         </div>
         {/* Code-window illustration */}
-        <div aria-hidden="true" className="hidden w-60 overflow-hidden rounded-2xl border border-line-strong bg-[#070a18]/80 font-mono text-[11px] leading-relaxed text-white/80 shadow-[0_20px_60px_-30px_var(--iris)] sm:block">
-          <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-2">
+        <div aria-hidden="true" className="hidden w-60 code-window overflow-hidden rounded-2xl font-mono text-[11px] leading-relaxed shadow-[0_20px_60px_-30px_var(--iris)] sm:block">
+          <div className="flex items-center gap-1.5 border-b border-[var(--code-border)] px-3 py-2">
             <span className="h-2 w-2 rounded-full bg-[#ff5f57]" /><span className="h-2 w-2 rounded-full bg-[#febc2e]" /><span className="h-2 w-2 rounded-full bg-[#28c840]" />
-            <span className="ml-2 text-[10px] text-white/40">hello.c</span>
+            <span className="ml-2 text-[10px] text-[var(--code-dim)]">hello.c</span>
           </div>
-          <pre className="px-3.5 py-3"><span className="text-[#a34fff]">#include</span> <span className="text-[#7cc4ff]">&lt;stdio.h&gt;</span>{'\n\n'}<span className="text-[#7cc4ff]">int</span> main() {'{'}{'\n'}  <span className="text-[#a34fff]">printf</span>(<span className="text-[#3ddc97]">&quot;Hello, World!&quot;</span>);{'\n'}  <span className="text-[#a34fff]">return</span> 0;{'\n'}{'}'}</pre>
+          <pre className="px-3.5 py-3"><span className="text-[var(--syn-kw)]">#include</span> <span className="text-[var(--syn-type)]">&lt;stdio.h&gt;</span>{'\n\n'}<span className="text-[var(--syn-type)]">int</span> main() {'{'}{'\n'}  <span className="text-[var(--syn-kw)]">printf</span>(<span className="text-[var(--syn-str)]">&quot;Hello, World!&quot;</span>);{'\n'}  <span className="text-[var(--syn-kw)]">return</span> 0;{'\n'}{'}'}</pre>
         </div>
       </div>
     </BentoCard>
@@ -272,7 +273,7 @@ function ProjectsPreview() {
   const spans = PROJECT_SPANS[items.length] || [];
   return (
     <div>
-      <PreviewHeading icon={FolderKanban} eyebrow="My projects" title={<>Things I&apos;ve <span className="text-gradient">built</span></>} to="/projects" linkLabel="View all projects" />
+      <PreviewHeading icon={FolderKanban} eyebrow="My projects" title={<>Things I&apos;ve <span className="text-gradient">built</span></>} to="/portfolio" linkLabel="View full portfolio" />
       {projects.loading ? (
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-12"><Skeleton className="h-96 lg:col-span-7" /><Skeleton className="h-96 lg:col-span-5" /></div>
       ) : (
@@ -339,7 +340,7 @@ function BlogPreview() {
   const items = posts.data || [];
   return (
     <BentoCard id="blog" className="flex scroll-mt-24 flex-col p-6 md:p-8 lg:col-span-5">
-      <BentoHeader icon={BookOpenText} eyebrow="Blog" title="Latest writing" to="/blog" />
+      <BentoHeader icon={BookOpenText} eyebrow="Blogs" title="Latest articles" to="/blogs" />
       <div className="relative z-10 mt-6 flex flex-1 flex-col">
         {posts.loading && <div className="space-y-3"><Skeleton className="h-20" /><Skeleton className="h-20" /></div>}
         {!posts.loading && items.length > 0 && (
@@ -386,7 +387,7 @@ function ContactPreview() {
   };
   return (
     <BentoCard className="p-6 md:p-12 lg:col-span-12">
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_90%_at_0%_0%,rgb(133_59_255/0.28),transparent_60%),radial-gradient(50%_80%_at_100%_100%,rgb(38_139_255/0.22),transparent_60%)]" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_90%_at_0%_0%,var(--glow),transparent_60%),radial-gradient(50%_80%_at_100%_100%,var(--glow-blue),transparent_60%)]" />
       <div aria-hidden="true" className="grid-bg absolute inset-0 opacity-60" />
       <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-7">
@@ -478,6 +479,12 @@ export default function Home() {
         <section aria-label="Journey and blog" className="grid grid-cols-1 gap-5 lg:grid-cols-12">
           <JourneyPreview />
           <BlogPreview />
+        </section>
+
+        {/* Future learning roadmap */}
+        <section id="future" aria-label="Future learning roadmap" className="scroll-mt-24">
+          <PreviewHeading icon={Compass} eyebrow="Future learning roadmap" title={<>What I&apos;m <span className="text-gradient">working towards</span></>} to="/journey#future" linkLabel="See the full roadmap" />
+          <FutureRoadmap compact />
         </section>
 
         {/* Contact */}

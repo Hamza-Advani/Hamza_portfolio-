@@ -51,9 +51,11 @@ export default function App() {
                     <Route path="about" element={<About />} />
                     <Route path="education" element={<Education />} />
                     <Route path="skills" element={<Skills />} />
+                    <Route path="portfolio" element={<Projects />} />
                     <Route path="projects" element={<Projects />} />
                     <Route path="projects/:slug" element={<ProjectDetail />} />
                     <Route path="certificates" element={<Certificates />} />
+                    <Route path="blogs" element={<Blog />} />
                     <Route path="blog" element={<Blog />} />
                     <Route path="blog/:slug" element={<BlogDetail />} />
                     <Route path="journey" element={<Journey />} />
