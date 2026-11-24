@@ -20,7 +20,16 @@ describe('projects', () => {
   test('seeded case studies are public with features, gallery and status', async () => {
     const res = await request(app).get('/api/public/projects').expect(200);
     const slugs = res.body.map((p) => p.slug);
-    for (const s of ['ah-clothing-hub', 'storeforge', 'northstar-lms', 'developer-portfolio-v2', 'personal-portfolio-v1']) assert.ok(slugs.includes(s), s);
+    assert.deepEqual(slugs.sort(), ['ah-clothing-hub', 'hire-at-home', 'mindbridge-digital-well-being', 'northstar-lms', 'storeforge']);
+    // deleted repo (P1) and the portfolio's own repo are not shown as projects
+    await request(app).get('/api/public/projects/personal-portfolio-v1').expect(404);
+    await request(app).get('/api/public/projects/developer-portfolio-v2').expect(404);
+    const lmsName = await request(app).get('/api/public/projects/northstar-lms').expect(200);
+    assert.equal(lmsName.body.title, 'GU Tech LMS');
+    assert.equal(lmsName.body.status, 'Under development');
+    const hire = await request(app).get('/api/public/projects/hire-at-home').expect(200);
+    assert.equal(hire.body.features.length, 0, 'no invented features');
+    assert.equal(hire.body.githubUrl, '');
     const detail = await request(app).get('/api/public/projects/ah-clothing-hub').expect(200);
     assert.equal(detail.body.status, 'Live');
     assert.ok(detail.body.features.length >= 5);

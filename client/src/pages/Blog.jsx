@@ -55,9 +55,9 @@ export default function Blog() {
                     type="button"
                     aria-pressed={category === c}
                     onClick={() => set('category', c)}
-                    className={cx('chip !py-1.5 transition hover:!text-ink', category === c && '!border-transparent !bg-[linear-gradient(110deg,var(--violet),var(--iris))] !text-white')}
+                    className={cx('chip !py-1.5 transition hover:!text-ink', category === c && '!border-transparent !bg-[linear-gradient(110deg,var(--violet),var(--iris))] !text-on-accent')}
                   >
-                    {c} <span className={cx('font-mono text-[10px]', category === c ? 'text-white/80' : 'text-faint')}>{n}</span>
+                    {c} <span className={cx('font-mono text-[10px]', category === c ? 'text-on-accent/80' : 'text-faint')}>{n}</span>
                   </button>
                 ))}
               </div>

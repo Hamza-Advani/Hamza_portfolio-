@@ -98,9 +98,9 @@ export const projects = [
     order: 2,
   },
   {
-    title: 'Northstar LMS (GU Tech LMS)',
+    title: 'GU Tech LMS',
     slug: 'northstar-lms',
-    status: 'In development',
+    status: 'Under development',
     category: 'Education · Full-stack',
     summary:
       'A learning management system for admins, teachers and students — courses, enrolment, resources, assignments with grading, auto-graded quizzes, announcements, classroom chat and complaints — built on Supabase with row-level security.',
@@ -109,7 +109,7 @@ export const projects = [
     description:
       '<p>The LMS has a <strong>React 18 + TypeScript (Vite)</strong> frontend using TanStack Query and React Router, and an <strong>Express + TypeScript</strong> API. Data, authentication and file storage are provided by <strong>Supabase</strong> (PostgreSQL, Auth and Storage).</p>' +
       '<p>The database schema has 15 tables — roles, profiles, courses, enrolments, resources, assignments, submissions, quizzes, questions, quiz attempts, marks, announcements, announcement reads, chat messages and complaints — and <strong>row-level security is enabled on every table</strong>, so access rules are enforced inside the database as well as in the API.</p>' +
-      '<p><em>Status:</em> the backend API and database schema are implemented; several frontend screens are still being built. The source code is not published yet.</p>',
+      '<p>Inside the code the workspace is branded <em>Northstar</em>.</p><p><em>Status:</em> the backend API and database schema are implemented; several frontend screens are still being built. The source code is not published yet.</p>',
     features: [
       'Three roles — admin, teacher and student — enforced by API middleware and Postgres RLS policies',
       'Course management with single and bulk (by email) student enrolment',
@@ -178,40 +178,71 @@ export const projects = [
     sourceNote: '',
     role: 'Designed and built the whole site: UI design system, React frontend, Express API, Blob storage layer, Firebase admin sign-in and deployment.',
     featured: false,
-    published: true,
+    published: false,
     date: '2026-11-24',
+    order: 6,
+  },
+  {
+    title: 'MindBridge — Digital Well-Being',
+    slug: 'mindbridge-digital-well-being',
+    status: 'Prototype',
+    category: 'Course project · Design Thinking',
+    summary:
+      'A private phone companion for university students that helps them use their phones on purpose — plan before opening the phone, get a gentle warning before time is up, wind down at night and always know where to find real help.',
+    problem:
+      'Interviews in a Design Thinking course showed students losing time and sleep to their phones, and feeling judged by tools that block or shame them. MindBridge tests a kinder approach: the student decides first, gets gentle reminders, and keeps every bit of data on their own device.',
+    description:
+      '<p>MindBridge is a working prototype built for a <strong>Design Thinking</strong> course project, based on the team’s midterm research (8 interviews, 6 ranked problems, 15 ideas scored, 10 kept). My GitHub repository is a fork of the team repository.</p>' +
+      '<p>It is a single HTML file — no build step and no server. It can be installed as an app (PWA) and works offline. Every piece of data stays in the browser’s local storage on the student’s own phone.</p>' +
+      '<h3>Safety by design</h3><ul><li>No account, no tracking, no analytics and no external scripts — a unit test fails if a network call is added.</li><li>Nothing is saved until the student accepts the privacy note, and one button deletes everything.</li><li>No streaks, scores, leaderboards or monitoring dashboards for teachers or parents.</li><li>MindBridge is not a counselor: a <em>Get help</em> tab always lists real people and helplines.</li></ul>',
+    features: [
+      'Today: daily plan from chosen focus areas, “Pause and choose” before opening the phone, daily check-in',
+      'Session: typed timers with a 5-minute warning, one 5-minute extension and “study first, then play”',
+      'Unwind: editable evening checklist, quiet hours and Do Not Disturb / Focus steps',
+      'My week: planned time by type, study vs entertainment, sleep and mood charts, JSON export',
+      'Get help: counselor, trusted person, helplines and harassment steps',
+      'Privacy first: no account, data stays on the device, consent before saving, delete all',
+      'Installable and offline-capable (web app manifest + service worker)',
+      'Automated tests with the Node.js test runner',
+    ],
+    architecture:
+      'One static index.html containing the UI, logic and editable content (a JSON block), plus a web app manifest and a service worker for install and offline use.\n' +
+      'All data is stored in the browser’s localStorage; there is no backend. Tests run with node --test.',
+    technologies: ['HTML', 'CSS', 'JavaScript', 'PWA', 'Service Worker', 'localStorage', 'Node.js test runner'],
+    image: IMG('mindbridge', 'cover.jpg'),
+    gallery: [
+      { image: IMG('mindbridge', 'screen-1.png'), caption: 'Welcome screen with the privacy note and focus areas' },
+      { image: IMG('mindbridge', 'screen-2.png'), caption: 'Today tab: Pause and choose, daily plan and check-in' },
+    ],
+    githubUrl: 'https://github.com/Hamza-Advani/digital-well-being',
+    liveUrl: '',
+    sourceNote: '',
+    role: '',
+    featured: false,
+    published: true,
+    date: '2026-11-09',
     order: 4,
   },
   {
-    title: 'Personal Portfolio v1',
-    slug: 'personal-portfolio-v1',
-    status: 'Archived',
-    category: 'Web Development',
-    summary: 'My first portfolio: a multi-page static website built with plain HTML, CSS and JavaScript — no frameworks.',
-    problem:
-      'My first goal was simply to get online: a personal site that introduces me, my education, skills and certificates, written by hand so I understood every line of HTML, CSS and JavaScript.',
-    description:
-      '<p>The first version of my portfolio, written without any framework. It was later replaced by the full-stack version above, and the repository is kept as a record of where I started.</p>',
-    features: [
-      'Eight pages: Home, About, Skills, Education, Certificates, Languages, Social and Contact',
-      'Certificate gallery with click-to-enlarge previews and Coursera verification links',
-      'Contact form that prepares a message in the visitor\'s email app',
-      'Hand-written responsive CSS and vanilla JavaScript interactions',
-    ],
-    architecture: 'Static HTML pages sharing one stylesheet (style.css) and one script (script.js). No build step and no backend.',
-    technologies: ['HTML', 'CSS', 'JavaScript'],
-    image: IMG('portfolio-v1', 'home.jpg'),
-    gallery: [
-      { image: IMG('portfolio-v1', 'home.jpg'), caption: 'v1 homepage' },
-      { image: IMG('portfolio-v1', 'skills.jpg'), caption: 'v1 skills page' },
-    ],
-    githubUrl: 'https://github.com/Hamza-Advani/Hamza-portfolio',
+    title: 'Hire At Home',
+    slug: 'hire-at-home',
+    status: 'Under development',
+    category: 'Upcoming project',
+    summary: 'A project that is currently under development. Details, screenshots and links will be added here as it progresses.',
+    problem: '',
+    description: '<p>This project is in an early stage — its repository has been created and development is under way. A full case study will be published once there is working software to show.</p>',
+    features: [],
+    architecture: '',
+    technologies: [],
+    image: '',
+    gallery: [],
+    githubUrl: '',
     liveUrl: '',
-    sourceNote: '',
-    role: 'Designed and hand-coded every page.',
+    sourceNote: 'Code not published yet',
+    role: '',
     featured: false,
     published: true,
-    date: '2026-10-02',
+    date: '2026-10-30',
     order: 5,
   },
 ];

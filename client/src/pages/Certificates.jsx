@@ -43,7 +43,7 @@ export function CertificatesGallery({ showSummary = false, limit }) {
                     <SmartImage src={c.image} alt={`Certificate: ${c.title}`} width={800} sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" className="aspect-[4/3] w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]" />
                   </div>
                   <span className="absolute inset-0 grid place-items-center bg-transparent opacity-0 transition duration-300 group-hover:bg-black/40 group-hover:opacity-100 group-focus-visible:opacity-100">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--violet),var(--aqua))] px-4 py-2 text-xs font-medium text-white shadow-[0_8px_30px_-8px_var(--iris)]"><Maximize2 className="h-3.5 w-3.5" /> View full size</span>
+                    <span className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--violet),var(--aqua))] px-4 py-2 text-xs font-medium text-on-accent shadow-[0_8px_30px_-8px_var(--iris)]"><Maximize2 className="h-3.5 w-3.5" /> View full size</span>
                   </span>
                 </button>
               )}

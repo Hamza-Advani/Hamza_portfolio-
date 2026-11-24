@@ -24,7 +24,7 @@ export const SKILL_CATEGORIES = [
   'Soft Skills',
 ];
 export const ROADMAP_STATUSES = ['Planned', 'Currently Learning', 'Completed'];
-export const PROJECT_STATUSES = ['Live', 'In development', 'Completed', 'Prototype', 'Archived'];
+export const PROJECT_STATUSES = ['Live', 'Completed', 'In progress', 'Under development', 'In development', 'Prototype', 'Archived'];
 
 const tags = z.array(str(40).min(1)).max(30).default([]);
 

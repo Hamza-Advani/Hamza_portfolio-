@@ -45,3 +45,26 @@ Working branch: `feat/v3-portfolio` (from `main` @ 03bf511). Safety branch: `bac
 - Cloudinary not configured in production → video uploads unavailable (images/PDFs use Blob fallback).
 - "My role" left empty for AH Clothing Hub, StoreForge, LMS — fill in admin (only what you did).
 - Hire-At-Home: README-only repo, no code found — not listed as a project.
+
+---
+
+## Round 2 — brand, project corrections, white & green redesign (2026-11-24)
+
+### Brand
+- New original logo mark **"Code Leaf"**: code brackets `< >` holding a growing leaf in place of the slash (developer who builds + keeps growing). Source: `client/src/components/brand/BrandMark.jsx` (brackets use currentColor; leaf = green→lime gradient).
+- Used in: header/footer (`BrandLockup`), loading screen (animated draw-in), admin sidebar, admin login, favicon (`client/public/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`), OG share image (`og-image.jpg`), intro video + poster (re-rendered with Remotion; `video/src/Intro.jsx`).
+
+### Projects (verified against GitHub on 2026-11-24)
+- Shown: AH Clothing Hub (public, live), StoreForge (private — no source link), GU Tech LMS (README-only repo; local code; Under development), MindBridge — Digital Well-Being (fork of a teammate's course repo; Prototype; role left empty), Hire At Home (README only; Under development; no invented details).
+- Removed: Personal Portfolio v1 (repo `Hamza-portfolio` deleted by owner). Hidden: developer-portfolio-v2 (the site's own repo; `published: false`, reversible in admin).
+- Not shown as projects: `Hamza-Advani` (profile README), `Hamza_portfolio-` (this site's source).
+- Live correction script: `server/scripts/correct-projects.mjs` (dry run default, backup first, ETag-guarded, only replaces untouched starter values).
+
+### Design
+- Tokens switched to white + green with an "ink & lime" accent (`client/src/index.css`); new `--on-accent` token for text on green fills (white in light, ink in dark). All purple hard-coded colours removed (Lightbox, Footer, theme-color meta).
+- Instagram reel: only its public cover image was accessible (video needs login) — used for direction (white canvas, ink cards, lime highlights).
+
+### Tests (round 2)
+- Server: 39 pass / 0 fail / 1 skipped (real-Blob test, run separately).
+- Admin E2E (Chrome): 23/23 incl. brand mark check.
+- Visual QA: all public routes light + dark (desktop), tablet 820px and mobile 390px; admin login/dashboard/forms.

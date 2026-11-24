@@ -23,9 +23,9 @@ const btnBase =
   'group relative inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap';
 const btnVariants = {
   primary:
-    'text-white bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
+    'text-on-accent bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
   gradient:
-    'text-white bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
+    'text-on-accent bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
   outline: 'border border-line-strong bg-surface/40 text-ink backdrop-blur hover:-translate-y-0.5 hover:border-iris/70 hover:bg-surface-2 hover:shadow-[0_10px_30px_-16px_var(--iris)]',
   ghost: 'text-muted hover:text-ink hover:bg-surface-2',
   danger: 'bg-rose/10 text-rose border border-rose/30 hover:bg-rose hover:text-white',
@@ -293,7 +293,7 @@ export function ViewAll({ to, children = 'View all', className }) {
     <Link
       to={to}
       className={cx(
-        'group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong bg-surface/50 px-3.5 py-1.5 text-xs font-medium text-ink backdrop-blur transition hover:border-iris/70 hover:text-white hover:bg-iris/80 hover:shadow-[0_8px_24px_-10px_var(--iris)]',
+        'group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong bg-surface/50 px-3.5 py-1.5 text-xs font-medium text-ink backdrop-blur transition hover:border-iris/70 hover:text-on-accent hover:bg-iris/80 hover:shadow-[0_8px_24px_-10px_var(--iris)]',
         className,
       )}
     >

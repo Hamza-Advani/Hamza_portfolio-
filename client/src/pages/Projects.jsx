@@ -28,7 +28,7 @@ export function ProjectsGrid({ filterId = 'proj-filter' }) {
       {categories.length > 2 && (
         <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter projects by category">
           {categories.map((c) => (
-            <button key={c} onClick={() => setCategory(c)} className={cx('relative rounded-full border px-4 py-2 text-sm transition', category === c ? 'border-transparent text-white' : 'border-line text-muted hover:text-ink')}>
+            <button key={c} onClick={() => setCategory(c)} className={cx('relative rounded-full border px-4 py-2 text-sm transition', category === c ? 'border-transparent text-on-accent' : 'border-line text-muted hover:text-ink')}>
               {category === c && <motion.span layoutId={filterId} className="absolute inset-0 -z-10 rounded-full bg-[linear-gradient(120deg,var(--violet),var(--aqua))]" />}
               {c}
             </button>

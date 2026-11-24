@@ -43,8 +43,8 @@ describe('public API', () => {
       const res = await request(app).get(`/api/public/${col}`).expect(200);
       assert.ok(res.body.length >= min, `${col} has ${res.body.length}`);
     }
-    const p = await request(app).get('/api/public/projects/developer-portfolio-v2').expect(200);
-    assert.equal(p.body.title, 'Developer Portfolio (this website)');
+    const p = await request(app).get('/api/public/projects/ah-clothing-hub').expect(200);
+    assert.equal(p.body.title, 'AH Clothing Hub');
     assert.ok(Array.isArray(p.body.related));
   });
 
@@ -56,7 +56,9 @@ describe('public API', () => {
   test('sitemap is valid xml', async () => {
     const res = await request(app).get('/sitemap.xml').expect(200);
     assert.match(res.headers['content-type'], /xml/);
-    assert.match(res.text, /<loc>.*\/projects\/developer-portfolio-v2<\/loc>/);
+    assert.match(res.text, /<loc>[^<]*\/projects\/ah-clothing-hub<\/loc>/);
+    assert.doesNotMatch(res.text, /developer-portfolio-v2|personal-portfolio-v1/, 'hidden projects are not in the sitemap');
+    assert.match(res.text, /<loc>[^<]*\/blogs<\/loc>/);
     await request(app).get('/api/sitemap.xml').expect(200);
   });
 });

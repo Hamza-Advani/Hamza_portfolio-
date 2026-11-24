@@ -8,6 +8,8 @@ const STATUS_TONE = {
   Live: 'text-lime border-lime/35 bg-lime/10',
   Completed: 'text-lime border-lime/35 bg-lime/10',
   'In development': 'text-amber border-amber/35 bg-amber/10',
+  'Under development': 'text-amber border-amber/35 bg-amber/10',
+  'In progress': 'text-amber border-amber/35 bg-amber/10',
   Prototype: 'text-amber border-amber/35 bg-amber/10',
   Archived: 'text-muted border-line-strong bg-surface-2',
 };
@@ -59,7 +61,7 @@ export function ProjectCard({ project, index = 0, large = false }) {
           {project.technologies?.length > (large ? 7 : 5) && <li className="chip">+{project.technologies.length - (large ? 7 : 5)}</li>}
         </ul>
         <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6 text-sm">
-          <Link to={href} className="inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(110deg,var(--violet),var(--iris))] px-4 py-2 font-medium text-white shadow-[0_8px_24px_-12px_var(--iris)] transition hover:-translate-y-0.5">
+          <Link to={href} className="inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(110deg,var(--violet),var(--iris))] px-4 py-2 font-medium text-on-accent shadow-[0_8px_24px_-12px_var(--iris)] transition hover:-translate-y-0.5">
             View details <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
           </Link>
           <span className="flex items-center gap-3 text-xs text-faint">

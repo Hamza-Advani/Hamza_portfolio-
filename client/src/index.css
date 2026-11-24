@@ -5,90 +5,99 @@
 /* ── Design tokens ─────────────────────────────────────────────────────
    One token set, two themes. Components must use these tokens (or the Tailwind colours
    mapped from them below) — never hard-coded light-only or dark-only colours.
-   iris = primary purple · violet = bright purple · aqua = indigo/blue accent · lime = success.
 
-   Light: clean neutral page, SOLID white cards with visible borders + natural shadows,
-          dark ink text, deep purple accents that pass WCAG AA on white.
-   Dark:  near-black surfaces with a purple tint, soft glass cards, bright purple highlights. */
+   Identity: WHITE + GREEN, with an "ink & lime" accent.
+   iris = primary green · violet = bright green · aqua = lime/olive accent · lime = success.
+   --on-accent is the text colour placed ON accent fills (buttons, active pills, icon tiles).
+
+   Light: clean white page, SOLID white cards with visible borders + soft natural shadows,
+          ink text, deep forest-green actions (white text passes WCAG AA).
+   Dark:  ink-black surfaces, soft glass cards, bright green / lime actions with ink text. */
 :root {
-  --bg: #f6f6fa;
-  --bg-2: #eeeef5;
+  --bg: #f5f6f1;
+  --bg-2: #eceee6;
   --surface: #ffffff;
-  --surface-2: #f3f3f8;
-  --border: rgb(23 20 56 / 0.10);
-  --border-strong: rgb(23 20 56 / 0.17);
-  --text: #0e0c1b;
-  --muted: #474459;
-  --faint: #67637b;
-  --iris: #6d28d9;
-  --violet: #7c3aed;
-  --aqua: #4f46e5;
+  --surface-2: #f2f4ed;
+  --border: rgb(18 30 14 / 0.10);
+  --border-strong: rgb(18 30 14 / 0.17);
+  --text: #0e140f;
+  --muted: #444d40;
+  --faint: #646d5e;
+  --iris: #166534;
+  --violet: #15803d;
+  --aqua: #3f6212;
   --lime: #047857;
   --rose: #be123c;
   --amber: #b45309;
-  --accent-text: #6d28d9; /* purple text on page/card backgrounds */
-  --ring: rgb(109 40 217 / 0.45);
-  --glow: rgb(109 40 217 / 0.07);
-  --glow-blue: rgb(79 70 229 / 0.05);
-  --grid: rgb(23 20 56 / 0.045);
+  --on-accent: #ffffff;
+  --brand-lime: #a3e635;
+  --brand-lime-text: #4d7c0f;
+  --accent-text: #166534; /* green text on page/card backgrounds */
+  --ring: rgb(22 101 52 / 0.45);
+  --glow: rgb(34 197 94 / 0.09);
+  --glow-blue: rgb(163 230 53 / 0.10);
+  --grid: rgb(18 30 14 / 0.045);
   --card-bg: #ffffff;
   --card-blur: 0px;
   --glow-border-opacity: 0;
-  --shadow-card: 0 1px 2px rgb(16 12 40 / 0.05), 0 14px 34px -18px rgb(40 22 110 / 0.22);
-  --shadow-hover: 0 2px 4px rgb(16 12 40 / 0.05), 0 26px 50px -24px rgb(76 29 149 / 0.38);
-  --shadow-nav: 0 10px 30px -18px rgb(30 20 80 / 0.35);
+  --shadow-card: 0 1px 2px rgb(14 20 15 / 0.05), 0 14px 34px -20px rgb(20 50 20 / 0.22);
+  --shadow-hover: 0 2px 4px rgb(14 20 15 / 0.05), 0 26px 50px -24px rgb(22 101 52 / 0.32);
+  --shadow-nav: 0 10px 30px -18px rgb(14 30 14 / 0.30);
   /* Content placed on top of photos/screenshots (captions, badges) */
-  --media-scrim: rgb(10 8 22 / 0.62);
-  --media-chip-bg: rgb(255 255 255 / 0.92);
-  --media-chip-fg: #1b1530;
+  --media-scrim: rgb(8 12 8 / 0.62);
+  --media-chip-bg: rgb(255 255 255 / 0.94);
+  --media-chip-fg: #0e140f;
   /* Code windows & <pre> blocks */
-  --code-bg: #f7f5ff;
-  --code-fg: #26213d;
-  --code-border: rgb(109 40 217 / 0.16);
-  --code-dim: #8a85a3;
-  --syn-kw: #7c3aed;
-  --syn-type: #2563eb;
-  --syn-str: #047857;
+  --code-bg: #f4f7ef;
+  --code-fg: #1b2418;
+  --code-border: rgb(22 101 52 / 0.16);
+  --code-dim: #7d8676;
+  --syn-kw: #15803d;
+  --syn-type: #0f766e;
+  --syn-str: #a16207;
   color-scheme: light;
 }
 
 .dark {
-  --bg: #07060d;
-  --bg-2: #0c0a15;
-  --surface: #13111d;
-  --surface-2: #1b1828;
+  --bg: #090c09;
+  --bg-2: #0e120e;
+  --surface: #121812;
+  --surface-2: #192119;
   --border: rgb(255 255 255 / 0.08);
   --border-strong: rgb(255 255 255 / 0.14);
-  --text: #f6f4ff;
-  --muted: #b9b5cc;
-  --faint: #8c879f;
-  --iris: #8b5cf6;
-  --violet: #a855f7;
-  --aqua: #818cf8;
+  --text: #f3f7f0;
+  --muted: #b4bead;
+  --faint: #879180;
+  --iris: #22c55e;
+  --violet: #4ade80;
+  --aqua: #a3e635;
   --lime: #34d399;
   --rose: #fb7185;
   --amber: #fbbf24;
-  --accent-text: #c4b5fd;
-  --ring: rgb(139 92 246 / 0.6);
-  --glow: rgb(139 92 246 / 0.20);
-  --glow-blue: rgb(99 102 241 / 0.14);
+  --on-accent: #06120a;
+  --brand-lime: #a3e635;
+  --brand-lime-text: #a3e635;
+  --accent-text: #86efac;
+  --ring: rgb(74 222 128 / 0.55);
+  --glow: rgb(34 197 94 / 0.16);
+  --glow-blue: rgb(163 230 53 / 0.10);
   --grid: rgb(255 255 255 / 0.035);
-  --card-bg: rgb(19 17 29 / 0.72);
+  --card-bg: rgb(18 24 18 / 0.74);
   --card-blur: 16px;
-  --glow-border-opacity: 0.55;
+  --glow-border-opacity: 0.45;
   --shadow-card: 0 24px 60px -32px rgb(0 0 0 / 0.85);
-  --shadow-hover: 0 30px 70px -30px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(139 92 246 / 0.25);
+  --shadow-hover: 0 30px 70px -30px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(74 222 128 / 0.22);
   --shadow-nav: 0 10px 40px -18px rgb(0 0 0 / 0.8);
-  --media-scrim: rgb(5 4 12 / 0.66);
-  --media-chip-bg: rgb(12 10 21 / 0.78);
-  --media-chip-fg: #f6f4ff;
-  --code-bg: #0d0b17;
-  --code-fg: #e7e3ff;
+  --media-scrim: rgb(4 8 4 / 0.66);
+  --media-chip-bg: rgb(10 14 10 / 0.80);
+  --media-chip-fg: #f3f7f0;
+  --code-bg: #0b100b;
+  --code-fg: #e4eedf;
   --code-border: rgb(255 255 255 / 0.09);
-  --code-dim: #7d7896;
-  --syn-kw: #c084fc;
-  --syn-type: #93c5fd;
-  --syn-str: #6ee7b7;
+  --code-dim: #7a8573;
+  --syn-kw: #86efac;
+  --syn-type: #5eead4;
+  --syn-str: #fde68a;
   color-scheme: dark;
 }
 
@@ -113,6 +122,8 @@
   --color-violet: var(--violet);
   --color-amber: var(--amber);
   --color-accent: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-brand-lime: var(--brand-lime);
 
   --animate-marquee: marquee 40s linear infinite;
   --animate-spin-slow: spin 18s linear infinite;
@@ -152,8 +163,8 @@
     overflow-x: hidden;
   }
   ::selection {
-    background: var(--iris);
-    color: #fff;
+    background: var(--brand-lime);
+    color: #0e140f;
   }
   :focus-visible {
     outline: 2px solid var(--iris);
@@ -306,7 +317,7 @@
     place-items: center;
     flex-shrink: 0;
     border-radius: 0.9rem;
-    color: #fff;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--violet), var(--aqua));
     box-shadow: 0 10px 30px -12px var(--iris);
   }

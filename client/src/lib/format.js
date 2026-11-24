@@ -32,4 +32,4 @@ export const SKILL_CATEGORIES = [
 ];
 
 export const ROADMAP_STATUSES = ['Planned', 'Currently Learning', 'Completed'];
-export const PROJECT_STATUSES = ['Live', 'In development', 'Completed', 'Prototype', 'Archived'];
+export const PROJECT_STATUSES = ['Live', 'Completed', 'In progress', 'Under development', 'In development', 'Prototype', 'Archived'];
