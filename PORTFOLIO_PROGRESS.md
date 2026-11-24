@@ -29,9 +29,10 @@ Working branch: `feat/v3-portfolio` (from `main` @ 03bf511). Safety branch: `bac
 - [x] Admin: Blob-backed image/PDF upload fallback (server/src/db/media.js, /api/admin/uploads/media, /api/media/*); new projects default to published
 - [x] Tests (server 39 pass; admin browser E2E 22/22; real Blob media round-trip)
 - [x] Add-only content merge script (server/scripts/merge-content.mjs) — dry run verified against live
-- [ ] Commit, push to Hamza_portfolio- main, verify Vercel deploy, test live
-- [ ] Apply live content merge (`node scripts/merge-content.mjs --apply [--fill-empty=...]`)
-- [ ] Archive Hamza-portfolio; remove legacy-origin remote; prune old branches
+- [x] Commit, push to Hamza_portfolio- main (7566161), Vercel production deploy = success, live routes tested
+- [x] Live content merge applied 2026-11-24 (3 projects + 16 posts added; empty fields of developer-portfolio-v2 / personal-portfolio-v1 filled). Backup: server/.data/backups/content-2026-11-24T16-21-45-628Z.json and Blob data/backups/content-2026-11-24T16-21-45-628Z.json
+- [x] Hamza-portfolio ARCHIVED (still public + linkable); legacy-origin remote removed; merged branches deleted (local + remote). Local safety branch kept: backup/pre-v3-2026-11-24
+- Note: Hamza-portfolio's 3 commits are a separate history (not inside Hamza_portfolio-); near-identical files exist in main at dd1524c. Archiving keeps it intact.
 
 ## Tests performed
 - Server unit tests: 39 pass / 0 fail / 1 skipped (skipped = real-Blob test, run separately → pass)
