@@ -9,6 +9,7 @@
     "start": "node src/index.js",
     "test": "node --no-experimental-require-module --test test/*.test.js",
     "seed": "node scripts/seed.js",
+    "build:posts": "node scripts/build-posts.mjs",
     "set-admin": "node scripts/set-admin.js"
   },
   "dependencies": {

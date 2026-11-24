@@ -5,7 +5,7 @@ import { adminApi, publicApi } from '../lib/api.js';
 import { Button, GithubIcon, Spinner } from '../components/ui.jsx';
 import { Modal } from './components/Modal.jsx';
 import { ProjectView } from '../pages/ProjectDetail.jsx';
-import { ROADMAP_STATUSES, SKILL_CATEGORIES } from '../lib/format.js';
+import { PROJECT_STATUSES, ROADMAP_STATUSES, SKILL_CATEGORIES } from '../lib/format.js';
 import { optimizeImage } from '../lib/media.js';
 
 const nextOrder = (list) => (list.length ? Math.max(...list.map((d) => d.order || 0)) + 1 : 1);
@@ -81,22 +81,44 @@ export const projectsConfig = {
   collection: 'projects',
   title: 'Projects',
   singular: 'Project',
-  description: 'Add, edit, feature and publish your projects. New projects start unpublished.',
+  description: 'Add, edit, feature and publish your projects. Switch "Published" off to keep a project as a hidden draft.',
   featureKey: 'featured',
-  newItem: (list) => ({ title: '', slug: '', summary: '', description: '', image: '', technologies: [], githubUrl: '', liveUrl: '', category: 'Web Development', featured: false, published: false, date: today(), order: nextOrder(list) }),
-  columns: (d) => ({ title: d.title, subtitle: `${d.category} · ${(d.technologies || []).join(', ')}`, thumb: d.image ? optimizeImage(d.image, 200) : null }),
+  newItem: (list) => ({ title: '', slug: '', summary: '', description: '', image: '', technologies: [], githubUrl: '', liveUrl: '', category: 'Web Development', featured: false, published: true, date: today(), order: nextOrder(list), status: 'Completed', problem: '', features: [], architecture: '', role: '', gallery: [], sourceNote: '' }),
+  columns: (d) => {
+    const thumb = d.image || d.gallery?.find((g) => g.image)?.image;
+    return { title: d.title, subtitle: [d.status, d.category, (d.technologies || []).join(', ')].filter(Boolean).join(' · '), thumb: thumb ? optimizeImage(thumb, 200) : null };
+  },
   preview: (values) => <ProjectView project={values} />,
   extraActions: (ctx) => <GithubImport {...ctx} />,
   fields: [
     { name: 'title', label: 'Title', placeholder: 'Project name' },
     { name: 'slug', label: 'URL slug', placeholder: 'auto-generated from title', help: 'Used in /projects/<slug>' },
     { name: 'summary', label: 'Short summary', type: 'textarea', rows: 2, max: 400 },
-    { name: 'image', label: 'Project image', type: 'image', folder: 'projects' },
-    { name: 'description', label: 'Description', type: 'rich', folder: 'projects' },
+    { name: 'status', label: 'Project status', type: 'select', options: ['', ...PROJECT_STATUSES] },
+    { name: 'image', label: 'Cover image / main screenshot', type: 'image', folder: 'projects' },
+    { name: 'problem', label: 'Problem / purpose', type: 'textarea', rows: 3, wide: true, help: 'Why the project exists and who it is for' },
+    { name: 'description', label: 'Full overview', type: 'rich', folder: 'projects' },
+    { name: 'features', label: 'Key features', type: 'lines', rows: 7, wide: true, help: 'One feature per line' },
+    { name: 'architecture', label: 'Architecture / workflow', type: 'textarea', rows: 4, wide: true },
+    { name: 'role', label: 'My role & contribution', type: 'textarea', rows: 3, wide: true, help: 'Only what you actually did — leave empty to hide' },
+    {
+      name: 'gallery',
+      label: 'Screenshot gallery',
+      type: 'list',
+      wide: true,
+      addLabel: 'Add screenshot',
+      newItem: { image: '', caption: '' },
+      itemLabel: (it, i) => it.caption || `Screenshot ${i + 1}`,
+      fields: [
+        { name: 'image', label: 'Image', type: 'image', folder: 'projects', wide: true },
+        { name: 'caption', label: 'Caption', wide: true },
+      ],
+    },
     { name: 'technologies', label: 'Technologies', type: 'tags', placeholder: 'React, Node.js…' },
     { name: 'category', label: 'Category', placeholder: 'Web Development' },
     { name: 'date', label: 'Date', type: 'date' },
-    { name: 'githubUrl', label: 'GitHub URL', type: 'url', placeholder: 'https://github.com/…' },
+    { name: 'githubUrl', label: 'GitHub URL', type: 'url', placeholder: 'https://github.com/…', help: 'Leave empty for private source code' },
+    { name: 'sourceNote', label: 'Source note (when no GitHub URL)', placeholder: 'e.g. Private repository' },
     { name: 'liveUrl', label: 'Live demo URL', type: 'url', placeholder: 'https://…' },
     { name: 'order', label: 'Sort order', type: 'number', min: 0 },
     { name: 'featured', label: 'Featured on the home page', type: 'toggle' },

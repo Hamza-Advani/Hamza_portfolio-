@@ -54,8 +54,8 @@ export function ProjectsGrid({ filterId = 'proj-filter' }) {
 export default function Projects() {
   return (
     <>
-      <Seo title="Projects" description="Projects designed and built by Muhammad Hamza, with source code and live demos." />
-      <PageHeader eyebrow="Projects" title={<>Things I&apos;ve <span className="text-gradient">built.</span></>} description="Each project is a step in my learning — with links to the code and, where available, a live demo." />
+      <Seo title="Portfolio" description="Portfolio of Muhammad Hamza — full-stack web projects with case studies, screenshots, live demos and source code." />
+      <PageHeader eyebrow="Portfolio" title={<>Projects &amp; <span className="text-gradient">case studies.</span></>} description="Open any project for the full story — the problem it solves, key features, architecture, screenshots, a live demo and the source code where it is public." />
       <Section className="!pt-0"><ProjectsGrid /></Section>
       <Section>
         <SectionHeading eyebrow="GitHub" title="All public repositories" description="Everything I've pushed publicly — including coursework and experiments." />

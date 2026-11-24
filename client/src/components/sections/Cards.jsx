@@ -1,50 +1,71 @@
 import { Link } from 'react-router';
-import { ArrowUpRight, Calendar, Clock, ExternalLink, Star } from 'lucide-react';
-import { CoverArt, GithubIcon, SmartImage, Spotlight } from '../ui.jsx';
-import { formatDate } from '../../lib/format.js';
+import { ArrowRight, ArrowUpRight, Calendar, Clock, Lock, Star } from 'lucide-react';
+import { CoverArt, SmartImage, Spotlight } from '../ui.jsx';
+import { cx, formatDate } from '../../lib/format.js';
+
+/** Colour treatment for a project's lifecycle status. */
+const STATUS_TONE = {
+  Live: 'text-lime border-lime/35 bg-lime/10',
+  Completed: 'text-lime border-lime/35 bg-lime/10',
+  'In development': 'text-amber border-amber/35 bg-amber/10',
+  Prototype: 'text-amber border-amber/35 bg-amber/10',
+  Archived: 'text-muted border-line-strong bg-surface-2',
+};
+
+export function ProjectStatus({ status, className }) {
+  if (!status) return null;
+  return (
+    <span className={cx('inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold', STATUS_TONE[status] || STATUS_TONE.Archived, className)}>
+      <span className={cx('h-1.5 w-1.5 rounded-full bg-current', status === 'Live' && 'animate-pulse')} aria-hidden="true" />
+      {status}
+    </span>
+  );
+}
+
+/** First image of a project: cover image, else first gallery shot. */
+export const projectCover = (p) => p.image || p.gallery?.find((g) => g.image)?.image || '';
 
 export function ProjectCard({ project, index = 0, large = false }) {
+  const cover = projectCover(project);
+  const href = `/projects/${project.slug}`;
   return (
     <Spotlight as="article" className="bento group flex h-full flex-col">
-      <Link to={`/projects/${project.slug}`} className="relative block overflow-hidden rounded-t-[1.45rem]" aria-label={`Open ${project.title}`}>
-        <div className={large ? 'aspect-[16/9] lg:aspect-[16/8]' : 'aspect-[16/10]'}>
-          {project.image ? (
-            <SmartImage src={project.image} alt={project.title} width={900} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-          ) : (
-            <CoverArt title={project.title} seed={index} className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
-          )}
+      <Link to={href} className="relative block p-2.5 pb-0" aria-label={`View details of ${project.title}`} tabIndex={-1}>
+        <div className="browser-frame !rounded-[1.05rem] !shadow-none">
+          <div className="browser-frame-bar !py-2" aria-hidden="true"><i /><i /><i /></div>
+          <div className={cx('overflow-hidden', large ? 'aspect-[16/9] lg:aspect-[16/8.4]' : 'aspect-[16/10]')}>
+            {cover ? (
+              <SmartImage src={cover} alt={`Screenshot of ${project.title}`} width={large ? 1200 : 800} className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]" />
+            ) : (
+              <CoverArt title={project.title} seed={index} className="h-full w-full" />
+            )}
+          </div>
         </div>
-        <span className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#070a18]/80 to-transparent" aria-hidden="true" />
-        <span className="absolute right-4 top-4 grid h-10 w-10 translate-y-2 place-items-center rounded-full bg-[linear-gradient(135deg,var(--violet),var(--aqua))] text-white opacity-0 shadow-[0_8px_24px_-8px_var(--iris)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          <ArrowUpRight className="h-4 w-4" />
+        <span className="absolute left-5 top-12 flex flex-wrap gap-1.5">
+          {project.featured && <span className="media-chip"><Star className="h-3 w-3 fill-violet text-violet" /> Featured</span>}
         </span>
-        {project.featured && (
-          <span className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full border border-white/10 bg-[#070a18]/70 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
-            <Star className="h-3 w-3 fill-violet text-violet" /> Featured
-          </span>
-        )}
       </Link>
       <div className="relative z-10 flex flex-1 flex-col p-6">
-        <p className="eyebrow mb-2">{project.category}</p>
+        <div className="mb-2.5 flex flex-wrap items-center gap-2">
+          <p className="eyebrow">{project.category}</p>
+          <ProjectStatus status={project.status} />
+        </div>
         <h3 className={large ? 'text-2xl font-semibold md:text-3xl' : 'text-xl font-semibold'}>
-          <Link to={`/projects/${project.slug}`} className="transition hover:text-iris">{project.title}</Link>
+          <Link to={href} className="transition hover:text-accent">{project.title}</Link>
         </h3>
         <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">{project.summary}</p>
-        <ul className="mt-4 flex flex-wrap gap-1.5">
-          {(project.technologies || []).slice(0, 5).map((t) => <li key={t} className="chip !border-iris/25 !text-ink">{t}</li>)}
-          {project.technologies?.length > 5 && <li className="chip">+{project.technologies.length - 5}</li>}
+        <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies">
+          {(project.technologies || []).slice(0, large ? 7 : 5).map((t) => <li key={t} className="chip !text-ink">{t}</li>)}
+          {project.technologies?.length > (large ? 7 : 5) && <li className="chip">+{project.technologies.length - (large ? 7 : 5)}</li>}
         </ul>
-        <div className="mt-auto flex flex-wrap items-center gap-2 pt-6 text-sm">
-          {project.githubUrl && (
-            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-muted transition hover:border-iris/60 hover:text-ink">
-              <GithubIcon className="h-4 w-4" /> Code
-            </a>
-          )}
-          {project.liveUrl && (
-            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-muted transition hover:border-iris/60 hover:text-ink">
-              <ExternalLink className="h-4 w-4" /> Live demo
-            </a>
-          )}
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6 text-sm">
+          <Link to={href} className="inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(110deg,var(--violet),var(--iris))] px-4 py-2 font-medium text-white shadow-[0_8px_24px_-12px_var(--iris)] transition hover:-translate-y-0.5">
+            View details <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+          </Link>
+          <span className="flex items-center gap-3 text-xs text-faint">
+            {project.liveUrl && <span className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-lime" /> Live demo</span>}
+            {!project.githubUrl && project.sourceNote && <span className="inline-flex items-center gap-1"><Lock className="h-3 w-3" /> {project.sourceNote}</span>}
+          </span>
         </div>
       </div>
     </Spotlight>
@@ -54,26 +75,29 @@ export function ProjectCard({ project, index = 0, large = false }) {
 export function PostCard({ post, index = 0 }) {
   return (
     <Spotlight as="article" className="bento group flex h-full flex-col">
-      <Link to={`/blog/${post.slug}`} className="block overflow-hidden rounded-t-[1.45rem]">
+      <Link to={`/blog/${post.slug}`} className="block overflow-hidden rounded-t-[1.45rem]" tabIndex={-1} aria-hidden="true">
         <div className="aspect-[16/9]">
           {post.coverImage ? (
             <SmartImage src={post.coverImage} alt="" width={800} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
           ) : (
-            <CoverArt title={post.title} seed={index + 11} className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
+            <CoverArt title={post.title} seed={index + 11} label={post.category} className="h-full w-full" />
           )}
         </div>
       </Link>
       <div className="relative z-10 flex flex-1 flex-col p-6">
         <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-faint">
-          <span className="chip !border-iris/30 !text-violet">{post.category}</span>
+          <span className="chip !border-iris/30 !text-accent">{post.category}</span>
           {post.publishedAt && <span className="inline-flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{formatDate(post.publishedAt)}</span>}
           {post.readingTime && <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.readingTime} min read</span>}
         </div>
         <h3 className="text-xl font-semibold leading-snug">
-          <Link to={`/blog/${post.slug}`} className="transition hover:text-iris">{post.title}</Link>
+          <Link to={`/blog/${post.slug}`} className="transition hover:text-accent">{post.title}</Link>
         </h3>
         <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">{post.excerpt}</p>
-        <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium">
+        {post.tags?.length > 0 && (
+          <p className="mt-3 flex flex-wrap gap-x-2 font-mono text-[11px] text-faint">{post.tags.slice(0, 4).map((t) => <span key={t}>#{t}</span>)}</p>
+        )}
+        <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium text-accent">
           Read article <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </span>
       </div>

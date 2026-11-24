@@ -7,7 +7,7 @@ import { publicApi } from '../lib/api.js';
 import { useFetch } from '../hooks/useFetch.js';
 import { useSite } from '../context/SiteContext.jsx';
 import { formatDate, readingTimeFromHtml } from '../lib/format.js';
-import { CoverArt, ErrorState, LinkedinIcon, RichText, Section, SectionHeading, Skeleton, SmartImage } from '../components/ui.jsx';
+import { ErrorState, LinkedinIcon, RichText, Section, SectionHeading, Skeleton, SmartImage } from '../components/ui.jsx';
 import { PostCard } from '../components/sections/Cards.jsx';
 import NotFound from './NotFound.jsx';
 
@@ -33,9 +33,9 @@ export function PostView({ post }) {
       <header className="relative overflow-hidden pb-10 pt-32 md:pt-40">
         <div className="grid-bg mask-fade-b absolute inset-0 -z-10" />
         <div className="container-x max-w-4xl">
-          <Link to="/blog" className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition hover:text-ink"><ArrowLeft className="h-4 w-4" /> All articles</Link>
+          <Link to="/blogs" className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-sm text-muted transition hover:border-iris/50 hover:text-ink"><ArrowLeft className="h-4 w-4" /> All articles</Link>
           <div className="mb-5 flex flex-wrap items-center gap-3 text-sm text-muted">
-            <span className="chip !text-iris">{post.category}</span>
+            <Link to={`/blogs?category=${encodeURIComponent(post.category)}`} className="chip !border-iris/30 !text-accent hover:!border-iris">{post.category}</Link>
             {post.publishedAt && <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" />{formatDate(post.publishedAt, { year: 'numeric', month: 'long', day: 'numeric' })}</span>}
             <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" />{minutes} min read</span>
           </div>
@@ -51,20 +51,18 @@ export function PostView({ post }) {
         </div>
       </header>
 
-      <div className="container-x max-w-5xl">
-        <div className="card overflow-hidden p-2">
-          {post.coverImage ? (
+      {post.coverImage && (
+        <div className="container-x max-w-5xl">
+          <div className="card overflow-hidden p-2">
             <SmartImage src={post.coverImage} alt="" width={1600} sizes="100vw" eager className="aspect-[16/8] w-full rounded-[1.2rem] object-cover" />
-          ) : (
-            <CoverArt title={post.title} seed={11} className="aspect-[16/7] w-full rounded-[1.2rem]" />
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="container-x max-w-3xl py-14 md:py-20">
         <RichText html={post.content} />
         <footer className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
-          <ul className="flex flex-wrap gap-2">{(post.tags || []).map((t) => <li key={t} className="chip">#{t}</li>)}</ul>
+          <ul className="flex flex-wrap gap-2">{(post.tags || []).map((t) => <li key={t}><Link to={`/blogs?tag=${encodeURIComponent(t)}`} className="chip transition hover:!border-iris hover:!text-ink">#{t}</Link></li>)}</ul>
           <div className="flex items-center gap-2">
             <button onClick={copy} className="chip !py-1.5 transition hover:!text-ink">{copied ? <Check className="h-3.5 w-3.5 text-lime" /> : <Copy className="h-3.5 w-3.5" />}{copied ? 'Copied' : 'Copy link'}</button>
             <a className="chip !py-1.5 transition hover:!text-ink" target="_blank" rel="noopener noreferrer" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}>

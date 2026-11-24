@@ -24,6 +24,7 @@ export const SKILL_CATEGORIES = [
   'Soft Skills',
 ];
 export const ROADMAP_STATUSES = ['Planned', 'Currently Learning', 'Completed'];
+export const PROJECT_STATUSES = ['Live', 'In development', 'Completed', 'Prototype', 'Archived'];
 
 const tags = z.array(str(40).min(1)).max(30).default([]);
 
@@ -76,6 +77,18 @@ export const schemas = {
     published: bool(false),
     date: str(30).default(''),
     order,
+    // Case-study fields shown on the project details page
+    status: z.enum(PROJECT_STATUSES).or(z.literal('')).default(''),
+    problem: text(4000).default(''),
+    features: z.preprocess(
+      (v) => (Array.isArray(v) ? v.map((s) => String(s ?? '').trim()).filter(Boolean) : v),
+      z.array(str(300).min(1)).max(30),
+    ).default([]),
+    architecture: text(4000).default(''),
+    role: text(2000).default(''),
+    gallery: z.array(z.object({ image: urlish, caption: str(200).default('') })).max(12).default([]),
+    // Shown instead of a GitHub button when the source is not public (e.g. "Private repository")
+    sourceNote: str(120).default(''),
   }),
 
   certificates: z.object({

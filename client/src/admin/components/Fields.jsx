@@ -126,7 +126,7 @@ export function FieldInput({ field, value, onChange, error }) {
     case 'select':
       control = (
         <select {...common} value={value ?? ''} onChange={(e) => onChange(e.target.value)} className="input">
-          {field.options.map((o) => <option key={o} value={o}>{o}</option>)}
+          {field.options.map((o) => <option key={o} value={o}>{o === '' ? '— None —' : o}</option>)}
         </select>
       );
       break;
@@ -142,6 +142,18 @@ export function FieldInput({ field, value, onChange, error }) {
       break;
     case 'rich':
       control = <RichEditor value={value} onChange={onChange} folder={field.folder} />;
+      break;
+    case 'lines':
+      // One item per line (e.g. key features). Blank lines are dropped by the server.
+      control = (
+        <textarea
+          {...common}
+          rows={field.rows || 6}
+          value={Array.isArray(value) ? value.join('\n') : value || ''}
+          onChange={(e) => onChange(e.target.value.split('\n'))}
+          className="input font-[inherit] leading-relaxed"
+        />
+      );
       break;
     case 'list':
       control = <ListEditor value={value} onChange={onChange} fields={field.fields} newItem={field.newItem} addLabel={field.addLabel} itemLabel={field.itemLabel} />;

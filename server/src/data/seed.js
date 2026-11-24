@@ -1,3 +1,5 @@
+import { projects } from './projects.js';
+import { posts as technicalPosts } from './posts/index.js';
 // Initial content for the portfolio. Every fact here comes from the previous portfolio
 // (resum.json + HTML pages) or from the owner's brief. Nothing is invented: skill levels are
 // left empty, blog posts are DRAFTS with clearly marked spots for personal experiences, and the
@@ -211,40 +213,7 @@ export const seedCollections = {
     },
   ],
 
-  projects: [
-    {
-      title: 'Developer Portfolio v2',
-      slug: 'developer-portfolio-v2',
-      summary: 'This website — a full-stack portfolio with a CMS, admin dashboard, blog and learning roadmap.',
-      description:
-        '<p>The second version of my portfolio, rebuilt from scratch as a full-stack application.</p><h3>What it includes</h3><ul><li>A React + Vite frontend styled with Tailwind CSS and animated with Framer Motion.</li><li>An Express REST API deployed as a Vercel serverless function.</li><li>Firebase Authentication with role-based (custom claim) admin access and Cloud Firestore for content.</li><li>Signed Cloudinary uploads for images and video, and Resend for contact-form emails.</li><li>An admin dashboard to manage projects, blog posts, certificates, skills, the roadmap and settings.</li></ul>',
-      image: '',
-      technologies: ['React', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Express', 'Firebase', 'Cloudinary', 'Resend'],
-      githubUrl: 'https://github.com/Hamza-Advani/Hamza_portfolio-',
-      liveUrl: 'https://muhammadhamza-iota.vercel.app',
-      category: 'Web Development',
-      featured: true,
-      published: true,
-      date: '2026-11-10',
-      order: 1,
-    },
-    {
-      title: 'Personal Portfolio v1',
-      slug: 'personal-portfolio-v1',
-      summary: 'My first portfolio: a multi-page static website built with plain HTML, CSS and JavaScript.',
-      description:
-        '<p>The first version of my portfolio, written without any framework.</p><h3>What it includes</h3><ul><li>Eight pages: Home, About, Skills, Education, Certificates, Languages, Social and Contact.</li><li>A certificate gallery with click-to-enlarge previews and Coursera verification links.</li><li>A contact form that prepares a message in the visitor\'s email client.</li><li>Hand-written responsive CSS and vanilla JavaScript interactions.</li></ul>',
-      image: '',
-      technologies: ['HTML', 'CSS', 'JavaScript'],
-      githubUrl: 'https://github.com/Hamza-Advani/Hamza-portfolio',
-      liveUrl: '',
-      category: 'Web Development',
-      featured: true,
-      published: true,
-      date: '2026-10-02',
-      order: 2,
-    },
-  ],
+  projects,
 
   posts: [
     {
@@ -372,6 +341,9 @@ int main(void) {
     sem(4, 8, 'Final Year Project II & Career', 'Planned', ['FYP implementation & defence', 'Interview preparation', 'Professional networking', 'Career launch']),
   ],
 };
+
+// Technical articles (published) follow the personal drafts above.
+seedCollections.posts.push(...technicalPosts);
 
 function sem(year, semester, title, status, topics) {
   return {
