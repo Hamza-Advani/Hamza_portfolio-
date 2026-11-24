@@ -101,3 +101,10 @@ Working branch: `feat/v3-portfolio` (from `main` @ 03bf511). Safety branch: `bac
 - Server: 48 pass / 0 fail / 1 skipped (real-Blob test) — new `server/test/learning-journey.test.js` (curriculum placement, labs, carry-over, subject CRUD, validation, persistence, title edit, legacy topics, progress formula).
 - Browser E2E (Chrome): journey 25/25 (cards, expand/collapse, add/edit/status/delete-with-confirm, progress recalculation, public refresh, title edit); admin regression 23/23.
 - Visual: light/dark, desktop, tablet 820px, mobile 390px.
+
+### Round 3 deployment
+- Commit 65251a3 → `main`; Vercel production deployment = success.
+- Live migration applied (`migrate-journey.mjs --apply`). Backup: `server/.data/backups/content-2026-11-24T18-07-46-329Z.json` and Blob `data/backups/content-2026-11-24T18-07-46-329Z.json`.
+- Live: 8 semesters / 60 subjects; only CS101 + GE103 Currently Learning; 0 completed; projects 5, posts 16, certificates 5 unchanged.
+- Live browser check 15/15 (8 cards, expand/collapse, no page errors, Home preview) at 1440px light, 390px dark, 820px light.
+- Not tested on live: admin subject editing with the real Firebase admin account (no credentials); the same flow passed locally (25/25).
