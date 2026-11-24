@@ -68,3 +68,8 @@ Working branch: `feat/v3-portfolio` (from `main` @ 03bf511). Safety branch: `bac
 - Server: 39 pass / 0 fail / 1 skipped (real-Blob test, run separately).
 - Admin E2E (Chrome): 23/23 incl. brand mark check.
 - Visual QA: all public routes light + dark (desktop), tablet 820px and mobile 390px; admin login/dashboard/forms.
+
+### Round 2 deployment
+- Commits: 40c275f (brand mark), df8ad48 (white & green + projects) → `main`; Vercel production deployment = success.
+- Live corrections applied with `correct-projects.mjs --apply`. Backup: `server/.data/backups/content-2026-11-24T17-17-58-673Z.json` and Blob `data/backups/content-2026-11-24T17-17-58-673Z.json`.
+- Live check: 5 projects (AH Clothing Hub, StoreForge, GU Tech LMS, MindBridge, Hire At Home); personal-portfolio-v1 and developer-portfolio-v2 → 404; 16 posts and 5 certificates unchanged; favicon/OG/poster/video served 200; all external links 200.
