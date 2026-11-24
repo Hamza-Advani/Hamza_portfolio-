@@ -9,7 +9,7 @@
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/index.js" },
     { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/((?!assets/|images/|media/|favicon|robots.txt|og-image).*)", "destination": "/index.html" }
+    { "source": "/((?!assets/|images/|media/|favicon|apple-touch-icon|robots.txt|og-image).*)", "destination": "/index.html" }
   ],
   "headers": [
     {

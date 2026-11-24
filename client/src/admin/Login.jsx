@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router';
-import { ArrowLeft, CircleAlert, KeyRound, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, CircleAlert, KeyRound } from 'lucide-react';
+import { BrandMark } from '../components/brand/BrandMark.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Button, Spinner } from '../components/ui.jsx';
 import { Seo } from '../lib/seo.jsx';
@@ -74,7 +75,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <Link to="/" className="mb-6 inline-flex items-center gap-2 text-sm text-muted hover:text-ink"><ArrowLeft className="h-4 w-4" /> Back to site</Link>
         <div className="card p-8">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-iris to-aqua text-white"><ShieldCheck className="h-6 w-6" /></span>
+          <span className="grid h-14 w-14 place-items-center rounded-2xl border border-line bg-surface shadow-[var(--shadow-card)]"><BrandMark className="h-10 w-10 text-ink" title="Muhammad Hamza" /></span>
           <h1 className="mt-5 text-2xl font-semibold">Admin sign in</h1>
           <p className="mt-1 text-sm text-muted">Only authorised administrators can access the dashboard.</p>
 

@@ -12,7 +12,7 @@ const SOUNDTRACK = getStaticFiles().find((f) => /^soundtrack\.(mp3|wav|m4a|aac)$
 export const FPS = 30;
 export const DURATION = 32 * FPS;
 
-const C = { bg: '#06060b', ink: '#f1f1f7', muted: '#a0a0b6', faint: '#6b6b82', iris: '#8b6cff', aqua: '#2dd4ee', lime: '#b4f046', line: 'rgba(255,255,255,0.08)' };
+const C = { bg: '#070a07', ink: '#f3f7f0', muted: '#a9b4a3', faint: '#6f7a69', iris: '#22c55e', aqua: '#4ade80', lime: '#a3e635', line: 'rgba(255,255,255,0.08)' };
 const DISPLAY = "'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif";
 const MONO = "'JetBrains Mono', Consolas, monospace";
 const GRADIENT = `linear-gradient(100deg, ${C.iris} 0%, ${C.aqua} 55%, ${C.lime} 100%)`;
@@ -167,7 +167,7 @@ function CodeWindow({ start }) {
     return C.muted;
   };
   return (
-    <div style={{ ...rise(f, start - 10, 40), width: 820, borderRadius: 28, border: `1px solid ${C.line}`, background: 'rgba(15,15,25,0.85)', boxShadow: '0 40px 120px -30px rgba(139,108,255,0.45)', overflow: 'hidden' }}>
+    <div style={{ ...rise(f, start - 10, 40), width: 820, borderRadius: 28, border: `1px solid ${C.line}`, background: 'rgba(12,18,12,0.88)', boxShadow: '0 40px 120px -30px rgba(34,197,94,0.45)', overflow: 'hidden' }}>
       <div style={{ display: 'flex', gap: 12, padding: '22px 26px', borderBottom: `1px solid ${C.line}`, alignItems: 'center' }}>
         {['#ff5f57', '#febc2e', '#28c840'].map((c) => <span key={c} style={{ width: 16, height: 16, borderRadius: 8, background: c }} />)}
         <span style={{ marginLeft: 16, fontFamily: MONO, fontSize: 20, color: C.faint }}>hello.c</span>
@@ -230,7 +230,7 @@ function SceneBuilding({ len }) {
           const p = interpolate(f, [34 + i * 12, 64 + i * 12], [0, 1], { ...clamp, easing: ease });
           return (
             <div key={c.t} style={{ flex: 1, opacity: p, transform: `translateY(${(1 - p) * 80}px) rotate(${(1 - p) * (i - 1) * 4}deg)`, padding: 44, borderRadius: 32, border: `1px solid ${C.line}`, background: 'rgba(15,15,25,0.8)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(500px circle at ${30 + i * 20}% 0%, rgba(139,108,255,0.25), transparent 60%)` }} />
+              <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(500px circle at ${30 + i * 20}% 0%, rgba(34,197,94,0.25), transparent 60%)` }} />
               <div style={{ position: 'relative' }}>
                 <div style={{ fontFamily: MONO, fontSize: 22, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.faint }}>{c.k} 0{i + 1}</div>
                 <div style={{ fontSize: 58, fontWeight: 700, marginTop: 22, letterSpacing: '-0.03em' }}>{c.t}</div>
@@ -347,7 +347,18 @@ export function Intro() {
       })}
       {/* progress line */}
       <div style={{ position: 'absolute', left: 0, bottom: 0, height: 5, width: `${(f / DURATION) * 100}%`, background: GRADIENT }} />
-      <div style={{ position: 'absolute', left: 160, top: 70, fontFamily: MONO, fontSize: 22, color: C.faint, letterSpacing: '0.2em' }}>MH — PORTFOLIO</div>
+      <div style={{ position: 'absolute', left: 160, top: 62, display: 'flex', alignItems: 'center', gap: 16, fontFamily: MONO, fontSize: 22, color: C.faint, letterSpacing: '0.2em' }}>
+        {/* Brand mark "Code Leaf" (same geometry as client/src/components/brand/BrandMark.jsx) */}
+        <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+          <defs>
+            <linearGradient id="vleaf" x1="18" y1="38" x2="31" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#22c55e" /><stop offset="1" stopColor="#bef264" /></linearGradient>
+          </defs>
+          <path d="M16.5 13.5 7 24l9.5 10.5" stroke={C.ink} strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M31.5 13.5 41 24l-9.5 10.5" stroke={C.ink} strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M17.9 38.3c-1.4-11.4 4.4-23.7 14-28.8 1.4 11.3-4.4 23.7-14 28.8Z" fill="url(#vleaf)" />
+        </svg>
+        PORTFOLIO
+      </div>
     </AbsoluteFill>
   );
 }

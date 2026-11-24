@@ -56,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p aria-hidden="true" className="pointer-events-none mt-16 select-none text-center font-display text-[18vw] font-bold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_rgb(133_59_255/0.28)] md:text-[13vw]">
+        <p aria-hidden="true" className="pointer-events-none mt-16 select-none text-center font-display text-[18vw] font-bold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_rgb(34_197_94/0.22)] md:text-[13vw]">
           HAMZA
         </p>
 

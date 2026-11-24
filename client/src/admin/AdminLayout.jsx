@@ -1,3 +1,4 @@
+import { BrandMark } from '../components/brand/BrandMark.jsx';
 import { Suspense, useEffect, useState } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router';
 import { Award, BookOpen, ExternalLink, FolderKanban, GraduationCap, Inbox, KeyRound, LayoutDashboard, LogOut, Map, Menu, Settings, Sparkles, User, Video, X } from 'lucide-react';
@@ -28,7 +29,7 @@ function Sidebar({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <Link to="/admin" className="flex items-center gap-2.5 px-5 py-5" onClick={onNavigate}>
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink font-display text-sm font-bold text-bg">MH</span>
+        <span className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-surface shadow-[var(--shadow-card)]"><BrandMark className="h-7 w-7 text-ink" /></span>
         <span>
           <span className="block text-sm font-semibold">Portfolio CMS</span>
           <span className="block text-xs text-faint">Admin dashboard</span>

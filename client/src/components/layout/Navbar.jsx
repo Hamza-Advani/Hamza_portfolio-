@@ -6,6 +6,7 @@ import { useTheme } from '../../context/ThemeContext.jsx';
 import { useScrolled } from '../../hooks/ui.js';
 import { cx } from '../../lib/format.js';
 import { HOME_SECTIONS } from '../../lib/scroll.js';
+import { BrandLockup } from '../brand/BrandMark.jsx';
 
 /** Every standalone page except Contact (which has its own button). Used by the navbar and footer. */
 export const NAV = [
@@ -16,14 +17,8 @@ const MOBILE_NAV = [...NAV, { to: '/contact', label: 'Contact' }];
 
 export function Logo({ className }) {
   return (
-    <Link to="/" className={cx('group flex items-center gap-2.5', className)} aria-label="Muhammad Hamza — home">
-      <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-[linear-gradient(135deg,var(--violet),var(--aqua))] font-display text-sm font-bold text-white shadow-[0_8px_24px_-8px_var(--iris)]">
-        <span className="absolute inset-0 bg-[conic-gradient(from_180deg,var(--violet),var(--aqua),var(--iris),var(--violet))] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-        <span className="relative">MH</span>
-      </span>
-      <span className="hidden font-display text-[15px] font-semibold tracking-tight sm:block">
-        Muhammad Hamza<span className="text-aqua">.</span>
-      </span>
+    <Link to="/" className={cx('group flex items-center', className)} aria-label="Muhammad Hamza — home">
+      <BrandLockup nameClassName="hidden sm:block" />
     </Link>
   );
 }
@@ -82,7 +77,7 @@ export default function Navbar() {
                   <MatchLink match={item.match}
                     to={item.to}
                     end={item.to === '/'}
-                    className={({ isActive }) => cx('relative block rounded-full px-3.5 py-2 text-sm transition-colors', isActive ? 'text-white' : 'text-muted hover:text-ink')}
+                    className={({ isActive }) => cx('relative block rounded-full px-3.5 py-2 text-sm transition-colors', isActive ? 'text-on-accent' : 'text-muted hover:text-ink')}
                   >
                     {({ isActive }) => (
                       <>
@@ -106,7 +101,7 @@ export default function Navbar() {
                 to="/contact"
                 className={({ isActive }) =>
                   cx(
-                    'hidden h-10 items-center gap-1.5 rounded-full px-5 text-sm font-medium text-white transition hover:-translate-y-0.5 sm:inline-flex',
+                    'hidden h-10 items-center gap-1.5 rounded-full px-5 text-sm font-medium text-on-accent transition hover:-translate-y-0.5 sm:inline-flex',
                     'bg-[linear-gradient(110deg,var(--violet),var(--iris)_45%,var(--aqua))] shadow-[0_8px_30px_-10px_var(--iris)] hover:shadow-[0_12px_36px_-10px_var(--iris)]',
                     isActive && 'ring-2 ring-[var(--ring)]',
                   )

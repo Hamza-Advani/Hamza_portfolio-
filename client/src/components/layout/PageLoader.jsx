@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { BrandMark } from '../brand/BrandMark.jsx';
 
 /** Branded intro loader shown on first visit until site data has loaded. */
 export default function PageLoader({ done }) {
@@ -26,20 +27,18 @@ export default function PageLoader({ done }) {
           aria-label="Loading"
         >
           <div className="flex flex-col items-center gap-6">
-            <div className="relative grid h-20 w-20 place-items-center">
+            <div className="relative grid h-24 w-24 place-items-center">
               <motion.span
-                className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_0deg,var(--violet),var(--aqua),var(--iris),var(--violet))]"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'linear' }}
+                aria-hidden="true"
+                className="absolute inset-2 rounded-full bg-[radial-gradient(closest-side,var(--glow),transparent)] blur-md"
+                animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
               />
-              <span className="absolute inset-[2px] rounded-[14px] bg-bg" />
-              <motion.span className="relative font-display text-2xl font-bold" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-                MH
-              </motion.span>
+              <BrandMark animate className="relative h-20 w-20 text-ink" />
             </div>
             <div className="h-px w-40 overflow-hidden bg-line">
               <motion.div
-                className="h-full bg-gradient-to-r from-violet via-iris to-aqua"
+                className="h-full bg-gradient-to-r from-violet via-iris to-brand-lime"
                 initial={{ x: '-100%' }}
                 animate={{ x: done ? '0%' : '-30%' }}
                 transition={{ duration: done ? 0.4 : 1.6, ease: 'easeOut' }}
