@@ -61,7 +61,7 @@ export default function Dashboard() {
             <Stat icon={Inbox} label="Messages" value={data.messages.total} sub={`${data.messages.unread} unread`} to="/admin/messages" />
             <Stat icon={Award} label="Certificates" value={data.certificates.total} to="/admin/certificates" />
             <Stat icon={Sparkles} label="Skills" value={data.skills.total} to="/admin/skills" />
-            <Stat icon={Map} label="Roadmap topics" value={data.roadmap.topics} sub={`${data.roadmap.completed} completed · ${data.roadmap.learning} in progress`} to="/admin/roadmap" />
+            <Stat icon={Map} label="Journey subjects" value={data.roadmap.topics} sub={`${data.roadmap.completed} completed · ${data.roadmap.learning} in progress`} to="/admin/roadmap" />
           </div>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-5">

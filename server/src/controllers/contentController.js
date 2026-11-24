@@ -167,7 +167,8 @@ export async function adminStats(_req, res) {
   const [projects, posts, certificates, skills, messages, roadmap] = await Promise.all(
     ['projects', 'posts', 'certificates', 'skills', 'messages', 'roadmap'].map((c) => db.list(c)),
   );
-  const topics = roadmap.flatMap((s) => s.topics || []);
+  // Learning Journey: count subjects (semesters saved before the tracker only have topics)
+  const topics = roadmap.flatMap((s) => (Array.isArray(s.subjects) ? s.subjects : s.topics || []));
   res.json({
     dataSource: db.kind,
     readOnly: db.readOnly,

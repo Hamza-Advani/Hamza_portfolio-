@@ -17,6 +17,7 @@ import { SocialLinks } from '../components/sections/SocialLinks.jsx';
 import { ProjectCard } from '../components/sections/Cards.jsx';
 import VideoSection from '../components/sections/VideoSection.jsx';
 import FutureRoadmap from '../components/sections/FutureRoadmap.jsx';
+import { progressOf, subjectsOf } from '../lib/academics.js';
 import { SkillPill } from '../components/sections/SkillsGrid.jsx';
 import { CertificatesGallery } from './Certificates.jsx';
 
@@ -292,8 +293,8 @@ function ProjectsPreview() {
 function JourneyPreview() {
   const roadmap = useFetch(list('roadmap'), []);
   const semesters = roadmap.data || [];
-  const topics = semesters.flatMap((s) => s.topics || []);
-  const current = semesters.find((s) => s.topics?.some((t) => t.status === 'Currently Learning')) || semesters[0];
+  const topics = semesters.flatMap(subjectsOf);
+  const current = [...semesters].sort((a, b) => a.semester - b.semester).find((s) => subjectsOf(s).some((t) => t.status === 'Currently Learning')) || semesters[0];
   const counts = [
     { label: 'Completed', icon: Check, color: 'text-lime', n: topics.filter((t) => t.status === 'Completed').length },
     { label: 'Learning', icon: CircleDot, color: 'text-aqua', n: topics.filter((t) => t.status === 'Currently Learning').length },
@@ -317,9 +318,9 @@ function JourneyPreview() {
           </ul>
           {current && (
             <div className="mt-5">
-              <p className="eyebrow mb-3 !text-[0.64rem]">Now · Year {current.year}, Semester {current.semester} — {current.title}</p>
+              <p className="eyebrow mb-3 !text-[0.64rem]">Now · Year {current.year}, Semester {current.semester} — {current.title} · {progressOf(subjectsOf(current))}% complete</p>
               <ol className="relative space-y-2 border-l border-iris/30 pl-5">
-                {(current.topics || []).slice(0, 5).map((t) => (
+                {subjectsOf(current).slice(0, 5).map((t) => (
                   <li key={t.id} className="relative flex items-center justify-between gap-3 text-sm">
                     <span aria-hidden="true" className={cx('absolute -left-[25px] h-2.5 w-2.5 rounded-full border-2 border-bg', t.status === 'Completed' ? 'bg-lime' : t.status === 'Currently Learning' ? 'bg-aqua shadow-[0_0_10px_var(--aqua)]' : 'bg-line-strong')} />
                     <span className="min-w-0 truncate">{t.title}</span>

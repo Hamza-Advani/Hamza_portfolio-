@@ -73,3 +73,31 @@ Working branch: `feat/v3-portfolio` (from `main` @ 03bf511). Safety branch: `bac
 - Commits: 40c275f (brand mark), df8ad48 (white & green + projects) → `main`; Vercel production deployment = success.
 - Live corrections applied with `correct-projects.mjs --apply`. Backup: `server/.data/backups/content-2026-11-24T17-17-58-673Z.json` and Blob `data/backups/content-2026-11-24T17-17-58-673Z.json`.
 - Live check: 5 projects (AH Clothing Hub, StoreForge, GU Tech LMS, MindBridge, Hire At Home); personal-portfolio-v1 and developer-portfolio-v2 → 404; 16 posts and 5 certificates unchanged; favicon/OG/poster/video served 200; all external links 200.
+
+---
+
+## Round 3 — Learning Journey: semester-wise academic tracker (2026-11-24)
+
+### What changed
+- Each roadmap semester now has `subjects[]` (official GU Tech courses): `{ id, code, title, status, creditHours, languages[], topics[], skills[], programs[], projects[{title, description, url}] }`. Old `topics[]` are kept and still rendered when a semester has no `subjects` (backward compatible).
+- Official curriculum (verbatim, incl. labs and credit hours): `server/src/data/curriculum.js` (source: https://gutech.edu.pk/bs-computer-science, retrieved 2026-11-24).
+- Progress = completed subjects ÷ total subjects × 100 (rounded; 0 subjects → 0%). Shared helper `client/src/lib/academics.js` (also used by Home preview + tests).
+- Public: `client/src/components/sections/Roadmap.jsx` — 8 semester cards grouped by year, overall/year/semester progress, status filter, click-to-expand subject details (only non-empty sections shown).
+- Admin: `client/src/admin/RoadmapEditor.jsx` ("Learning journey" in the sidebar) — per semester: edit title, add/edit subject (form dialog incl. languages, topics, skills, programs, projects with links), change status (saves instantly), delete with confirmation. Saved via the existing `/api/admin/content/roadmap/:id` → Vercel Blob.
+- Server: schema `subjects` (validated, blank lines dropped, URLs checked); admin stats count subjects.
+- Live migration: `server/scripts/migrate-journey.mjs` (dry run default, backup first, ETag-guarded; skips semesters that already have subjects; updates the roadmap note only if it is still the starter text).
+
+### Progress carried over (only clear matches)
+- Semester 1: CS101 Problem Solving & Programming Fundamentals → Currently Learning (+ language C), GE103 Functional English → Currently Learning. Everything else Planned; nothing marked Completed.
+
+### Curriculum items to confirm (owner)
+- Official page typos kept as published: "Entreprenership", "Applcation of information & Communication Technologies", "Artificial Inteliligence Lab".
+- Semester 2 lists "MD102 Internship I" and "MD102 Deficiency Course: Basic Maths II Copy" (same code; "Copy" dropped as a website artefact).
+- Deficiency / non-credit courses (MD101, MD102 Basic Maths II) apply to non-maths students — delete them in admin if they don't apply.
+- Elective slots (CS-Elective III … VII) are placeholders until electives are chosen.
+- Semester titles are the earlier ones (e.g. Semester 5 "Databases & Systems" while Data Base Systems is officially Semester 3) — rename in admin if wanted.
+
+### Tests (round 3)
+- Server: 48 pass / 0 fail / 1 skipped (real-Blob test) — new `server/test/learning-journey.test.js` (curriculum placement, labs, carry-over, subject CRUD, validation, persistence, title edit, legacy topics, progress formula).
+- Browser E2E (Chrome): journey 25/25 (cards, expand/collapse, add/edit/status/delete-with-confirm, progress recalculation, public refresh, title edit); admin regression 23/23.
+- Visual: light/dark, desktop, tablet 820px, mobile 390px.

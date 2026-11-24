@@ -22,7 +22,7 @@ export function EducationContent({ headingLevel = 'page' }) {
             eyebrow={`${current.startYear} – ${current.endYear}`}
             title={headingLevel === 'page' ? 'Four-year BSCS timeline' : 'My BSCS timeline'}
             align="center"
-            description="A high-level view of each academic year. The learning journey has semester-level topics."
+            description="A high-level view of each academic year. The learning journey tracks every subject, semester by semester."
           />
           <MilestoneTimeline milestones={current.milestones} />
         </div>

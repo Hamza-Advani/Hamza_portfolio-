@@ -17,7 +17,7 @@ export const ADMIN_NAV = [
   { to: '/admin/skills', label: 'Skills', icon: Sparkles },
   { to: '/admin/education', label: 'Education', icon: GraduationCap },
   { to: '/admin/certificates', label: 'Certificates', icon: Award },
-  { to: '/admin/roadmap', label: 'Roadmap', icon: Map },
+  { to: '/admin/roadmap', label: 'Learning journey', icon: Map },
   { to: '/admin/video', label: 'Intro video', icon: Video },
   { to: '/admin/messages', label: 'Messages', icon: Inbox },
   { to: '/admin/settings', label: 'Settings', icon: Settings },

@@ -1,3 +1,4 @@
+import { officialSubjects, withCarriedProgress } from './curriculum.js';
 import { projects } from './projects.js';
 import { posts as technicalPosts } from './posts/index.js';
 // Initial content for the portfolio. Every fact here comes from the previous portfolio
@@ -57,7 +58,7 @@ export const seedSingletons = {
     availability: 'Open to learning opportunities, collaborations and internships',
     footerNote: 'Designed & built by Muhammad Hamza with React, Express and Firebase.',
     roadmapDisclaimer:
-      'This is a suggested, self-made learning plan. It is not an officially verified GU-Tech curriculum and will change as I progress.',
+      'Subjects and semesters follow the official GU Tech BS Computer Science programme structure (gutech.edu.pk). The status and learning notes for each subject are my own and are updated as I progress.',
     roadmapYears: [
       { year: 1, title: 'Programming Fundamentals and Computer Science Basics' },
       { year: 2, title: 'Data Structures, Algorithms, and Core Development' },
@@ -355,6 +356,9 @@ function sem(year, semester, title, status, topics) {
     topics: topics.map((t, i) => ({ id: `s${semester}-t${i + 1}`, title: t, status })),
   };
 }
+
+// Official GU Tech courses per semester; progress from the earlier plan is carried over only where it clearly matches.
+for (const s of seedCollections.roadmap) s.subjects = withCarriedProgress(s.semester, officialSubjects(s.semester), s.topics);
 
 export function buildSeed() {
   const collections = {};

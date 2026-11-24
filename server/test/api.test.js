@@ -26,7 +26,7 @@ describe('public API', () => {
     const res = await request(app).get('/api/public/site').expect(200);
     assert.equal(res.body.profile.name, 'Muhammad Hamza');
     assert.equal(res.body.profile.email, 'hamzaadvani8547@gmail.com');
-    assert.ok(res.body.settings.roadmapDisclaimer.includes('not an officially verified'));
+    assert.ok(res.body.settings.roadmapDisclaimer.includes('official GU Tech'));
     assert.ok(res.body.video.url);
   });
 

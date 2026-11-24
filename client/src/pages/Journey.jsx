@@ -23,11 +23,11 @@ export default function Journey() {
   useScrollToHashOnLoad(hash);
   return (
     <>
-      <Seo title="Learning Journey" description="Muhammad Hamza's suggested four-year BSCS learning roadmap — from programming fundamentals to the final year project and career." />
+      <Seo title="Learning Journey" description="Muhammad Hamza's semester-wise BSCS progress at GU Tech — every subject, its status and what I'm learning in it." />
       <PageHeader
         eyebrow="Learning journey"
         title={<>Four years. Eight semesters. <span className="text-gradient">One roadmap.</span></>}
-        description="How I plan to grow through my BSCS — what I've completed, what I'm learning right now, and what comes next."
+        description="My BSCS at GU Tech, semester by semester — every subject, what I've completed, what I'm learning right now and what comes next."
       />
       <Section className="!pt-0"><JourneyRoadmap /></Section>
       <Section id="future">
