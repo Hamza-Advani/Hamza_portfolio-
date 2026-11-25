@@ -3,7 +3,7 @@ import { getDb } from '../db/index.js';
 import { env } from '../config/env.js';
 import { escapeHtml } from '../utils/text.js';
 
-const STATIC_ROUTES = ['/', '/about', '/education', '/skills', '/portfolio', '/certificates', '/blogs', '/journey', '/contact', '/cv'];
+const STATIC_ROUTES = ['/', '/about', '/education', '/skills', '/portfolio', '/certificates', '/blogs', '/contact', '/cv'];
 
 export async function sitemap(req, res) {
   const db = getDb();

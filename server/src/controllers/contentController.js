@@ -10,7 +10,6 @@ const isPublic = {
   skills: (d) => d.published !== false,
   education: (d) => d.published !== false,
   certificates: (d) => d.published !== false,
-  roadmap: (d) => d.published !== false,
   projects: (d) => d.published === true,
   posts: (d) => d.status === 'published',
 };
@@ -164,11 +163,9 @@ export async function adminSetSingleton(req, res) {
 
 export async function adminStats(_req, res) {
   const db = getDb();
-  const [projects, posts, certificates, skills, messages, roadmap] = await Promise.all(
-    ['projects', 'posts', 'certificates', 'skills', 'messages', 'roadmap'].map((c) => db.list(c)),
+  const [projects, posts, certificates, skills, messages] = await Promise.all(
+    ['projects', 'posts', 'certificates', 'skills', 'messages'].map((c) => db.list(c)),
   );
-  // Learning Journey: count subjects (semesters saved before the tracker only have topics)
-  const topics = roadmap.flatMap((s) => (Array.isArray(s.subjects) ? s.subjects : s.topics || []));
   res.json({
     dataSource: db.kind,
     readOnly: db.readOnly,
@@ -177,11 +174,6 @@ export async function adminStats(_req, res) {
     certificates: { total: certificates.length },
     skills: { total: skills.length },
     messages: { total: messages.length, unread: messages.filter((m) => !m.read).length },
-    roadmap: {
-      topics: topics.length,
-      completed: topics.filter((t) => t.status === 'Completed').length,
-      learning: topics.filter((t) => t.status === 'Currently Learning').length,
-    },
     recentMessages: messages
       .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))
       .slice(0, 5)

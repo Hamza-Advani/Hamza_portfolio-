@@ -144,12 +144,12 @@ export const projects = [
     status: 'Live',
     category: 'Web Development',
     summary:
-      'This website — a full-stack portfolio with project case studies, a technical blog, a learning roadmap and a secure admin panel that saves every change to a Vercel Blob store.',
+      'This website — a full-stack portfolio with project case studies, a technical blog and a secure admin panel that saves every change to a Vercel Blob store.',
     problem:
-      'A static portfolio has to be re-coded and re-deployed for every small change. I wanted a portfolio I can update from any device — new projects, blog posts, certificates and roadmap progress — without touching code, while keeping the public site fast.',
+      'A static portfolio has to be re-coded and re-deployed for every small change. I wanted a portfolio I can update from any device — new projects, blog posts and certificates — without touching code, while keeping the public site fast.',
     description:
       '<p>The site is a <strong>React 19 + Vite</strong> single-page app styled with <strong>Tailwind CSS v4</strong> and animated with Framer Motion. An <strong>Express 5</strong> API runs as one Vercel Function.</p>' +
-      '<h3>Content and admin</h3><ul><li>All content lives in one JSON document in a <strong>private Vercel Blob store</strong>. Saves use the document\'s ETag for optimistic concurrency, so two saves can never silently overwrite each other.</li><li>The admin panel uses <strong>Firebase Authentication</strong>. The API verifies the Firebase ID token on every admin request and only allows listed admin accounts.</li><li>Projects, blog posts (rich-text editor), certificates, skills, education, the roadmap, the profile and site settings are all editable.</li></ul>' +
+      '<h3>Content and admin</h3><ul><li>All content lives in one JSON document in a <strong>private Vercel Blob store</strong>. Saves use the document\'s ETag for optimistic concurrency, so two saves can never silently overwrite each other.</li><li>The admin panel uses <strong>Firebase Authentication</strong>. The API verifies the Firebase ID token on every admin request and only allows listed admin accounts.</li><li>Projects, blog posts (rich-text editor), certificates, skills, education, the profile and site settings are all editable.</li></ul>' +
       '<h3>Design</h3><p>A token-based design system with matching light and dark themes, bento-style dashboard sections, accessible focus states and reduced-motion support.</p>',
     features: [
       'Project case-study pages with features, architecture, screenshots and live / source links',

@@ -26,7 +26,7 @@ describe('public API', () => {
     const res = await request(app).get('/api/public/site').expect(200);
     assert.equal(res.body.profile.name, 'Muhammad Hamza');
     assert.equal(res.body.profile.email, 'hamzaadvani8547@gmail.com');
-    assert.ok(res.body.settings.roadmapDisclaimer.includes('official GU Tech'));
+    assert.equal(res.body.settings.roadmapDisclaimer, undefined, 'learning journey settings removed');
     assert.ok(res.body.video.url);
   });
 
@@ -38,8 +38,8 @@ describe('public API', () => {
     await request(app).get('/api/public/posts/my-first-semester-bscs-journey').expect(404);
   });
 
-  test('published projects, certificates, skills, education, roadmap are listed', async () => {
-    for (const [col, min] of [['projects', 2], ['certificates', 5], ['skills', 10], ['education', 3], ['roadmap', 8]]) {
+  test('published projects, certificates, skills and education are listed', async () => {
+    for (const [col, min] of [['projects', 2], ['certificates', 5], ['skills', 10], ['education', 3]]) {
       const res = await request(app).get(`/api/public/${col}`).expect(200);
       assert.ok(res.body.length >= min, `${col} has ${res.body.length}`);
     }
@@ -130,17 +130,17 @@ describe('admin CRUD', () => {
   test('singleton update merges and validates', async () => {
     const res = await request(app).put('/api/admin/site/settings').set(ADMIN).send({ availability: 'Open to internships' }).expect(200);
     assert.equal(res.body.availability, 'Open to internships');
-    assert.ok(res.body.roadmapYears.length === 4, 'other settings kept');
+    assert.ok(res.body.manualRepos.length > 0 && res.body.showGithubRepos === true, 'other settings kept');
     await request(app).put('/api/admin/site/profile').set(ADMIN).send({ email: 'not-an-email' }).expect(400);
   });
 
-  test('roadmap topic status can be changed', async () => {
-    const sems = (await request(app).get('/api/admin/content/roadmap').set(ADMIN)).body;
-    const s = sems[0];
-    const topics = s.topics.map((t, i) => (i === 0 ? { ...t, status: 'Completed' } : t));
-    const res = await request(app).patch(`/api/admin/content/roadmap/${s.id}`).set(ADMIN).send({ topics }).expect(200);
-    assert.equal(res.body.topics[0].status, 'Completed');
-    await request(app).patch(`/api/admin/content/roadmap/${s.id}`).set(ADMIN).send({ topics: [{ id: 'x', title: 'y', status: 'Done' }] }).expect(400);
+  test('learning journey (roadmap) API is gone', async () => {
+    await request(app).get('/api/public/roadmap').expect(404);
+    await request(app).get('/api/admin/content/roadmap').set(ADMIN).expect(404);
+    const stats = (await request(app).get('/api/admin/stats').set(ADMIN).expect(200)).body;
+    assert.equal(stats.roadmap, undefined);
+    const sitemap = await request(app).get('/sitemap.xml').expect(200);
+    assert.doesNotMatch(sitemap.text, /\/journey</);
   });
 
   test('uploads report Cloudinary as not configured', async () => {

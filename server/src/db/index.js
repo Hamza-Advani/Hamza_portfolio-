@@ -30,7 +30,7 @@ export function resetDb() {
   driver = null;
 }
 
-export const COLLECTIONS = ['skills', 'education', 'projects', 'certificates', 'posts', 'roadmap', 'messages'];
+export const COLLECTIONS = ['skills', 'education', 'projects', 'certificates', 'posts', 'messages'];
 export const SINGLETONS = ['profile', 'settings', 'video'];
 
 export function sortDocs(docs) {

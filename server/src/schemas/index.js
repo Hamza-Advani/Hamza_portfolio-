@@ -28,29 +28,6 @@ export const PROJECT_STATUSES = ['Live', 'Completed', 'In progress', 'Under deve
 
 const tags = z.array(str(40).min(1)).max(30).default([]);
 
-// A list edited one item per line in the admin: blank lines are dropped before validation.
-const lines = (max = 200, count = 60) =>
-  z
-    .preprocess((v) => (Array.isArray(v) ? v.map((s) => String(s ?? '').trim()).filter(Boolean) : v), z.array(z.string().max(max)).max(count))
-    .default([]);
-
-// One university subject inside a semester (Learning Journey tracker).
-const subject = z.object({
-  id: str(40).min(1),
-  code: str(20).default(''),
-  title: str(160).min(1, 'Subject name is required'),
-  status: z.enum(ROADMAP_STATUSES).default('Planned'),
-  creditHours: z.coerce.number().min(0).max(12).nullable().default(null),
-  languages: lines(80),
-  topics: lines(),
-  skills: lines(),
-  programs: lines(),
-  projects: z
-    .array(z.object({ title: str(160).min(1, 'Project title is required'), description: text(1500).default(''), url: urlish }))
-    .max(30)
-    .default([]),
-});
-
 export const schemas = {
   skills: z.object({
     name: str(60).min(1, 'Name is required'),
@@ -140,27 +117,6 @@ export const schemas = {
     publishedAt: z.string().nullable().default(null),
   }),
 
-  roadmap: z.object({
-    year: z.coerce.number().int().min(1).max(4),
-    semester: z.coerce.number().int().min(1).max(8),
-    title: str(120).min(1),
-    order,
-    published: bool(true),
-    topics: z
-      .array(
-        z.object({
-          id: str(40).min(1),
-          title: str(160).min(1),
-          status: z.enum(ROADMAP_STATUSES).default('Planned'),
-        }),
-      )
-      .max(40)
-      .default([]),
-    // Semester-wise academic tracker: one entry per official course. Replaces `topics`
-    // (kept above for backward compatibility with semesters saved before the tracker).
-    subjects: z.array(subject).max(30).optional(),
-  }),
-
   // Messages are created only by the public contact form; admins may only flag them.
   messages: z.object({
     read: z.boolean().optional(),
@@ -206,11 +162,6 @@ export const singletonSchemas = {
     ogImage: urlish,
     availability: str(160).default(''),
     footerNote: str(200).default(''),
-    roadmapDisclaimer: str(400).default(''),
-    roadmapYears: z
-      .array(z.object({ year: z.coerce.number().int().min(1).max(4), title: str(160).min(1) }))
-      .max(4)
-      .default([]),
     showIntroVideo: bool(true),
     showGithubRepos: bool(true),
     manualRepos: z

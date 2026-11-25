@@ -1,10 +1,9 @@
-import { officialSubjects, withCarriedProgress } from './curriculum.js';
 import { projects } from './projects.js';
 import { posts as technicalPosts } from './posts/index.js';
 // Initial content for the portfolio. Every fact here comes from the previous portfolio
 // (resum.json + HTML pages) or from the owner's brief. Nothing is invented: skill levels are
-// left empty, blog posts are DRAFTS with clearly marked spots for personal experiences, and the
-// roadmap is labelled as a suggested plan. Everything is editable from the admin dashboard.
+// left empty, blog posts are DRAFTS with clearly marked spots for personal experiences.
+// Everything is editable from the admin dashboard.
 
 const now = '2026-11-10T00:00:00.000Z';
 
@@ -53,18 +52,10 @@ export const seedSingletons = {
   settings: {
     siteTitle: 'Muhammad Hamza — BSCS Student & Developer',
     seoDescription:
-      'Portfolio of Muhammad Hamza, a BS Computer Science student at GU-Tech, Karachi. Projects, certificates, learning roadmap and blog.',
+      'Portfolio of Muhammad Hamza, a BS Computer Science student at GU-Tech, Karachi. Projects, certificates and blog.',
     ogImage: '/og-image.jpg',
     availability: 'Open to learning opportunities, collaborations and internships',
     footerNote: 'Designed & built by Muhammad Hamza with React, Express and Firebase.',
-    roadmapDisclaimer:
-      'Subjects and semesters follow the official GU Tech BS Computer Science programme structure (gutech.edu.pk). The status and learning notes for each subject are my own and are updated as I progress.',
-    roadmapYears: [
-      { year: 1, title: 'Programming Fundamentals and Computer Science Basics' },
-      { year: 2, title: 'Data Structures, Algorithms, and Core Development' },
-      { year: 3, title: 'Advanced Development, Databases, and Specialization' },
-      { year: 4, title: 'Final Year Project, Internship Preparation, and Career Development' },
-    ],
     showIntroVideo: true,
     showGithubRepos: true,
     // Used when the GitHub API is unreachable. Only real public repositories belong here.
@@ -315,7 +306,7 @@ int main(void) {
       excerpt: 'How I plan to use my four years of BSCS to grow from fundamentals to real-world, professional software development.',
       category: 'Career',
       tags: ['Roadmap', 'Career', 'Goals'],
-      content: `<p class="author-note">✍️ Draft — make this roadmap yours before publishing. See the Learning Journey page for the editable plan.</p>
+      content: `<p class="author-note">✍️ Draft — make this roadmap yours before publishing.</p>
 <h2>The big picture</h2>
 <p>My suggested plan follows the four years of my degree:</p>
 <ol><li><strong>Year 1:</strong> programming fundamentals and computer science basics.</li><li><strong>Year 2:</strong> data structures, algorithms and core development.</li><li><strong>Year 3:</strong> advanced development, databases and a specialisation.</li><li><strong>Year 4:</strong> final year project, internship preparation and career development.</li></ol>
@@ -331,34 +322,13 @@ int main(void) {
     },
   ],
 
-  roadmap: [
-    sem(1, 1, 'Foundations', 'Currently Learning', ['Programming Fundamentals (C)', 'Introduction to Computing', 'Calculus & Analytical Geometry', 'Functional English', 'Git & GitHub basics']),
-    sem(1, 2, 'Building Blocks', 'Planned', ['Object-Oriented Programming (C++)', 'Discrete Structures', 'Digital Logic Design', 'Python for problem solving', 'HTML, CSS & JavaScript']),
-    sem(2, 3, 'Data Structures', 'Planned', ['Data Structures', 'Linear Algebra', 'Computer Organization & Assembly', 'Version control workflows']),
-    sem(2, 4, 'Algorithms & Core Dev', 'Planned', ['Design & Analysis of Algorithms', 'Probability & Statistics', 'Operating Systems', 'React & modern frontend', 'REST APIs with Node.js']),
-    sem(3, 5, 'Databases & Systems', 'Planned', ['Database Systems (SQL)', 'Software Engineering', 'Computer Networks', 'Full-stack project']),
-    sem(3, 6, 'Specialisation', 'Planned', ['Choose a specialisation (web, AI/ML, mobile or cloud)', 'Theory of Automata', 'Information Security basics', 'Open-source contributions']),
-    sem(4, 7, 'Final Year Project I', 'Planned', ['FYP proposal & research', 'Internship applications', 'System design fundamentals', 'Portfolio & CV refresh']),
-    sem(4, 8, 'Final Year Project II & Career', 'Planned', ['FYP implementation & defence', 'Interview preparation', 'Professional networking', 'Career launch']),
-  ],
+
 };
 
 // Technical articles (published) follow the personal drafts above.
 seedCollections.posts.push(...technicalPosts);
 
-function sem(year, semester, title, status, topics) {
-  return {
-    year,
-    semester,
-    title,
-    order: semester,
-    published: true,
-    topics: topics.map((t, i) => ({ id: `s${semester}-t${i + 1}`, title: t, status })),
-  };
-}
 
-// Official GU Tech courses per semester; progress from the earlier plan is carried over only where it clearly matches.
-for (const s of seedCollections.roadmap) s.subjects = withCarriedProgress(s.semester, officialSubjects(s.semester), s.topics);
 
 export function buildSeed() {
   const collections = {};

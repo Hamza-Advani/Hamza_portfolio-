@@ -27,7 +27,7 @@ service cloud.firestore {
     }
 
     match /{col}/{id} {
-      allow read: if col in ['skills', 'education', 'certificates', 'roadmap'] && resource.data.get('published', true) != false;
+      allow read: if col in ['skills', 'education', 'certificates'] && resource.data.get('published', true) != false;
       allow write: if false;
     }
 
