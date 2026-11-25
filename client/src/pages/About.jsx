@@ -27,7 +27,7 @@ export function ProfileFacts({ showPortrait = true, className }) {
           <SmartImage src={profile.image} alt={`Portrait of ${profile.name}`} width={700} className="aspect-[4/5] w-full rounded-[calc(1.6rem-1.5px)] object-cover" />
         </div>
       )}
-      <div className="card glow-border space-y-4 p-6">
+      <div className="card space-y-4 p-6">
         <div>
           <p className="eyebrow">Name</p>
           <p className="mt-1 font-medium">{profile.name}</p>
@@ -61,7 +61,7 @@ export function AboutChapters({ compact = false }) {
   return (
     <div className={cx(compact ? 'grid gap-5 md:grid-cols-2' : 'space-y-5')}>
       {chapters.map((c, i) => (
-        <Reveal key={c.title} delay={(compact ? i % 2 : i) * 0.05} className={cx(compact && i === chapters.length - 1 && chapters.length % 2 === 1 && 'md:col-span-2')}>
+        <Reveal key={c.title} className={cx(compact && i === chapters.length - 1 && chapters.length % 2 === 1 && 'md:col-span-2')}>
           <Spotlight className={cx('h-full', compact ? 'p-6 md:p-7' : 'p-7 md:p-9')}>
             <div className="relative z-10">
               <div className="flex items-center gap-4">
@@ -95,7 +95,7 @@ export default function About() {
             <AboutChapters />
             <Reveal className="flex flex-wrap gap-3 pt-9">
               <Button to="/education" variant="primary"><GraduationCap className="h-4 w-4" /> Education timeline</Button>
-              <Button to="/journey" variant="outline"><BookOpen className="h-4 w-4" /> Learning journey</Button>
+              <Button to="/blogs" variant="outline"><BookOpen className="h-4 w-4" /> Read my articles</Button>
             </Reveal>
           </div>
         </div>

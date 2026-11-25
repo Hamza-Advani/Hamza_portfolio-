@@ -1,7 +1,7 @@
 import { BrandMark } from '../components/brand/BrandMark.jsx';
 import { Suspense, useEffect, useState } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router';
-import { Award, BookOpen, ExternalLink, FolderKanban, GraduationCap, Inbox, KeyRound, LayoutDashboard, LogOut, Map, Menu, Settings, Sparkles, User, Video, X } from 'lucide-react';
+import { Award, BookOpen, ExternalLink, FolderKanban, GraduationCap, Inbox, KeyRound, LayoutDashboard, LogOut, Menu, Settings, Sparkles, User, Video, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Spinner } from '../components/ui.jsx';
 import { ThemeToggle } from '../components/layout/Navbar.jsx';
@@ -17,7 +17,6 @@ export const ADMIN_NAV = [
   { to: '/admin/skills', label: 'Skills', icon: Sparkles },
   { to: '/admin/education', label: 'Education', icon: GraduationCap },
   { to: '/admin/certificates', label: 'Certificates', icon: Award },
-  { to: '/admin/roadmap', label: 'Learning journey', icon: Map },
   { to: '/admin/video', label: 'Intro video', icon: Video },
   { to: '/admin/messages', label: 'Messages', icon: Inbox },
   { to: '/admin/settings', label: 'Settings', icon: Settings },
@@ -43,7 +42,7 @@ function Sidebar({ onNavigate }) {
                 to={n.to}
                 end={n.end}
                 onClick={onNavigate}
-                className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition', isActive ? 'bg-surface-2 font-medium text-ink ring-1 ring-line' : 'text-muted hover:bg-surface-2/60 hover:text-ink')}
+                className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm', isActive ? 'tile font-semibold text-accent' : 'text-muted hover:bg-surface-2 hover:text-ink')}
               >
                 <n.icon className="h-4 w-4" /> {n.label}
               </NavLink>
@@ -55,7 +54,7 @@ function Sidebar({ onNavigate }) {
         <a href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted hover:bg-surface-2 hover:text-ink">
           <ExternalLink className="h-4 w-4" /> View live site
         </a>
-        <div className="flex items-center justify-between gap-2 rounded-xl bg-surface-2/60 px-3 py-2">
+        <div className="well flex items-center justify-between gap-2 !rounded-xl px-3 py-2">
           <p className="min-w-0 truncate text-xs text-muted" title={user?.email}>{user?.email}</p>
           <button onClick={signOut} className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted hover:bg-rose/10 hover:text-rose" aria-label="Sign out" title="Sign out">
             <LogOut className="h-4 w-4" />
@@ -78,19 +77,19 @@ export default function AdminLayout() {
   return (
     <ToastProvider>
       <Seo title="Admin" noindex />
-      <div className="min-h-screen bg-bg-2">
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-line bg-bg lg:block"><Sidebar /></aside>
+      <div className="min-h-screen bg-bg">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-line bg-[image:var(--panel)] shadow-[var(--raise)] lg:block"><Sidebar /></aside>
         {open && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-            <aside className="absolute inset-y-0 left-0 w-72 border-r border-line bg-bg">
+            <aside className="absolute inset-y-0 left-0 w-72 border-r border-line bg-[image:var(--panel)] shadow-[var(--raise)]">
               <button onClick={() => setOpen(false)} className="absolute right-3 top-5 grid h-9 w-9 place-items-center rounded-full hover:bg-surface-2" aria-label="Close menu"><X className="h-4 w-4" /></button>
               <Sidebar onNavigate={() => setOpen(false)} />
             </aside>
           </div>
         )}
         <div className="lg:pl-64">
-          <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-line bg-bg/80 px-4 py-3 backdrop-blur-xl sm:px-6">
+          <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-line bg-[image:var(--panel)] px-4 py-3 shadow-[var(--raise-sm)] sm:px-6">
             <button onClick={() => setOpen(true)} className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden" aria-label="Open menu"><Menu className="h-4 w-4" /></button>
             <p className="text-sm text-muted">{user?.dev ? <span className="chip !border-lime/40 !text-lime">Local dev session</span> : 'Signed in as administrator'}</p>
             <ThemeToggle />

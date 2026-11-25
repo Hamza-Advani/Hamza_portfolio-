@@ -54,7 +54,7 @@ export default function VideoSection() {
     <Reveal className="relative">
       {/* Glow stays inside the page gutter on phones so it never widens the layout */}
       <div aria-hidden="true" className="absolute inset-x-0 -inset-y-6 -z-10 rounded-[3rem] sm:-inset-6 bg-[radial-gradient(60%_60%_at_50%_50%,var(--glow),transparent)] blur-2xl" />
-      <figure className="card glow-border bento overflow-hidden p-2 md:p-3">
+      <figure className="card bento overflow-hidden p-2 md:p-3">
         <div className="relative aspect-video overflow-hidden rounded-[1.1rem] bg-black">
           {/* preload="none": the video loads only when played, so it never competes with the page data */}
           <video
@@ -80,8 +80,7 @@ export default function VideoSection() {
               className="group absolute inset-0 grid place-items-center bg-gradient-to-t from-black/60 via-black/10 to-transparent"
               aria-label={`Play video: ${video.title}`}
             >
-              <span className="relative grid h-20 w-20 place-items-center rounded-full bg-white text-black transition-transform duration-500 group-hover:scale-110 md:h-24 md:w-24">
-                <span className="absolute inset-0 animate-ping rounded-full bg-white/40" />
+              <span className="relative grid h-20 w-20 place-items-center rounded-full bg-white text-black md:h-24 md:w-24">
                 <Play className="relative ml-1 h-7 w-7 fill-current" />
               </span>
             </button>
@@ -94,7 +93,7 @@ export default function VideoSection() {
               aria-pressed={muted}
               aria-label={soundLabel}
               title={soundLabel}
-              className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white backdrop-blur transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-80"
+              className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white backdrop-blur hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-80"
             >
               {muted || hasAudio === false ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               {hasAudio === false ? 'No audio track' : muted ? 'Unmute' : 'Mute'}

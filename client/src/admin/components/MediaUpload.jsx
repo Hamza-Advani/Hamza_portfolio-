@@ -4,6 +4,7 @@ import { acceptFor, optimizeImage, uploadToCloudinary } from '../../lib/media.js
 import { useToast } from './Toast.jsx';
 
 const ICON = { image: ImagePlus, video: Video, document: FileText };
+const cxFrame = (folder) => (folder === 'certificates' ? 'frame-doc h-24' : 'frame-screen h-24');
 const LIMIT = { image: '8 MB · JPG, PNG, WEBP, AVIF, GIF', video: '100 MB · MP4, WEBM, MOV', document: '10 MB · PDF' };
 
 /**
@@ -47,14 +48,19 @@ export default function MediaUpload({ kind = 'image', folder = 'misc', value, on
           setDragging(false);
           handle(e.dataTransfer.files?.[0]);
         }}
-        className={`relative overflow-hidden rounded-2xl border border-dashed transition ${dragging ? 'border-iris bg-iris/5' : 'border-line-strong'}`}
+        className={`relative overflow-hidden rounded-2xl border border-dashed ${dragging ? 'border-iris bg-iris/5' : 'border-line-strong'}`}
       >
         {value ? (
           <div className="flex flex-col gap-4 p-3 sm:flex-row sm:items-center">
-            <div className="h-28 w-full shrink-0 overflow-hidden rounded-xl bg-surface-2 sm:w-44">
-              {kind === 'image' && <img src={optimizeImage(value, 400)} alt="" className="h-full w-full object-cover" />}
-              {kind === 'video' && <video src={value} className="h-full w-full object-cover" muted preload="metadata" />}
-              {kind === 'document' && <div className="grid h-full place-items-center"><FileText className="h-8 w-8 text-iris" /></div>}
+            {/* Preview uses the same framing as the public site: certificates as framed documents, the rest in a bevel */}
+            <div className={folder === 'certificates' ? 'frame-certificate !p-1.5 w-full shrink-0 sm:w-48' : 'frame-showcase !p-1.5 w-full shrink-0 sm:w-48'}>
+              <div className={folder === 'certificates' ? 'frame-mat !p-1.5' : ''}>
+                <div className={cxFrame(folder)}>
+                  {kind === 'image' && <img src={optimizeImage(value, 400)} alt="" className={folder === 'certificates' ? 'h-full w-full bg-white object-contain' : 'h-full w-full object-cover'} />}
+                  {kind === 'video' && <video src={value} className="h-full w-full object-cover" muted preload="metadata" />}
+                  {kind === 'document' && <div className="grid h-full place-items-center"><FileText className="h-8 w-8 text-iris" /></div>}
+                </div>
+              </div>
             </div>
             <div className="min-w-0 flex-1">
               <a href={value} target="_blank" rel="noopener noreferrer" className="block truncate font-mono text-xs text-muted hover:text-ink">{value}</a>
@@ -72,10 +78,10 @@ export default function MediaUpload({ kind = 'image', folder = 'misc', value, on
           </button>
         )}
         {progress !== null && (
-          <div className="absolute inset-0 grid place-items-center bg-bg/85 backdrop-blur-sm">
+          <div className="absolute inset-0 grid place-items-center bg-bg/90">
             <div className="w-2/3 text-center">
-              <LoaderCircle className="mx-auto h-6 w-6 animate-spin text-iris" />
-              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2"><div className="h-full bg-gradient-to-r from-iris to-aqua transition-all" style={{ width: `${progress}%` }} /></div>
+              <LoaderCircle className="mx-auto h-6 w-6 text-iris" />
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2"><div className="h-full bg-gradient-to-r from-iris to-aqua" style={{ width: `${progress}%` }} /></div>
               <p className="mt-2 font-mono text-xs text-muted">{progress < 100 ? `Uploading ${progress}%` : 'Verifying…'}</p>
             </div>
           </div>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
-import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, Calendar, Check, Clock, Copy } from 'lucide-react';
 import { Seo } from '../lib/seo.jsx';
 import { publicApi } from '../lib/api.js';
@@ -33,7 +32,7 @@ export function PostView({ post }) {
       <header className="relative overflow-hidden pb-10 pt-32 md:pt-40">
         <div className="grid-bg mask-fade-b absolute inset-0 -z-10" />
         <div className="container-x max-w-4xl">
-          <Link to="/blogs" className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-sm text-muted transition hover:border-iris/50 hover:text-ink"><ArrowLeft className="h-4 w-4" /> All articles</Link>
+          <Link to="/blogs" className="mb-8 inline-flex items-center gap-2 rounded-full btn-neutral px-3.5 py-1.5 text-sm text-muted hover:border-iris/50 hover:text-ink"><ArrowLeft className="h-4 w-4" /> All articles</Link>
           <div className="mb-5 flex flex-wrap items-center gap-3 text-sm text-muted">
             <Link to={`/blogs?category=${encodeURIComponent(post.category)}`} className="chip !border-iris/30 !text-accent hover:!border-iris">{post.category}</Link>
             {post.publishedAt && <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" />{formatDate(post.publishedAt, { year: 'numeric', month: 'long', day: 'numeric' })}</span>}
@@ -62,10 +61,10 @@ export function PostView({ post }) {
       <div className="container-x max-w-3xl py-14 md:py-20">
         <RichText html={post.content} />
         <footer className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
-          <ul className="flex flex-wrap gap-2">{(post.tags || []).map((t) => <li key={t}><Link to={`/blogs?tag=${encodeURIComponent(t)}`} className="chip transition hover:!border-iris hover:!text-ink">#{t}</Link></li>)}</ul>
+          <ul className="flex flex-wrap gap-2">{(post.tags || []).map((t) => <li key={t}><Link to={`/blogs?tag=${encodeURIComponent(t)}`} className="chip hover:!border-iris hover:!text-ink">#{t}</Link></li>)}</ul>
           <div className="flex items-center gap-2">
-            <button onClick={copy} className="chip !py-1.5 transition hover:!text-ink">{copied ? <Check className="h-3.5 w-3.5 text-lime" /> : <Copy className="h-3.5 w-3.5" />}{copied ? 'Copied' : 'Copy link'}</button>
-            <a className="chip !py-1.5 transition hover:!text-ink" target="_blank" rel="noopener noreferrer" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}>
+            <button onClick={copy} className="chip !py-1.5 hover:!text-ink">{copied ? <Check className="h-3.5 w-3.5 text-lime" /> : <Copy className="h-3.5 w-3.5" />}{copied ? 'Copied' : 'Copy link'}</button>
+            <a className="chip !py-1.5 hover:!text-ink" target="_blank" rel="noopener noreferrer" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}>
               <LinkedinIcon className="h-3.5 w-3.5" /> Share
             </a>
           </div>
@@ -78,8 +77,6 @@ export function PostView({ post }) {
 export default function BlogDetail() {
   const { slug } = useParams();
   const { data, loading, error, reload } = useFetch((o) => publicApi.get('posts', slug, o), [slug]);
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   if (error?.status === 404) return <NotFound what="article" />;
   if (loading)
@@ -95,7 +92,6 @@ export default function BlogDetail() {
   return (
     <>
       <Seo title={data.seoTitle || data.title} description={data.seoDescription || data.excerpt} image={data.coverImage || undefined} type="article" />
-      <motion.div style={{ scaleX }} className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-gradient-to-r from-iris via-aqua to-lime" aria-hidden="true" />
       <PostView post={data} />
       {data.related?.length > 0 && (
         <Section className="!pt-0">

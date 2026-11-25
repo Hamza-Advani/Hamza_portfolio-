@@ -8,7 +8,7 @@ export default function ContactCTA() {
     <section className="py-16 md:py-24">
       <div className="container-x">
         <Reveal>
-          <div className="card glow-border relative overflow-hidden rounded-[2rem] px-6 py-16 text-center md:px-16 md:py-24">
+          <div className="card relative overflow-hidden rounded-[2rem] px-6 py-16 text-center md:px-16 md:py-24">
             <div className="absolute inset-0 -z-0 bg-[radial-gradient(50%_80%_at_50%_0%,var(--glow),transparent),radial-gradient(40%_60%_at_100%_100%,color-mix(in_srgb,var(--aqua)_18%,transparent),transparent)]" />
             <div className="grid-bg absolute inset-0 opacity-70" />
             <div className="relative">

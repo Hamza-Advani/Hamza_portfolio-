@@ -85,7 +85,7 @@ export default function SkillsGrid({ skills, compact = false }) {
         const Icon = CATEGORY_ICON[g.category] || Cpu;
         const hasDetail = g.items.some((s) => typeof s.level === 'number' || s.note);
         return (
-          <Reveal key={g.category} delay={(i % 2) * 0.06}>
+          <Reveal key={g.category}>
             <Spotlight className="bento h-full p-6 md:p-7">
               <div className="relative z-10">
                 <div className="flex items-center justify-between gap-4">

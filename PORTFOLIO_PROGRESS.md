@@ -108,3 +108,38 @@ Working branch: `feat/v3-portfolio` (from `main` @ 03bf511). Safety branch: `bac
 - Live: 8 semesters / 60 subjects; only CS101 + GE103 Currently Learning; 0 completed; projects 5, posts 16, certificates 5 unchanged.
 - Live browser check 15/15 (8 cards, expand/collapse, no page errors, Home preview) at 1440px light, 390px dark, 820px light.
 - Not tested on live: admin subject editing with the real Firebase admin account (no credentials); the same flow passed locally (25/25).
+
+---
+
+## Round 4 — Skeuomorphic redesign, zero motion, Learning Journey removed (2026-11-25)
+
+Safety branch: `backup/pre-skeuo-2026-11-25` (= 8570eb1, before this round).
+
+### Inputs
+- Screen recording found locally: `Videos/Screen Recordings/Screen Recording 2026-11-25 140747.mp4` (31 s, live homepage) — reviewed frame by frame.
+- Skeuomorphism reference screenshot: NOT found on this machine/session — design follows the written brief.
+
+### Video findings → root causes → fixes
+- Theme toggle showed a mixed half-light/half-dark page for ~0.5 s (dark navbar on a light page, grey stat cards/buttons). Cause: dozens of CSS colour transitions (300–700 ms, different per element) animating from old to new theme. Fix: all transitions/animations removed globally → theme switches in one frame (verified: first frame after click == settled frame).
+- Continuous motion: rotating conic ring behind the portrait (`animate-spin-slow`), typewriter role text, floating code chip, parallax glows, pulsing/pinging dots. All removed.
+
+### Motion removed (site + admin)
+- framer-motion uninstalled; codemod turned every `motion.*` into plain elements and dropped `AnimatePresence`; `Reveal` is a static wrapper; page loader removed; BlogDetail scroll-progress bar, Home parallax, navbar scroll-resize, cursor spotlight removed; smooth scrolling → instant.
+- All `transition*`, `duration-*`, `animate-*`, hover translate/scale/rotate classes stripped; CSS keyframes removed; global `* { animation:none!important; transition:none!important }`.
+
+### Design (client/src/index.css)
+- Skeuomorphic tokens: `--panel`, `--raise`, `--raise-sm`, `--inset`, `--well`, `--bezel`, `--btn-*`, `--moulding`, `--mat` (light + dark).
+- Classes: `.card` (raised panel), `.well` (recessed), `.tile`, `.btn-primary` / `.btn-neutral` (bevelled), recessed `.input`, raised `.chip` / `.pill`, frames `.frame-showcase` + `.frame-screen` (projects), `.frame-certificate` + `.frame-mat` + `.frame-doc` (certificates), `.frame-portrait`.
+- Applied: navbar (raised bar, recessed tab track, raised active tab), hero (framed portrait, role chips), project cards + detail screenshots + gallery (bezel), certificates (framed documents), blog cards, CV (framed paper), admin sidebar/header/dashboard/list thumbnails/media previews/editor.
+
+### Learning Journey removed
+- Client: Journey page, Roadmap, RoadmapEditor, academics.js, Home preview, nav/footer link, admin sidebar + dashboard tile + settings section; `/journey` now redirects to `/`.
+- Server: roadmap collection, schemas (roadmap, subject, settings roadmap*), stats, sitemap, seed, curriculum.js, migrate-journey.mjs, learning-journey tests; firestore.rules.
+- Kept on purpose: Future Learning Roadmap section (separate feature, Home), `ROADMAP_STATUSES` (Education milestones).
+- Live data removal script: `server/scripts/remove-journey-data.mjs` (dry run default, backup first, ETag-guarded).
+
+### Tests (round 4, local)
+- Server: 39 pass / 0 fail / 1 skipped (real-Blob test).
+- Motion/theme audit: 12 public routes + admin login — no running animations, no transitions, pixel-identical frames 1.5 s apart, instant theme switch, theme stable after reload/navigation.
+- Admin audit: 17/17 light, 17/17 dark (all 12 screens, no motion, no overflow, /admin/roadmap gone, modal static, mobile).
+- Admin E2E: 23/23. Public functional: 18/18. Responsive (4 viewports × 13 routes): 156/156 light, 156/156 dark.

@@ -22,7 +22,6 @@ export default function Skills() {
           <p className="max-w-xl text-sm text-muted">Want to see these skills in practice? My projects and GitHub repositories show what I&apos;ve built with them.</p>
           <div className="flex flex-wrap gap-3">
             <Button to="/portfolio">See projects</Button>
-            <Button to="/journey" variant="outline">What I&apos;m learning next</Button>
           </div>
         </Reveal>
       </Section>

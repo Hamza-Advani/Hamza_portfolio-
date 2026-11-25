@@ -65,7 +65,7 @@ export function ProjectView({ project }) {
         </div>
         <div className="container-x">
           <Reveal>
-            <Link to="/portfolio" className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-sm text-muted transition hover:border-iris/50 hover:text-ink">
+            <Link to="/portfolio" className="mb-8 inline-flex items-center gap-2 rounded-full btn-neutral px-3.5 py-1.5 text-sm text-muted hover:border-iris/50 hover:text-ink">
               <ArrowLeft className="h-4 w-4" /> All projects
             </Link>
             <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -80,17 +80,19 @@ export function ProjectView({ project }) {
       </header>
 
       <div className="container-x">
-        <Reveal className="browser-frame">
+        <div className="frame-showcase !p-3">
+        <div className="browser-frame">
           <div className="browser-frame-bar" aria-hidden="true">
             <i /><i /><i />
-            {project.liveUrl && <span className="ml-3 truncate rounded-md bg-surface px-2.5 py-0.5 font-mono text-[11px] text-faint">{project.liveUrl.replace(/^https?:\/\//, '')}</span>}
+            {project.liveUrl && <span className="well ml-3 truncate !rounded-md px-2.5 py-0.5 font-mono text-[11px] text-faint">{project.liveUrl.replace(/^https?:\/\//, '')}</span>}
           </div>
           {cover ? (
             <SmartImage src={cover} alt={`${project.title} — main screenshot`} width={1800} sizes="(min-width: 1280px) 1200px, 100vw" eager className="aspect-[16/9] w-full object-cover object-top" />
           ) : (
             <CoverArt title={project.title} label={project.category} className="aspect-[16/8] w-full" />
           )}
-        </Reveal>
+        </div>
+        </div>
       </div>
 
       <Section>
@@ -113,7 +115,7 @@ export function ProjectView({ project }) {
               <Block icon={CheckCircle2} title="Key features">
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {features.map((f) => (
-                    <li key={f} className="flex gap-3 rounded-2xl border border-line bg-surface-2/60 p-4 text-sm leading-relaxed">
+                    <li key={f} className="flex gap-3 well p-4 text-sm leading-relaxed">
                       <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-lime" aria-hidden="true" />
                       <span>{f}</span>
                     </li>
@@ -134,10 +136,10 @@ export function ProjectView({ project }) {
                   {gallery.map((g, i) => (
                     <li key={g.image + i}>
                       <button type="button" onClick={() => setShot(i)} className="group block w-full text-left" aria-label={`Open screenshot: ${g.caption || project.title}`}>
-                        <span className="browser-frame relative block">
-                          <SmartImage src={g.image} alt={g.caption || `${project.title} screenshot ${i + 1}`} width={900} className="aspect-[16/10] w-full object-cover object-top transition duration-500 group-hover:scale-[1.02]" />
-                          <span className="absolute right-3 top-3 media-chip opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100"><Maximize2 className="h-3 w-3" /> Enlarge</span>
-                        </span>
+                        <span className="frame-showcase relative block"><span className="frame-screen block">
+                          <SmartImage src={g.image} alt={g.caption || `${project.title} screenshot ${i + 1}`} width={900} className="aspect-[16/10] w-full object-cover object-top" />
+                          <span className="media-chip absolute bottom-5 right-5"><Maximize2 className="h-3 w-3" /> Enlarge</span>
+                        </span></span>
                         {g.caption && <span className="mt-2 block text-sm text-muted">{g.caption}</span>}
                       </button>
                     </li>
@@ -184,12 +186,12 @@ export function ProjectView({ project }) {
               )}
               <div className="space-y-2 border-t border-line pt-5 text-sm">
                 {project.liveUrl && (
-                  <a className="flex items-center gap-2 break-all text-muted transition hover:text-accent" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <a className="flex items-center gap-2 break-all text-muted hover:text-accent" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4 shrink-0" /> {project.liveUrl.replace(/^https?:\/\//, '')}
                   </a>
                 )}
                 {project.githubUrl ? (
-                  <a className="flex items-center gap-2 break-all text-muted transition hover:text-accent" href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <a className="flex items-center gap-2 break-all text-muted hover:text-accent" href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                     <GithubIcon className="h-4 w-4 shrink-0" /> {project.githubUrl.replace('https://github.com/', '')}
                   </a>
                 ) : (

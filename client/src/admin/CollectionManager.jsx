@@ -117,7 +117,11 @@ export default function CollectionManager({ config }) {
                   return (
                     <li key={doc.id} className={cx('card flex flex-col gap-3 p-4 sm:flex-row sm:items-center', !isPublished && 'opacity-70')}>
                       {col.thumb !== undefined && (
-                        <div className="h-14 w-20 shrink-0 overflow-hidden rounded-lg bg-surface-2">{col.thumb && <img src={col.thumb} alt="" className="h-full w-full object-cover" loading="lazy" />}</div>
+                        <div className={cx('w-24 shrink-0', collection === 'certificates' ? 'frame-certificate !p-1' : 'frame-showcase !p-1')}>
+                          <div className={collection === 'certificates' ? 'frame-mat !p-1' : ''}>
+                            <div className={cx('h-12', collection === 'certificates' ? 'frame-doc' : 'frame-screen')}>{col.thumb && <img src={col.thumb} alt="" className={cx('h-full w-full', collection === 'certificates' ? 'bg-white object-contain' : 'object-cover')} loading="lazy" />}</div>
+                          </div>
+                        </div>
                       )}
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-medium">{col.title}</p>

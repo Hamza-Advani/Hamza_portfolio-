@@ -19,8 +19,8 @@ export function Toggle({ checked, onChange, label, help }) {
     <label className="flex cursor-pointer items-start gap-3">
       <span className="relative mt-0.5 inline-flex shrink-0">
         <input type="checkbox" className="peer sr-only" checked={Boolean(checked)} onChange={(e) => onChange(e.target.checked)} />
-        <span className="h-6 w-11 rounded-full bg-line-strong transition peer-checked:bg-iris peer-focus-visible:ring-2 peer-focus-visible:ring-iris" />
-        <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition peer-checked:translate-x-5" />
+        <span className="h-6 w-11 rounded-full bg-line-strong peer-checked:bg-iris peer-focus-visible:ring-2 peer-focus-visible:ring-iris" />
+        <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow peer-checked:translate-x-5" />
       </span>
       <span>
         <span className="block text-sm font-medium">{label}</span>
@@ -75,7 +75,7 @@ export function ListEditor({ value = [], onChange, fields, newItem, addLabel = '
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={i} className="rounded-2xl border border-line bg-surface-2/40 p-4">
+        <div key={i} className="well p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="font-mono text-xs text-faint">{itemLabel ? itemLabel(item, i) : `#${i + 1}`}</span>
             <div className="flex gap-1">

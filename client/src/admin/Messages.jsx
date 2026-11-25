@@ -63,7 +63,7 @@ export default function Messages() {
           <ul className="card max-h-[70vh] divide-y divide-line overflow-y-auto p-1">
             {list.map((m) => (
               <li key={m.id}>
-                <button onClick={() => open(m)} className={cx('w-full rounded-xl p-3 text-left transition hover:bg-surface-2', selected === m.id && 'bg-surface-2')}>
+                <button onClick={() => open(m)} className={cx('w-full rounded-xl p-3 text-left hover:bg-surface-2', selected === m.id && 'bg-surface-2')}>
                   <div className="flex items-center justify-between gap-2">
                     <p className={cx('truncate text-sm', !m.read && 'font-semibold')}>{!m.read && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-iris" />}{m.name}</p>
                     <span className="shrink-0 text-[11px] text-faint">{formatDate(m.createdAt, { month: 'short', day: 'numeric' })}</span>

@@ -30,21 +30,22 @@ export function CertificatesGallery({ showSummary = false, limit }) {
       {data?.length === 0 && <EmptyState icon={Award} title="No certificates yet" />}
       <div className={`grid gap-5 md:gap-6 ${cols}`}>
         {shown.map((c, i) => (
-          <Reveal key={c.id} delay={(i % 4) * 0.06}>
-            <article className="card glow-border bento group flex h-full flex-col p-3">
+          <Reveal key={c.id}>
+            <article className="card bento flex h-full flex-col p-3">
               {c.image && (
+                /* Framed document: green moulding → paper mat with a fine gold line → certificate */
                 <button
                   type="button"
                   onClick={() => setOpen(withImages.indexOf(c))}
-                  className="relative block overflow-hidden rounded-[1.1rem] bg-[radial-gradient(120%_90%_at_50%_0%,var(--glow),transparent_60%),var(--surface-2)] p-3 ring-1 ring-[var(--border)]"
-                  aria-label={`Enlarge certificate: ${c.title}`}
+                  className="frame-certificate relative block w-full text-left"
+                  aria-label={`View certificate full size: ${c.title}`}
                 >
-                  <div className="overflow-hidden rounded-lg bg-white shadow-[0_14px_34px_-18px_rgb(0_0_0/0.55)]">
-                    <SmartImage src={c.image} alt={`Certificate: ${c.title}`} width={800} sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" className="aspect-[4/3] w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]" />
+                  <div className="frame-mat">
+                    <div className="frame-doc">
+                      <SmartImage src={c.image} alt={`Certificate: ${c.title}`} width={800} sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" className="aspect-[4/3] w-full bg-white object-contain" />
+                    </div>
                   </div>
-                  <span className="absolute inset-0 grid place-items-center bg-transparent opacity-0 transition duration-300 group-hover:bg-black/40 group-hover:opacity-100 group-focus-visible:opacity-100">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--violet),var(--aqua))] px-4 py-2 text-xs font-medium text-on-accent shadow-[0_8px_30px_-8px_var(--iris)]"><Maximize2 className="h-3.5 w-3.5" /> View full size</span>
-                  </span>
+                  <span className="media-chip absolute bottom-4 right-4"><Maximize2 className="h-3 w-3" /> Full size</span>
                 </button>
               )}
               <div className="relative z-10 flex flex-1 flex-col px-3 pb-3 pt-5">
@@ -56,7 +57,7 @@ export function CertificatesGallery({ showSummary = false, limit }) {
                   {c.credentialId && <div className="break-all font-mono"><dt className="inline">Credential ID: </dt><dd className="inline text-muted">{c.credentialId}</dd></div>}
                 </dl>
                 {c.verifyUrl && (
-                  <a href={c.verifyUrl} target="_blank" rel="noopener noreferrer" className="mt-auto inline-flex w-fit items-center gap-1.5 pt-5 text-sm font-medium text-violet transition hover:text-aqua">
+                  <a href={c.verifyUrl} target="_blank" rel="noopener noreferrer" className="mt-auto inline-flex w-fit items-center gap-1.5 pt-5 text-sm font-medium text-violet hover:text-aqua">
                     Verify certificate <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 )}

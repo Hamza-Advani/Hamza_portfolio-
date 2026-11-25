@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { CircleAlert, CircleCheck, Copy, Check, Mail, MapPin, Send } from 'lucide-react';
 import { Seo } from '../lib/seo.jsx';
 import { publicApi } from '../lib/api.js';
@@ -26,13 +25,13 @@ function Field({ id, label, error, children }) {
     <div>
       <label htmlFor={id} className="mb-2 block text-sm font-medium">{label}</label>
       {children}
-      <AnimatePresence>
+      <>
         {error && (
-          <motion.p id={`${id}-error`} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-1.5 text-xs text-rose">
+          <p id={`${id}-error`} className="mt-1.5 text-xs text-rose">
             {error}
-          </motion.p>
+          </p>
         )}
-      </AnimatePresence>
+      </>
     </div>
   );
 }
@@ -100,27 +99,27 @@ export function ContactPanel() {
   return (
     <div className="grid gap-8 lg:grid-cols-12">
       <Reveal className="space-y-4 lg:col-span-4">
-        <div className="card glow-border p-6">
+        <div className="card p-6">
           <span className="icon-tile h-11 w-11"><Mail className="h-5 w-5" /></span>
           <p className="eyebrow mt-5">Email</p>
           <a href={`mailto:${profile.email}`} className="mt-1 block break-all font-medium hover:text-violet">{profile.email}</a>
-          <button type="button" onClick={copyEmail} className="chip mt-4 !py-1.5 transition hover:!text-ink">
+          <button type="button" onClick={copyEmail} className="chip mt-4 !py-1.5 hover:!text-ink">
             {copied ? <Check className="h-3.5 w-3.5 text-lime" /> : <Copy className="h-3.5 w-3.5" />} {copied ? 'Copied!' : 'Copy address'}
           </button>
         </div>
-        <div className="card glow-border p-6">
+        <div className="card p-6">
           <span className="icon-tile h-11 w-11"><MapPin className="h-5 w-5" /></span>
           <p className="eyebrow mt-5">Location</p>
           <p className="mt-1 font-medium">{profile.location}</p>
         </div>
-        <div className="card glow-border p-6">
+        <div className="card p-6">
           <p className="eyebrow mb-4">Elsewhere</p>
           <SocialLinks size="lg" />
         </div>
       </Reveal>
 
-      <Reveal delay={0.08} className="lg:col-span-8">
-        <form onSubmit={submit} noValidate className="card glow-border space-y-5 p-6 md:p-10" aria-describedby="form-status">
+      <Reveal className="lg:col-span-8">
+        <form onSubmit={submit} noValidate className="card space-y-5 p-6 md:p-10" aria-describedby="form-status">
           <div className="grid gap-5 md:grid-cols-2">
             <Field id="name" label="Name" error={errors.name}><input {...inputProps('name')} autoComplete="name" placeholder="Your name" maxLength={80} /></Field>
             <Field id="email" label="Email" error={errors.email}><input {...inputProps('email')} type="email" autoComplete="email" placeholder="you@example.com" maxLength={160} /></Field>
@@ -137,14 +136,14 @@ export function ContactPanel() {
           </div>
 
           <div id="form-status" aria-live="polite">
-            <AnimatePresence mode="wait">
+            <>
               {status.state === 'success' && (
-                <motion.p key="ok" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-start gap-2 rounded-xl border border-lime/40 bg-lime/10 p-3 text-sm">
+                <p key="ok" className="flex items-start gap-2 rounded-xl border border-lime/40 bg-lime/10 p-3 text-sm">
                   <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-lime" /> {status.message}
-                </motion.p>
+                </p>
               )}
               {status.state === 'error' && (
-                <motion.p key="err" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-start gap-2 rounded-xl border border-rose/40 bg-rose/10 p-3 text-sm">
+                <p key="err" className="flex items-start gap-2 rounded-xl border border-rose/40 bg-rose/10 p-3 text-sm">
                   <CircleAlert className="mt-0.5 h-4 w-4 shrink-0 text-rose" />
                   <span>
                     {status.message}
@@ -155,9 +154,9 @@ export function ContactPanel() {
                       </>
                     )}
                   </span>
-                </motion.p>
+                </p>
               )}
-            </AnimatePresence>
+            </>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-4">

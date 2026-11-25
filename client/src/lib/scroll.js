@@ -7,27 +7,23 @@ export const HOME_SECTIONS = [
   { id: 'skills', label: 'Skills', page: '/skills' },
   { id: 'projects', label: 'Portfolio', page: '/portfolio', match: ['/portfolio', '/projects'] },
   { id: 'certificates', label: 'Certificates', page: '/certificates' },
-  { id: 'journey', label: 'Journey', page: '/journey' },
   { id: 'blog', label: 'Blogs', page: '/blogs', match: ['/blog'] },
   { id: 'contact', label: 'Contact', page: '/contact' },
 ];
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
 /**
- * Smooth-scrolls to a homepage section. Sections use `scroll-margin-top`, so the fixed
+ * Scrolls (instantly) to a homepage section. Sections use `scroll-margin-top`, so the fixed
  * navbar never covers the heading. Updates the URL hash without adding history entries.
  */
 export function scrollToSection(id) {
   if (id === 'top') {
-    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
     window.history.replaceState(window.history.state, '', '/');
     return true;
   }
   const el = document.getElementById(id);
   if (!el) return false;
-  el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+  el.scrollIntoView({ behavior: 'auto', block: 'start' });
   window.history.replaceState(window.history.state, '', `/#${id}`);
   return true;
 }

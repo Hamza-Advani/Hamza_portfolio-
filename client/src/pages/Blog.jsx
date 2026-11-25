@@ -55,7 +55,7 @@ export default function Blog() {
                     type="button"
                     aria-pressed={category === c}
                     onClick={() => set('category', c)}
-                    className={cx('chip !py-1.5 transition hover:!text-ink', category === c && '!border-transparent !bg-[linear-gradient(110deg,var(--violet),var(--iris))] !text-on-accent')}
+                    className={cx('chip !py-1.5 hover:!text-ink', category === c && '!border-transparent !bg-[linear-gradient(110deg,var(--violet),var(--iris))] !text-on-accent')}
                   >
                     {c} <span className={cx('font-mono text-[10px]', category === c ? 'text-on-accent/80' : 'text-faint')}>{n}</span>
                   </button>
@@ -70,7 +70,7 @@ export default function Blog() {
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-x-3 gap-y-1.5 border-t border-line pt-4" role="group" aria-label="Filter by tag">
                 {tags.map((t) => (
-                  <button key={t} type="button" aria-pressed={tag === t} onClick={() => set('tag', tag === t ? null : t)} className={cx('font-mono text-xs transition hover:text-ink', tag === t ? 'font-semibold text-accent' : 'text-faint')}>#{t}</button>
+                  <button key={t} type="button" aria-pressed={tag === t} onClick={() => set('tag', tag === t ? null : t)} className={cx('font-mono text-xs hover:text-ink', tag === t ? 'font-semibold text-accent' : 'text-faint')}>#{t}</button>
                 ))}
               </div>
             )}
@@ -91,7 +91,7 @@ export default function Blog() {
         {data?.length === 0 && <EmptyState icon={PenLine} title="Articles are on the way" description="New technical articles will appear here soon." />}
         {data?.length > 0 && posts.length === 0 && <EmptyState icon={Search} title="No matching articles" description="Try a different search, category or tag." />}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((p, i) => <Reveal key={p.id} delay={(i % 3) * 0.06}><PostCard post={p} index={i} /></Reveal>)}
+          {posts.map((p, i) => <Reveal key={p.id}><PostCard post={p} index={i} /></Reveal>)}
         </div>
       </Section>
     </>

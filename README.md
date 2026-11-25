@@ -1,18 +1,18 @@
 # Muhammad Hamza — Developer Portfolio (v3)
 
-A full-stack personal portfolio with project case studies, a technical blog, a learning roadmap and an admin dashboard.
+A full-stack personal portfolio with project case studies, a technical blog and an admin dashboard.
 
 **What's new in v3**
 - One token-based design system with matching **light and dark themes** (`client/src/index.css`). Components use tokens only — no hard-coded dark-only colours.
 - **Portfolio** (`/portfolio`, alias `/projects`) with case-study pages (`/projects/:slug`): problem, overview, key features, architecture, screenshot gallery, status, role, live demo and source links (or a "private repository" note).
 - **Blogs** (`/blogs`, alias `/blog`, `/blog/:slug`) — 16 technical articles written in Markdown under `server/content/posts`, compiled with `npm run build:posts -w server`. Search, categories and tags are kept in the URL.
-- **Future learning roadmap** on Home and `/journey#future` (clearly marked as plans, not finished work).
+- **Future learning roadmap** section on Home (clearly marked as plans, not finished work). The semester-wise Learning Journey was removed on 2026-11-25.
 - **Uploads without Cloudinary**: when `CLOUDINARY_*` is not set, admin image/PDF uploads (≤ 4 MB, images compressed in the browser) are stored in the private Vercel Blob store and served from `/api/media/...`. `/api/health` reports `services.uploads`.
 - `server/scripts/merge-content.mjs` adds new starter projects/posts to the live Blob document (dry run by default, backup first, add-only, ETag-guarded).
 
 | Layer | Tech |
 | --- | --- |
-| Frontend | React 19, Vite, Tailwind CSS 4, React Router, Framer Motion, Lucide, TipTap editor |
+| Frontend | React 19, Vite, Tailwind CSS 4, React Router, Lucide, TipTap editor |
 | Backend | Node.js, Express 5 REST API (runs as one Vercel serverless function) |
 | Data & auth | Cloud Firestore + Firebase Authentication, Firebase Admin SDK (server only), role via custom claim |
 | Media | Cloudinary signed uploads (images, PDF CV, video) with server-side verification |
@@ -46,10 +46,10 @@ portfolio/
 │  ├─ public/                   images/, media/intro.mp4, poster, captions, og-image, robots.txt, favicon
 │  ├─ src/
 │  │  ├─ pages/                 Home, About, Education, Skills, Projects, ProjectDetail, Certificates,
-│  │  │                         Blog, BlogDetail, Journey, Contact, CV, NotFound
+│  │  │                         Blog, BlogDetail, Contact, CV, NotFound
 │  │  ├─ admin/                 Login, Dashboard, Profile, Projects, Posts (+editor), Skills, Education,
-│  │  │                         Certificates, Roadmap, Video, Messages, Settings
-│  │  ├─ components/            layout (Navbar, Footer, Loader), sections, ui kit
+│  │  │                         Certificates, Video, Messages, Settings
+│  │  ├─ components/            layout (Navbar, Footer), sections, ui kit
 │  │  ├─ context/               Site data, theme, auth
 │  │  └─ lib/                   api client, firebase, cloudinary helpers, SEO
 │  └─ .env.example
@@ -60,14 +60,14 @@ portfolio/
 ```
 
 ### Pages
-`/` · `/about` · `/education` · `/skills` · `/projects` · `/projects/:slug` · `/certificates` · `/blog` · `/blog/:slug` · `/journey` · `/contact` · `/cv` (printable résumé) · `/admin` · any unknown URL → 404.
+`/` · `/about` · `/education` · `/skills` · `/projects` · `/projects/:slug` · `/certificates` · `/blog` · `/blog/:slug` · `/contact` · `/cv` (printable résumé) · `/admin` · any unknown URL → 404.
 
 ### API
 | Method | Route | Access |
 | --- | --- | --- |
 | GET | `/api/health` | public |
 | GET | `/api/public/site` | public — profile, settings, video |
-| GET | `/api/public/:collection` (`skills`, `education`, `projects`, `certificates`, `posts`, `roadmap`) | public — published only |
+| GET | `/api/public/:collection` (`skills`, `education`, `projects`, `certificates`, `posts`) | public — published only |
 | GET | `/api/public/projects/:slug`, `/api/public/posts/:slug` | public — published only |
 | GET | `/api/public/github` | public — GitHub API proxy with cache + manual fallback |
 | POST | `/api/contact` | public — validated, rate-limited, spam-protected |
@@ -118,7 +118,7 @@ Delete `server/.data/db.json` any time to reset local content to the seed.
    either paste it into Firestore → Rules, or run `npx firebase-tools deploy --only firestore:rules`.
    The browser has **no write access**; all writes go through the API with the Admin SDK.
 6. **Seed content** – `npm run seed` (copies your profile, education, 5 certificates, skills, 2 projects,
-   5 draft blog posts and the 8-semester roadmap into Firestore; existing data is never overwritten unless you pass `-- --force`).
+   5 draft blog posts into Firestore; existing data is never overwritten unless you pass `-- --force`).
 
 ## 4. Admin account setup
 
@@ -263,7 +263,6 @@ To replace the video without code, use **Admin → Intro video** (upload to Clou
 - **Blog**: the 5 posts are **drafts**. They contain educational outlines plus highlighted ✍️ notes where only you can write
   your personal experience. Replace those notes, then click **Publish**. Use **Preview** to check before publishing.
 - **Skills** have no proficiency levels — set them in Admin → Skills if you want progress bars.
-- **Roadmap** is labelled a *suggested learning plan*; Semester 1 topics are marked *Currently Learning*. Update statuses as you go.
 - **CV**: "Download CV" opens a printable résumé (`/cv`, "Save as PDF"). Upload a PDF in Admin → Profile → CV to link that instead.
 - **Projects**: only the two portfolio versions are seeded. Use **Import from GitHub** in Admin → Projects to draft others
   (Hire-At-Home, LMS_GU_TECH, SMIT) and add their descriptions — the GitHub repos currently have no descriptions.

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { ArrowUpRight, Award, BookOpen, CircleAlert, FolderKanban, Inbox, Map, Plus, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Award, BookOpen, CircleAlert, FolderKanban, Inbox, Plus, Sparkles } from 'lucide-react';
 import { adminApi, publicApi } from '../lib/api.js';
 import { useFetch } from '../hooks/useFetch.js';
 import { formatDate } from '../lib/format.js';
@@ -8,10 +8,10 @@ import { AdminPageHeader } from './AdminLayout.jsx';
 
 function Stat({ icon: Icon, label, value, sub, to }) {
   return (
-    <Link to={to} className="card group p-5 transition hover:border-iris">
+    <Link to={to} className="card group p-5 hover:border-iris">
       <div className="flex items-center justify-between">
-        <span className="grid h-10 w-10 place-items-center rounded-xl bg-surface-2 text-iris"><Icon className="h-5 w-5" /></span>
-        <ArrowUpRight className="h-4 w-4 text-faint transition group-hover:text-ink" />
+        <span className="icon-tile h-10 w-10 rounded-xl"><Icon className="h-5 w-5" /></span>
+        <ArrowUpRight className="h-4 w-4 text-faint group-hover:text-ink" />
       </div>
       <p className="mt-4 font-display text-3xl font-semibold">{value}</p>
       <p className="text-sm text-muted">{label}</p>
@@ -52,16 +52,15 @@ export default function Dashboard() {
 
       {error && <ErrorState error={error} onRetry={reload} />}
       {loading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }, (_, i) => <Skeleton key={i} className="h-36" />)}</div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">{Array.from({ length: 5 }, (_, i) => <Skeleton key={i} className="h-36" />)}</div>
       ) : data && (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <Stat icon={FolderKanban} label="Projects" value={data.projects.total} sub={`${data.projects.published} published · ${data.projects.featured} featured`} to="/admin/projects" />
             <Stat icon={BookOpen} label="Blog posts" value={data.posts.total} sub={`${data.posts.published} published · ${data.posts.drafts} drafts`} to="/admin/posts" />
             <Stat icon={Inbox} label="Messages" value={data.messages.total} sub={`${data.messages.unread} unread`} to="/admin/messages" />
             <Stat icon={Award} label="Certificates" value={data.certificates.total} to="/admin/certificates" />
             <Stat icon={Sparkles} label="Skills" value={data.skills.total} to="/admin/skills" />
-            <Stat icon={Map} label="Journey subjects" value={data.roadmap.topics} sub={`${data.roadmap.completed} completed · ${data.roadmap.learning} in progress`} to="/admin/roadmap" />
           </div>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-5">

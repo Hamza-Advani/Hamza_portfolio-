@@ -21,7 +21,7 @@ export default function Footer() {
                 <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-aqua" /> {profile.location}</p>
               )}
               {profile?.email && (
-                <a href={`mailto:${profile.email}`} className="flex items-center gap-2 transition hover:text-ink">
+                <a href={`mailto:${profile.email}`} className="flex items-center gap-2 hover:text-ink">
                   <Mail className="h-4 w-4 text-aqua" /> {profile.email}
                 </a>
               )}
@@ -32,7 +32,7 @@ export default function Footer() {
               <p className="eyebrow mb-4">Explore</p>
               <ul className="space-y-2.5 text-sm">
                 {NAV.slice(0, 5).map((n) => (
-                  <li key={n.to}><Link to={n.to} className="text-muted transition hover:text-ink">{n.label}</Link></li>
+                  <li key={n.to}><Link to={n.to} className="text-muted hover:text-ink">{n.label}</Link></li>
                 ))}
               </ul>
             </div>
@@ -40,7 +40,7 @@ export default function Footer() {
               <p className="eyebrow mb-4">More</p>
               <ul className="space-y-2.5 text-sm">
                 {[...NAV.slice(5), { to: '/contact', label: 'Contact' }, { to: '/cv', label: 'Résumé / CV' }].map((n) => (
-                  <li key={n.to}><Link to={n.to} className="text-muted transition hover:text-ink">{n.label}</Link></li>
+                  <li key={n.to}><Link to={n.to} className="text-muted hover:text-ink">{n.label}</Link></li>
                 ))}
               </ul>
             </div>
@@ -50,7 +50,7 @@ export default function Footer() {
             <SocialLinks />
             {settings?.availability && (
               <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-muted">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-lime" /> {settings.availability}
+                <span className="h-1.5 w-1.5 rounded-full bg-lime" /> {settings.availability}
               </p>
             )}
           </div>
@@ -64,8 +64,8 @@ export default function Footer() {
           <p>© {year} {profile?.name || 'Muhammad Hamza'}. {settings?.footerNote}</p>
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 transition hover:border-iris hover:text-ink"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'auto' })}
+            className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 hover:border-iris hover:text-ink"
           >
             Back to top <ArrowUp className="h-3.5 w-3.5" />
           </button>

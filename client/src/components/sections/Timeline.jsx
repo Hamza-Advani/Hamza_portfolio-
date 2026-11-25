@@ -5,7 +5,7 @@ import { cx } from '../../lib/format.js';
 export function EducationCard({ item, compact = false }) {
   const years = [item.startYear, item.endYear].filter(Boolean).join(' – ');
   return (
-    <article className={cx('card glow-border bento p-6 md:p-8', item.current && 'ring-1 ring-iris/40')}>
+    <article className={cx('card bento p-6 md:p-8', item.current && 'ring-1 ring-iris/40')}>
       <div className="flex flex-wrap items-center gap-3">
         <span className="icon-tile h-11 w-11">
           <GraduationCap className="h-5 w-5" />
@@ -13,7 +13,7 @@ export function EducationCard({ item, compact = false }) {
         {years && <span className="font-mono text-sm text-muted">{years}</span>}
         {item.status && (
           <span className={cx('chip', item.current && '!border-aqua/40 !text-aqua')}>
-            {item.current && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-aqua" />}
+            {item.current && <span className="h-1.5 w-1.5 rounded-full bg-aqua" />}
             {item.status}
           </span>
         )}
@@ -40,7 +40,7 @@ export function MilestoneTimeline({ milestones = [] }) {
               m.status === 'Completed' ? 'bg-lime' : m.status === 'Currently Learning' ? 'bg-aqua shadow-[0_0_0_6px_color-mix(in_srgb,var(--aqua)_25%,transparent)]' : 'bg-line-strong',
             )}
           />
-          <Reveal className={cx(i % 2 ? 'md:col-start-2' : 'md:text-right')} delay={0.05}>
+          <Reveal className={cx(i % 2 ? 'md:col-start-2' : 'md:text-right')}>
             <p className="font-mono text-sm text-violet">{m.period}</p>
             <h3 className="mt-1 text-xl font-semibold md:text-2xl">{m.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">{m.description}</p>

@@ -28,17 +28,18 @@ export default function CV() {
   const H = ({ children }) => <h2 className="mb-3 border-b border-neutral-300 pb-1 font-display text-sm font-bold uppercase tracking-[0.16em] text-neutral-800">{children}</h2>;
 
   return (
-    <div className="min-h-screen bg-neutral-200 py-6 print:bg-white print:py-0">
+    <div className="min-h-screen bg-bg py-6 print:bg-white print:py-0">
       <Seo title="CV" description={`Résumé of ${profile.name}`} />
       <div className="mx-auto mb-4 flex max-w-[210mm] flex-wrap items-center justify-between gap-3 px-4 print:hidden">
-        <Link to="/" className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-neutral-800 shadow"><ArrowLeft className="h-4 w-4" /> Back to site</Link>
+        <Link to="/" className="btn-neutral inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm"><ArrowLeft className="h-4 w-4" /> Back to site</Link>
         <div className="flex gap-2">
-          {profile.cvUrl && <a href={profile.cvUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-neutral-800 shadow"><Download className="h-4 w-4" /> Uploaded PDF</a>}
-          <button onClick={() => window.print()} className="inline-flex items-center gap-2 rounded-full bg-neutral-900 px-4 py-2 text-sm text-white shadow"><Printer className="h-4 w-4" /> Save as PDF</button>
+          {profile.cvUrl && <a href={profile.cvUrl} target="_blank" rel="noopener noreferrer" className="btn-neutral inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm"><Download className="h-4 w-4" /> Uploaded PDF</a>}
+          <button onClick={() => window.print()} className="btn-primary inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm"><Printer className="h-4 w-4" /> Save as PDF</button>
         </div>
       </div>
 
-      <article className="mx-auto max-w-[210mm] bg-white px-5 py-8 sm:px-[14mm] sm:py-[14mm] print:px-[14mm] print:py-[14mm] text-[13px] leading-relaxed text-neutral-700 shadow-xl print:shadow-none" style={{ colorScheme: 'light' }}>
+      <div className="frame-showcase mx-auto max-w-[calc(210mm+1.5rem)] !p-3 print:max-w-none print:!border-0 print:!bg-none print:!p-0 print:!shadow-none">
+      <article className="mx-auto max-w-[210mm] rounded-md bg-white px-5 py-8 sm:px-[14mm] sm:py-[14mm] print:px-[14mm] print:py-[14mm] text-[13px] leading-relaxed text-neutral-700 shadow-xl print:shadow-none" style={{ colorScheme: 'light' }}>
         <header className="flex flex-col-reverse items-start justify-between gap-4 sm:flex-row sm:gap-6 print:flex-row border-b-2 border-neutral-900 pb-5">
           <div>
             <h1 className="font-display text-4xl font-bold tracking-tight text-neutral-900">{profile.name}</h1>
@@ -117,6 +118,7 @@ export default function CV() {
           <p>{(profile.languages || []).map((l) => `${l.name} (${l.level})`).join(' · ')}</p>
         </section>
       </article>
+      </div>
     </div>
   );
 }

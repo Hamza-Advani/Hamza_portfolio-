@@ -154,7 +154,7 @@ export function SettingsEditor() {
   const s = useSingleton('settings');
   const v = s.values || {};
   return (
-    <Shell title="Website settings" description="SEO defaults, footer, roadmap labels and GitHub fallback." state={s}>
+    <Shell title="Website settings" description="SEO defaults, footer and GitHub fallback." state={s}>
       <Section title="SEO & sharing">
         <FormGrid
           values={v}
@@ -176,16 +176,6 @@ export function SettingsEditor() {
             { name: 'footerNote', label: 'Footer note', wide: true },
             { name: 'showIntroVideo', label: 'Show intro video on the home page', type: 'toggle' },
             { name: 'showGithubRepos', label: 'Show GitHub repositories', type: 'toggle' },
-          ]}
-        />
-      </Section>
-      <Section title="Learning roadmap">
-        <FormGrid
-          values={v}
-          onChange={s.change}
-          fields={[
-            { name: 'roadmapDisclaimer', label: 'Disclaimer (shown above the roadmap)', type: 'textarea', rows: 2 },
-            { name: 'roadmapYears', label: 'Year themes', type: 'list', addLabel: 'Add year', newItem: { year: 1, title: '' }, itemLabel: (y) => `Year ${y.year}`, fields: [{ name: 'year', label: 'Year', type: 'number', min: 1, maxValue: 4 }, { name: 'title', label: 'Theme' }] },
           ]}
         />
       </Section>

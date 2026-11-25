@@ -22,7 +22,7 @@ export function EducationContent({ headingLevel = 'page' }) {
             eyebrow={`${current.startYear} – ${current.endYear}`}
             title={headingLevel === 'page' ? 'Four-year BSCS timeline' : 'My BSCS timeline'}
             align="center"
-            description="A high-level view of each academic year. The learning journey tracks every subject, semester by semester."
+            description="A high-level view of each academic year."
           />
           <MilestoneTimeline milestones={current.milestones} />
         </div>
@@ -31,7 +31,7 @@ export function EducationContent({ headingLevel = 'page' }) {
         <div className="mt-6">
           <h3 className="eyebrow mb-5">Before university</h3>
           <div className="grid gap-5 md:grid-cols-2">
-            {previous.map((e, i) => <Reveal key={e.id} delay={i * 0.08}><EducationCard item={e} /></Reveal>)}
+            {previous.map((e, i) => <Reveal key={e.id}><EducationCard item={e} /></Reveal>)}
           </div>
         </div>
       )}
@@ -47,7 +47,6 @@ export default function Education() {
       <Section className="!pt-0">
         <EducationContent />
         <Reveal className="mt-12 flex flex-wrap gap-6">
-          <ArrowLink to="/journey">Explore the detailed roadmap</ArrowLink>
           <ArrowLink to="/certificates">View my certificates</ArrowLink>
         </Reveal>
       </Section>

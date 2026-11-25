@@ -27,7 +27,6 @@ export default defineConfig({
           // Only vendor libraries every public page needs get their own long-cached chunks.
           // Admin-only libraries (TipTap, Firebase) are left to lazy route splitting.
           if (!id.includes('node_modules')) return;
-          if (/node_modules[\\/](framer-motion|motion-dom|motion-utils)[\\/]/.test(id)) return 'motion';
           if (/node_modules[\\/](react|react-dom|scheduler|react-router)[\\/]/.test(id)) return 'react';
         },
       },

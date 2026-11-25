@@ -39,7 +39,7 @@ function Tool({ onClick, active, disabled, label, children }) {
       title={label}
       aria-label={label}
       aria-pressed={active}
-      className={cx('grid h-8 w-8 place-items-center rounded-lg text-muted transition hover:bg-surface-2 hover:text-ink disabled:opacity-30', active && 'bg-iris/15 !text-iris')}
+      className={cx('grid h-8 w-8 place-items-center rounded-lg text-muted hover:bg-surface-2 hover:text-ink disabled:opacity-30', active && 'bg-iris/15 !text-iris')}
     >
       {children}
     </button>
@@ -114,8 +114,8 @@ export default function RichEditor({ value, onChange, folder = 'blog' }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-line-strong bg-surface-2/40">
-      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-0.5 border-b border-line bg-surface/95 p-1.5 backdrop-blur">
+    <div className="well overflow-hidden !rounded-2xl">
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-0.5 border-b border-line bg-[image:var(--panel)] p-1.5 shadow-[var(--raise-sm)]">
         <Tool label="Heading 2" active={state.h2} onClick={() => chain().toggleHeading({ level: 2 }).run()}><Heading2 className="h-4 w-4" /></Tool>
         <Tool label="Heading 3" active={state.h3} onClick={() => chain().toggleHeading({ level: 3 }).run()}><Heading3 className="h-4 w-4" /></Tool>
         <span className="mx-1 h-5 w-px bg-line" />

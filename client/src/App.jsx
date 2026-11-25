@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router';
-import { MotionConfig } from 'framer-motion';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { SiteProvider } from './context/SiteContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import Layout, { RouteFallback } from './components/layout/Layout.jsx';
@@ -15,7 +14,6 @@ const ProjectDetail = lazy(() => import('./pages/ProjectDetail.jsx'));
 const Certificates = lazy(() => import('./pages/Certificates.jsx'));
 const Blog = lazy(() => import('./pages/Blog.jsx'));
 const BlogDetail = lazy(() => import('./pages/BlogDetail.jsx'));
-const Journey = lazy(() => import('./pages/Journey.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const CV = lazy(() => import('./pages/CV.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
@@ -34,7 +32,6 @@ const EducationAdmin = lazy(() => import('./admin/collections.jsx').then((m) => 
 const CertificatesAdmin = lazy(() => import('./admin/collections.jsx').then((m) => ({ default: m.CertificatesAdmin })));
 const PostsList = lazy(() => import('./admin/Posts.jsx').then((m) => ({ default: m.PostsList })));
 const PostEditor = lazy(() => import('./admin/Posts.jsx').then((m) => ({ default: m.PostEditor })));
-const RoadmapEditor = lazy(() => import('./admin/RoadmapEditor.jsx'));
 const Messages = lazy(() => import('./admin/Messages.jsx'));
 const AccountSettings = lazy(() => import('./admin/AccountSettings.jsx'));
 
@@ -42,7 +39,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <MotionConfig reducedMotion="user">
           <SiteProvider>
               <Suspense fallback={<RouteFallback />}>
                 <Routes>
@@ -58,7 +54,8 @@ export default function App() {
                     <Route path="blogs" element={<Blog />} />
                     <Route path="blog" element={<Blog />} />
                     <Route path="blog/:slug" element={<BlogDetail />} />
-                    <Route path="journey" element={<Journey />} />
+                    {/* Learning Journey was removed — old links land on the homepage */}
+                    <Route path="journey" element={<Navigate to="/" replace />} />
                     <Route path="contact" element={<Contact />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
@@ -74,7 +71,6 @@ export default function App() {
                     <Route path="skills" element={<SkillsAdmin />} />
                     <Route path="education" element={<EducationAdmin />} />
                     <Route path="certificates" element={<CertificatesAdmin />} />
-                    <Route path="roadmap" element={<RoadmapEditor />} />
                     <Route path="video" element={<VideoEditor />} />
                     <Route path="messages" element={<Messages />} />
                     <Route path="settings" element={<SettingsEditor />} />
@@ -85,7 +81,6 @@ export default function App() {
                 </Routes>
               </Suspense>
           </SiteProvider>
-        </MotionConfig>
       </ThemeProvider>
     </BrowserRouter>
   );

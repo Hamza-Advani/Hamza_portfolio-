@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { optimizeImage } from '../../lib/media.js';
 
@@ -24,43 +23,40 @@ export default function Lightbox({ items, index, onClose, onIndex }) {
   }, [open, index, items.length, onClose, onIndex]);
 
   return createPortal(
-    <AnimatePresence>
+    <>
       {item && (
-        <motion.div
+        <div
           role="dialog"
           aria-modal="true"
           aria-label={item.title}
           className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-[#060906]/90 p-4 backdrop-blur-xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
           onClick={onClose}
         >
-          <button onClick={onClose} className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-white backdrop-blur transition hover:border-[#4ade80] hover:bg-[#16a34a]/40" aria-label="Close">
+          <button onClick={onClose} className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-white backdrop-blur hover:border-[#4ade80] hover:bg-[#16a34a]/40" aria-label="Close">
             <X className="h-5 w-5" />
           </button>
-          <motion.div className="rounded-2xl bg-[linear-gradient(135deg,rgb(74_222_128/0.55),rgb(163_230_53/0.5))] p-px shadow-[0_30px_120px_-30px_rgb(34_197_94/0.6)]" initial={{ scale: 0.94, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} onClick={(e) => e.stopPropagation()}>
+          <div className="rounded-2xl bg-[linear-gradient(135deg,rgb(74_222_128/0.55),rgb(163_230_53/0.5))] p-px shadow-[0_30px_120px_-30px_rgb(34_197_94/0.6)]" onClick={(e) => e.stopPropagation()}>
           <img
             key={item.image}
             src={optimizeImage(item.image, 1800)}
             alt={item.title}
             className="block max-h-[74vh] w-auto max-w-[calc(100vw-2rem)] rounded-2xl bg-white object-contain"
           />
-          </motion.div>
+          </div>
           <p className="mt-5 max-w-2xl text-center text-sm text-white/85">{item.title}{items.length > 1 && <span className="ml-2 font-mono text-xs text-white/50">{index + 1} / {items.length}</span>}</p>
           {items.length > 1 && (
             <div className="mt-3 flex gap-2" onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => onIndex((index - 1 + items.length) % items.length)} className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-white backdrop-blur transition hover:border-[#4ade80] hover:bg-[#16a34a]/40" aria-label="Previous">
+              <button onClick={() => onIndex((index - 1 + items.length) % items.length)} className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-white backdrop-blur hover:border-[#4ade80] hover:bg-[#16a34a]/40" aria-label="Previous">
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <button onClick={() => onIndex((index + 1) % items.length)} className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-white backdrop-blur transition hover:border-[#4ade80] hover:bg-[#16a34a]/40" aria-label="Next">
+              <button onClick={() => onIndex((index + 1) % items.length)} className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-white backdrop-blur hover:border-[#4ade80] hover:bg-[#16a34a]/40" aria-label="Next">
                 <ChevronRight className="h-5 w-5" />
               </button>
             </div>
           )}
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>,
+    </>,
     document.body,
   );
 }

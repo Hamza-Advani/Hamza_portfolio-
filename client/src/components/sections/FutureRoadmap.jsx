@@ -70,7 +70,7 @@ export default function FutureRoadmap({ compact = false }) {
     <div>
       <ol className={cx('grid gap-4 sm:grid-cols-2', !compact && 'xl:grid-cols-3')}>
         {goals.map((g, i) => (
-          <Reveal as="li" key={g.title} delay={(i % 3) * 0.05} className={cx('card bento flex flex-col p-6', !compact && i === 0 && 'xl:col-span-2')}>
+          <Reveal as="li" key={g.title} className={cx('card bento flex flex-col p-6', !compact && i === 0 && 'xl:col-span-2')}>
             <div className="flex items-start justify-between gap-3">
               <span className="icon-tile h-11 w-11"><g.icon className="h-5 w-5" /></span>
               <span className={cx('rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide', TONE[g.status])}>{g.status}</span>

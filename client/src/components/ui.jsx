@@ -1,6 +1,4 @@
-import { useRef } from 'react';
 import { Link } from 'react-router';
-import { motion, useReducedMotion } from 'framer-motion';
 import DOMPurify from 'dompurify';
 import { ArrowUpRight, CircleAlert, LoaderCircle, RefreshCw } from 'lucide-react';
 import { cx } from '../lib/format.js';
@@ -20,13 +18,11 @@ export const LinkedinIcon = (p) => (
 
 // ── Buttons ─────────────────────────────────────────────────────────────
 const btnBase =
-  'group relative inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap';
+  'group relative inline-flex items-center justify-center gap-2 rounded-full font-medium disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap';
 const btnVariants = {
-  primary:
-    'text-on-accent bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
-  gradient:
-    'text-on-accent bg-[linear-gradient(110deg,var(--violet),var(--iris)_40%,var(--aqua))] bg-[length:200%_100%] hover:bg-[position:100%_0] hover:-translate-y-0.5 active:translate-y-0 shadow-[0_10px_40px_-14px_var(--iris)] hover:shadow-[0_16px_50px_-14px_var(--iris)]',
-  outline: 'border border-line-strong bg-surface/40 text-ink backdrop-blur hover:-translate-y-0.5 hover:border-iris/70 hover:bg-surface-2 hover:shadow-[0_10px_30px_-16px_var(--iris)]',
+  primary: 'btn-primary',
+  gradient: 'btn-primary',
+  outline: 'btn-neutral',
   ghost: 'text-muted hover:text-ink hover:bg-surface-2',
   danger: 'bg-rose/10 text-rose border border-rose/30 hover:bg-rose hover:text-white',
 };
@@ -36,7 +32,7 @@ export function Button({ to, href, variant = 'primary', size = 'md', className, 
   const cls = cx(btnBase, btnVariants[variant], btnSizes[size], className);
   const content = (
     <>
-      {loading && <LoaderCircle className="h-4 w-4 animate-spin" />}
+      {loading && <LoaderCircle className="h-4 w-4" />}
       {children}
     </>
   );
@@ -53,44 +49,26 @@ export function Button({ to, href, variant = 'primary', size = 'md', className, 
 export function ArrowLink({ to, href, children, className }) {
   const inner = (
     <>
-      <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-[length:100%_1px]">
+      <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 group-hover:bg-[length:100%_1px]">
         {children}
       </span>
-      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      <ArrowUpRight className="h-4 w-4" />
     </>
   );
   const cls = cx('group inline-flex items-center gap-1.5 text-sm font-medium text-ink', className);
   return to ? <Link to={to} className={cls}>{inner}</Link> : <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>;
 }
 
-// ── Motion helpers ──────────────────────────────────────────────────────
-export function Reveal({ children, delay = 0, y = 24, className, as = 'div' }) {
-  const reduce = useReducedMotion();
-  const M = motion[as];
-  return (
-    <M
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </M>
-  );
+// ── Static wrappers (the site has no motion) ─────────────────────────────
+/** Formerly a scroll-reveal animation. Now a plain wrapper so content is always visible. */
+export function Reveal({ children, className, as: Tag = 'div' }) {
+  return <Tag className={className}>{children}</Tag>;
 }
 
-/** Card whose border + glow follow the cursor. */
+/** Raised panel (kept as a named component for the existing cards). */
 export function Spotlight({ as: Tag = 'div', className, children, ...rest }) {
-  const ref = useRef(null);
-  const onMove = (e) => {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    ref.current.style.setProperty('--mx', `${e.clientX - r.left}px`);
-    ref.current.style.setProperty('--my', `${e.clientY - r.top}px`);
-  };
   return (
-    <Tag ref={ref} onMouseMove={onMove} className={cx('card glow-border spotlight overflow-hidden', className)} {...rest}>
+    <Tag className={cx('card overflow-hidden', className)} {...rest}>
       {children}
     </Tag>
   );
@@ -110,7 +88,7 @@ export function SectionHeading({ eyebrow, title, description, align = 'left', ac
         <h2 id={id} className="text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl md:text-5xl">{title}</h2>
         {description && <p className="mt-4 text-base leading-relaxed text-muted md:text-lg">{description}</p>}
       </Reveal>
-      {action && <Reveal delay={0.1}>{action}</Reveal>}
+      {action && <Reveal>{action}</Reveal>}
     </div>
   );
 }
@@ -129,7 +107,7 @@ export function PageHeader({ eyebrow, title, description, children }) {
           <h1 className="text-balance max-w-4xl text-[2.4rem] font-semibold leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl">{title}</h1>
           {description && <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">{description}</p>}
         </Reveal>
-        {children && <Reveal delay={0.15} className="mt-8">{children}</Reveal>}
+        {children && <Reveal className="mt-8">{children}</Reveal>}
       </div>
     </header>
   );
@@ -154,18 +132,18 @@ const statusStyles = {
 export function StatusBadge({ status, className }) {
   return (
     <span className={cx('inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide', statusStyles[status] || statusStyles.Planned, className)}>
-      {status === 'Currently Learning' && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current" />}
+      {status === 'Currently Learning' && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
       {status}
     </span>
   );
 }
 
 export function Spinner({ className }) {
-  return <LoaderCircle className={cx('h-5 w-5 animate-spin text-iris', className)} aria-label="Loading" />;
+  return <LoaderCircle className={cx('h-5 w-5 text-iris', className)} aria-label="Loading" />;
 }
 
 export function Skeleton({ className }) {
-  return <div className={cx('animate-shimmer rounded-2xl bg-[linear-gradient(90deg,var(--surface-2)_25%,var(--border-strong)_50%,var(--surface-2)_75%)] bg-[length:200%_100%]', className)} />;
+  return <div className={cx('rounded-2xl bg-[linear-gradient(90deg,var(--surface-2)_25%,var(--border-strong)_50%,var(--surface-2)_75%)]', className)} />;
 }
 
 export function SkeletonGrid({ count = 3, className = 'h-72' }) {
@@ -178,7 +156,7 @@ export function SkeletonGrid({ count = 3, className = 'h-72' }) {
 
 export function ErrorState({ error, onRetry, title = 'Something went wrong' }) {
   return (
-    <div role="alert" className="card glow-border mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
+    <div role="alert" className="card mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
       <CircleAlert className="h-8 w-8 text-rose" />
       <h3 className="text-lg font-semibold">{title}</h3>
       <p className="text-sm text-muted">{error?.message || 'Please try again in a moment.'}</p>
@@ -193,7 +171,7 @@ export function ErrorState({ error, onRetry, title = 'Something went wrong' }) {
 
 export function EmptyState({ icon: Icon, title, description, action }) {
   return (
-    <div className="card glow-border mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
+    <div className="card mx-auto flex max-w-lg flex-col items-center gap-3 p-10 text-center">
       {Icon && <div className="icon-tile h-14 w-14 rounded-2xl"><Icon className="h-6 w-6" /></div>}
       <h3 className="text-lg font-semibold">{title}</h3>
       {description && <p className="text-sm text-muted">{description}</p>}
@@ -246,27 +224,11 @@ export function RichText({ html, className }) {
   return <div className={cx('prose-x', className)} dangerouslySetInnerHTML={{ __html: clean }} />;
 }
 
-export function Marquee({ items, className }) {
-  const row = [...items, ...items];
-  return (
-    <div className={cx('mask-fade-x relative flex overflow-hidden', className)}>
-      <div className="flex shrink-0 animate-marquee items-center gap-10 pr-10 hover:[animation-play-state:paused]">
-        {row.map((item, i) => (
-          <span key={i} className="flex items-center gap-10 whitespace-nowrap font-display text-2xl font-medium text-faint md:text-4xl">
-            {item}
-            <span className="h-2 w-2 rounded-full bg-gradient-to-r from-violet to-aqua shadow-[0_0_10px_var(--iris)]" />
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 // ── Bento primitives ────────────────────────────────────────────────────
-/** Glass bento tile with a gradient border, lift + glow on hover. */
+/** Raised skeuomorphic panel (static: no hover movement). */
 export function BentoCard({ as: Tag = 'div', className, children, ...rest }) {
   return (
-    <Tag className={cx('card glow-border bento relative overflow-hidden', className)} {...rest}>
+    <Tag className={cx('card bento relative overflow-hidden', className)} {...rest}>
       {children}
     </Tag>
   );
@@ -293,12 +255,12 @@ export function ViewAll({ to, children = 'View all', className }) {
     <Link
       to={to}
       className={cx(
-        'group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong bg-surface/50 px-3.5 py-1.5 text-xs font-medium text-ink backdrop-blur transition hover:border-iris/70 hover:text-on-accent hover:bg-iris/80 hover:shadow-[0_8px_24px_-10px_var(--iris)]',
+        'group inline-flex shrink-0 items-center gap-1.5 rounded-full btn-neutral px-3.5 py-1.5 text-xs font-medium text-ink hover:text-accent',
         className,
       )}
     >
       {children}
-      <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      <ArrowUpRight className="h-3.5 w-3.5" />
     </Link>
   );
 }
