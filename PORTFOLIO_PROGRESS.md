@@ -143,3 +143,10 @@ Safety branch: `backup/pre-skeuo-2026-11-25` (= 8570eb1, before this round).
 - Motion/theme audit: 12 public routes + admin login — no running animations, no transitions, pixel-identical frames 1.5 s apart, instant theme switch, theme stable after reload/navigation.
 - Admin audit: 17/17 light, 17/17 dark (all 12 screens, no motion, no overflow, /admin/roadmap gone, modal static, mobile).
 - Admin E2E: 23/23. Public functional: 18/18. Responsive (4 viewports × 13 routes): 156/156 light, 156/156 dark.
+
+### Round 4 deployment
+- Commits: 0f9261c (server: Learning Journey removed), 0c1e4d8 (client: skeuomorphic redesign, zero motion, journey UI removed) → `main`; Vercel production deployment = success.
+- Independent QA agent review: no blocking issues; 9 minor leftovers (unused vars, dead orb markup, stale comments, no-op classes/props, a fragile sitemap test) fixed before commit.
+- Live data: `remove-journey-data.mjs --apply` removed collections.roadmap (8 semesters, 57 subjects) and settings.roadmapDisclaimer/roadmapYears. Backup: `server/.data/backups/content-2026-11-25T13-46-28-576Z.json` and Blob `data/backups/content-2026-11-25T13-46-28-576Z.json`. Projects 5, posts 16, certificates 5, skills 12, education 3 unchanged.
+- LIVE tests (https://muhammadhamza-iota.vercel.app): motion/theme audit 40/40 (12 routes + admin login: no animations, no transitions, pixel-identical frames, instant theme switch, theme stable after reload/navigation); public functional 17/17 (contact form intentionally not submitted on production); responsive 4 viewports × 14 routes 168/168 light + 168/168 dark; /api/public/roadmap → 404; /journey → redirects home.
+- Not tested live: admin login/editing with the real Firebase account (no credentials available); the same admin flows passed locally (E2E 23/23, audit 17/17 light + dark).
